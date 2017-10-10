@@ -1,6 +1,7 @@
 import sys
 import spotipy
 import spotipy.util as util
+import pickle
 try:
     from .personal_info import SPOTIFY
 except:
@@ -13,8 +14,9 @@ except:
 # three artists for that month
 class Spotify():
     def __init__(self):
-        self.token = util.prompt_for_user_token(SPOTIFY['email'],'user-top-read',client_id=SPOTIFY['client_id'],client_secret=SPOTIFY['client_secret'],redirect_uri=SPOTIFY['redirect_uri'])
-        self.sp = spotipy.Spotify(auth=self.token)
+        with open('personal_dashboard/spotify.pkl', 'rb') as input:
+            self.token = pickle.load(input)
+            self.sp = spotipy.Spotify(auth=self.token)
 
     def get_monthly_top_tracks(self):
         top_tracks = self.sp.current_user_top_tracks(limit=5, time_range='short_term')

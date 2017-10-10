@@ -1,4 +1,4 @@
-personal_info.py
+#personal_info.py
 __pycache__/
 *.py[cod]
 venv
