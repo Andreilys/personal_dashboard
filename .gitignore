@@ -1,7 +1,7 @@
 #personal_info.py
 __pycache__/
 *.py[cod]
-#venv
+venv
 __init__.py
 .gitignore
 .cache-12al104@queensu.ca

@@ -36,6 +36,3 @@ class Spotify():
             external_url = item['external_urls']['spotify']
             artist_list.append("<a target='_blank' href='{0}'>{1}</a><br>".format(external_url, artist))
         return artist_list
-
-sp = Spotify()
-print(sp.get_monthly_top_tracks())
