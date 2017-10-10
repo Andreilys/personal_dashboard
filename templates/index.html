@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Personal Dashboard</title>
+
+  <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='css/styles.css')}}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename='js/scripts.js')}}"> </script>
+  <link rel="shortcut icon" href="static/favicon.ico" type="gear">
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="quote"> <i>{{quote[0]}}</i><br> <strong>{{quote[1]}}</strong>
+    <p id="temp"></li>
+    <p id="weather_hourly"></li>
+    <p id="weather_today"></li>
+  </div>
+<h1 id="loading"> Loading Data.... </h1>
+<div id="coding">
+</div>
+
+<TABLE class="data_table" border="1">
+<TR><TH>Daily Rescuetime<td><p>Productivity: <p id="rescue_time_daily_productivity"></p></p><p>Unproductivity: <p id="rescue_time_daily_unproductivity"></p> </p> <p>Top Three sources: <p id="rescue_time_daily_top_three"></p></p> </td>
+<TR><TH>Weekly Rescuetime<td><p>Productivity: <p id="rescue_time_past_seven_productivity"></p></p><p>Unproductivity: <p id="rescue_time_past_seven_unproductivity"></p> </p> <p>Top Five sources: <p id="rescue_time_past_seven_top_five"></p></p> </td>
+<TR><TH>Steps<td><p id="current_steps"></p><p id="average_past_seven_steps"></p></td>
+<TR><TH>Chess<td><p id="chess_rating"></p><p id="chess_games"></p></td>
+<TR><TH>Pomodoros<td>Daily Pomodoro's: <p id="daily_pomodoros"></p>Past 7 Days Pomdoro's: <p id="past_seven_days_pomodoros"></p></td>
+<TR><TH>Weight<td id="weight"></td>
+<TR><TH>Todoist<td><p id="total_tasks"></p><p id="daily_completed_tasks"></p><p id="past_seven_completed_tasks"></p></td>
+<TR><TH>Spotify<td>Top tracks this month: <p id="top_tracks"></p>Top Artists this month:<p id="top_artists"></p></td>
+</TABLE>
+
+</body>
+</html>

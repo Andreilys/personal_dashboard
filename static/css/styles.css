@@ -1,0 +1,34 @@
+
+.quote {
+    text-align: center;
+    padding: 20px;
+}
+
+.data_table {
+  text-align: center;
+  margin: auto;
+}
+
+#coding_time {
+  display: inline;
+   width:30%;
+   height:30%;
+   margin:auto;
+   position:relative;
+   left:15%
+}
+
+#coding_lang {
+  display: inline;
+  width:30%;
+  height:30%;
+  float:right;
+  margin:auto;
+  position:relative;
+  right:15%
+}
+
+#loading {
+  margin:auto;
+  text-align: center;
+}

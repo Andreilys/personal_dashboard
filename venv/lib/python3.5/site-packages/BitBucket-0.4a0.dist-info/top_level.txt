@@ -1,0 +1,2 @@
+bitbucket
+s3amazon
