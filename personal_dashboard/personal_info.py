@@ -1,0 +1,11 @@
+GOOGLE_MAPS_API_KEY = 'AIzaSyBbkJMNqpJi7S8MZL9w5duChvOP-3l1Qd4'
+MINT_DETAILS = ["alyskov7@gmail.com", "Logos101!", "4CDE81381D7C46CA941B9CACABEFD02D", "50e644f5eb624aba87709f1b021710e0"]
+HOME = "373 Union St W, Kingston, ON K7L 2R4"
+WORK = "101 Union St W, Kingston, ON K7L 5C4"
+RESCUETIME_API_KEY = "B63DjxcuNdYRvZmXtyh20h3dEdcfKRjUMpmsdm8Y"
+TODOIST = {"email" : '12al104@queensu.ca', "password" : "logos101"}
+SPOTIFY = {"email" : '12al104@queensu.ca', 'client_id' : "23b4a71c19ea4bfcab4bc9cbc6e1ffc9", 'client_secret':'6bd69bda8edf4e1db80d9c3b43584cc7', 'redirect_uri':'http://localhost/'}
+DARKSKY_KEY = "0d319b0be7b50ff2cec95e9513c9cbf2"
+MOVES_KEYS = {'client_id':'c418oY3nC9LbHQ4aRA3I79drjPGSjZpa', 'client_secret':'7s0DDpKVRg29kAgCaexjOIz2cnlnXWsOA4iscM6A6ly3coPqRIWfCLkHNiba905B', 'redirect_url': 'https://example.com/old/path'}
+WITHINGS_KEYS = {'API_KEY': 'c79cf24e836845ce8d00790dd906522447cd95523f433159727c4551d', 'API_SECRET' : '16681b172fd6241f377e24349404dbb978f7ecf3eb81bd979df3592ffb1fb0'}
+TOGGL_API_TOKEN = 'fab0834862bcf57035b57bb39f0ae13f'
