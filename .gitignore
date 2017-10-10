@@ -1,7 +1,7 @@
-#personal_info.py
-# Byte-compiled / optimized / DLL files
-#__pycache__/
-#*.py[cod]
-#venv
-#__init__.py
-#.gitignore
+personal_info.py
+ Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+venv
+__init__.py
+.gitignore
