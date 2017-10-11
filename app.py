@@ -22,6 +22,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 @app.route('/')
 def hello_world():
+    #TODO: Quote will need to be moved to the data object later 
     return render_template('index.html', quote=QUOTE)
 
 
