@@ -22,7 +22,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 @app.route('/')
 def hello_world():
-    #TODO: Quote will need to be moved to the data object later 
     return render_template('index.html', quote=QUOTE)
 
 
@@ -34,6 +33,7 @@ def data():
     Python JSON emitters will directly encode arrays and other data types,
     Flask.jsonify() appears to require a dict.
     """
+    #Sleeping to avoid too many pings to API's
     time.sleep(10)
     rescue_time = RescueTime()
     # next_bus = NextBus().get_next_bus()
