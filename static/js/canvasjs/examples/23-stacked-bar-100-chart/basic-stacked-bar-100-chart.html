@@ -1,0 +1,67 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer",
+			{
+				title: {
+					text: "Division of products Sold in Quarter."
+
+				},
+				data: [
+				{
+					type: "stackedBar100",
+					dataPoints: [
+					{ y: 600, label: "Water Filter" },
+					{ y: 400, label: "Modern Chair" },
+					{ y: 120, label: "VOIP Phone" },
+					{ y: 250, label: "Microwave" },
+					{ y: 120, label: "Water Filter" },
+					{ y: 374, label: "Expresso Machine" },
+					{ y: 350, label: "Lobby Chair" }
+
+					]
+				},
+				 {
+				 	type: "stackedBar100",
+				 	dataPoints: [
+					{ y: 400, label: "Water Filter" },
+					{ y: 500, label: "Modern Chair" },
+					{ y: 220, label: "VOIP Phone" },
+					{ y: 350, label: "Microwave" },
+					{ y: 220, label: "Water Filter" },
+					{ y: 474, label: "Expresso Machine" },
+					{ y: 450, label: "Lobby Chair" }
+
+				 	]
+				 },
+				{
+					type: "stackedBar100",
+					dataPoints: [
+					{ y: 300, label: "Water Filter" },
+					{ y: 610, label: "Modern Chair" },
+					{ y: 215, label: "VOIP Phone" },
+					{ y: 221, label: "Microwave" },
+					{ y: 75, label: "Water Filter" },
+					{ y: 310, label: "Expresso Machine" },
+					{ y: 340, label: "Lobby Chair" }
+
+					]
+				}
+
+				]
+
+			});
+
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;">
+	</div>
+</body>
+</html>

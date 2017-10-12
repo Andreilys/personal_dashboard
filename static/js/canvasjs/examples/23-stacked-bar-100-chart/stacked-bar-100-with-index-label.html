@@ -1,0 +1,188 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer",
+			{
+				theme: 'theme2',
+				title: {
+					text: "Time Spent in Holiday Season"
+
+				},
+				animationEnabled: true,
+				axisY: {
+					title: "percent"
+				},
+				legend: {
+					horizontalAlign: 'center',
+					verticalAlign: 'bottom'
+				},
+				toolTip: {
+					shared: true
+				},
+				data: [
+				{
+					type: "stackedBar100",
+					showInLegend: true,
+					name: "With Friends",
+					indexLabel: "{y}",
+					dataPoints: [
+					{ y: 350, label: "George" },
+					{ y: 350, label: "Alex" },
+					{ y: 350, label: "Mike" },
+					{ y: 374, label: "Jake" },
+					{ y: 320, label: "Shah" },
+					{ y: 300, label: "Joe" },
+					{ y: 400, label: "Fin" },
+					{ y: 220, label: "Larry" }
+
+					]
+				},
+
+				{
+					type: "stackedBar100",
+					showInLegend: true,
+					name: "Eating Out",
+					indexLabel: "{y}",
+					dataPoints: [
+					{ y: 250, label: "George" },
+					{ y: 280, label: "Alex" },
+					{ y: 350, label: "Mike" },
+					{ y: 274, label: "Jake" },
+					{ y: 320, label: "Shah" },
+					{ y: 320, label: "Joe" },
+					{ y: 280, label: "Fin" },
+					{ y: 420, label: "Larry" }
+
+					]
+				},
+				{
+					type: "stackedBar100",
+					showInLegend: true,
+					name: "Reading",
+					indexLabel: "{y}",
+					dataPoints: [
+					{ y: 350, label: "George" },
+					{ y: 350, label: "Alex" },
+					{ y: 350, label: "Mike" },
+					{ y: 374, label: "Jake" },
+					{ y: 120, label: "Shah" },
+					{ y: 120, label: "Joe" },
+					{ y: 400, label: "Fin" },
+					{ y: 120, label: "Larry" }
+
+					]
+				},
+
+				{
+					type: "stackedBar100",
+					showInLegend: true,
+					name: "Shopping",
+					indexLabel: "{y}",
+					dataPoints: [
+					{ y: 250, label: "George" },
+					{ y: 250, label: "Alex" },
+					{ y: 250, label: "Mike" },
+					{ y: 274, label: "Jake" },
+					{ y: 320, label: "Shah" },
+					{ y: 220, label: "Joe" },
+					{ y: 100, label: "Fin" },
+					{ y: 420, label: "Larry" }
+
+					]
+				},
+				{
+					type: "stackedBar100",
+					showInLegend: true,
+					name: "Fitness",
+					indexLabel: "{y}",
+					dataPoints: [
+					{ y: 150, label: "George" },
+					{ y: 30, label: "Alex" },
+					{ y: 45, label: "Mike" },
+					{ y: 74, label: "Jake" },
+					{ y: 64, label: "Shah" },
+					{ y: 40, label: "Joe" },
+					{ y: 50, label: "Fin" },
+					{ y: 40, label: "Larry" }
+
+					]
+				},
+
+				{
+					type: "stackedBar100",
+					showInLegend: true,
+					name: "Travel",
+					indexLabel: "{y}",
+					dataPoints: [
+					{ y: 150, label: "George" },
+					{ y: 170, label: "Alex" },
+					{ y: 150, label: "Mike" },
+					{ y: 174, label: "Jake" },
+					{ y: 120, label: "Shah" },
+					{ y: 160, label: "Joe" },
+					{ y: 100, label: "Fin" },
+					{ y: 80, label: "Larry" }
+
+					]
+				},
+
+				{
+					type: "stackedBar100",
+					showInLegend: true,
+					name: "Internet",
+					indexLabel: "{y}",
+					dataPoints: [
+					{ y: 160, label: "George" },
+					{ y: 170, label: "Alex" },
+					{ y: 50, label: "Mike" },
+					{ y: 174, label: "Jake" },
+					{ y: 104, label: "Shah" },
+					{ y: 120, label: "Joe" },
+					{ y: 300, label: "Fin" },
+					{ y: 420, label: "Larry" }
+
+					]
+				},
+
+				{
+					type: "stackedBar100",
+					showInLegend: true,
+					name: "Hobbies",
+					indexLabel: "{y}",
+					dataPoints: [
+					{ y: 80, label: "George" },
+					{ y: 150, label: "Alex" },
+					{ y: 50, label: "Mike" },
+					{ y: 74, label: "Jake" },
+					{ y: 40, label: "Shah" },
+					{ y: 120, label: "Joe" },
+					{ y: 100, label: "Fin" },
+					{ y: 120, label: "Larry" }
+
+					]
+				}
+
+
+				]
+
+			});
+
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;">
+	</div>
+</body>
+</html>
+
+</html>

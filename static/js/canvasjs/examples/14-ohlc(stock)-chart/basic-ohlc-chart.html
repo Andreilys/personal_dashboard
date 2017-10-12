@@ -1,0 +1,52 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title: {
+					text: "Monthly Stock Prices for 2012",
+				},
+				axisY: {
+					includeZero: false,
+					prefix: "$",
+					title: "Prices",
+				},
+				axisX: {
+					interval: 1,
+					intervalType: "month",
+					valueFormatString: "MMM",
+				},
+				data: [
+				{
+					type: "ohlc",
+					dataPoints: [   // Y: [Open, High ,Low, Close]
+						{ x: new Date(2012, 00, 01), y: [53.65, 56.88, 50.28, 54.99] },
+						{ x: new Date(2012, 01, 01), y: [55.52, 60.86, 54.97, 57.68] },
+						{ x: new Date(2012, 02, 01), y: [57.84, 59.18, 55.24, 57.03] },
+						{ x: new Date(2012, 03, 01), y: [57.12, 57.87, 44.45, 47.30] },
+						{ x: new Date(2012, 04, 01), y: [47.37, 47.73, 41.59, 42.10] },
+						{ x: new Date(2012, 05, 01), y: [41.96, 45.56, 41.40, 45.06] },
+						{ x: new Date(2012, 06, 01), y: [45.46, 46.05, 37.93, 39.58] },
+						{ x: new Date(2012, 07, 01), y: [39.94, 44.60, 38.97, 42.53] },
+						{ x: new Date(2012, 08, 01), y: [42.38, 48.90, 41.58, 48.54] },
+						{ x: new Date(2012, 09, 01), y: [49.36, 49.99, 42.58, 43.42] },
+						{ x: new Date(2012, 10, 01), y: [43.82, 44.75, 41.59, 44.45] },
+						{ x: new Date(2012, 11, 01), y: [44.25, 44.40, 41.18, 42.30] }
+					]
+				}
+				]
+			});
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+
+
+</html>

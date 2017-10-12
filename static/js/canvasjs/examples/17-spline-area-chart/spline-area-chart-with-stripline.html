@@ -1,0 +1,45 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title: {
+					text: "Spline Area Chart with Stripline on Axis X"
+				},
+				axisX: {
+					stripLines: [
+					{
+						value: 1940
+					}
+					],
+					valueFormatString: "####"
+				},
+				data: [
+				{
+					type: "splineArea",
+					color: "rgba(83, 223, 128, .6)",
+					dataPoints: [
+						{ x: 1910, y: 5 },
+						{ x: 1920, y: 9 },
+						{ x: 1930, y: 17 },
+						{ x: 1940, y: 32 },
+						{ x: 1950, y: 22 },
+						{ x: 1960, y: 14 },
+						{ x: 1970, y: 25 },
+						{ x: 1980, y: 18 },
+						{ x: 1990, y: 20 }
+					]
+				}
+				]
+			});
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			CanvasJS.addCultureInfo("es", {
+				decimalSeparator: ",",// Observe ToolTip Number Format
+				digitGroupSeparator: ".", // Observe axisY labels
+				days: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]
+
+			});
+
+			var chart = new CanvasJS.Chart("chartContainer", {
+				theme: "theme1",
+				culture: "es",
+				axisX: {
+					valueFormatString: "DDDD"
+				},
+				// change to "theme1"
+				title: {
+					text: "Localization Demo - Days in Spanish"
+				},
+				data: [
+				{
+					type: "column",
+					dataPoints: [
+					//Note: month input is 0-11 in JavaScript - 05 is June
+					{ x: new Date(2013, 05, 3), y: 3275.6 },
+					{ x: new Date(2013, 05, 4), y: 5250.8 },
+					{ x: new Date(2013, 05, 5), y: 6255.3 },
+					{ x: new Date(2013, 05, 6), y: 8275.2 },
+					{ x: new Date(2013, 05, 7), y: 6378.1 },
+					{ x: new Date(2013, 05, 8), y: 5258.4 },
+					{ x: new Date(2013, 05, 9), y: 3514.8 }
+					]
+				}
+				]
+			});
+
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;">
+	</div>
+</body>
+</html>

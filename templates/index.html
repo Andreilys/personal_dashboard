@@ -5,9 +5,9 @@
   <meta charset="utf-8">
 
   <title>Personal Dashboard</title>
-
   <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='css/styles.css')}}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
   <script src="{{ url_for('static', filename='js/scripts.js')}}"> </script>
   <link rel="shortcut icon" href="static/favicon.ico" type="gear">
   <!--[if lt IE 9]>
@@ -16,9 +16,22 @@
 </head>
 <body>
   <div class="quote"> <i>{{quote[0]}}</i><br> <strong>{{quote[1]}}</strong>
+  </div>
+    <span style="position: absolute;padding-left: 40%;">
+      <canvas id="unproductivity_doughnut" width="100%" height="100%" float:right></canvas>
+      <p>Daily Unproductivity</p>
+    </span>
+    <span>
+      <canvas id="steps_doughnut" width="100%" height="100%" float: left></canvas>
+      <p>Daily Steps</p>
+    </span>
+
+
+  </span>
+    <!-- TODO fix the number of calls to the dark sky API before
     <p id="temp"></li>
     <p id="weather_hourly"></li>
-    <p id="weather_today"></li>
+    <p id="weather_today"></li> -->
   </div>
 <h1 id="loading"> Loading Data.... </h1>
 <div id="coding">

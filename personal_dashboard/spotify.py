@@ -13,6 +13,9 @@ except:
 # three artists for that month
 class Spotify():
     def __init__(self):
+        #This requires a users prompting first time its run, afterwards there will
+        # be a cached file called .cache-spotifyemail, make sure this cached file
+        # is pushed to whatever cloud based application otherwise it will break
         self.token = util.prompt_for_user_token(SPOTIFY['email'],'user-top-read',client_id=SPOTIFY['client_id'],client_secret=SPOTIFY['client_secret'],redirect_uri=SPOTIFY['redirect_uri'])
         self.sp = spotipy.Spotify(auth=self.token)
 

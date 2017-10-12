@@ -1,0 +1,40 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">
+window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer",
+	{
+		title: {
+			text: "Basic Range Area Chart"
+		},
+		axisY: {
+			includeZero: false
+		},
+		axisX: {
+			interval: 10
+		},
+		data: [
+		{
+			type: "rangeArea",
+			dataPoints: [ 
+				{ x: 10, y: [18.86, 40.76] }, // y: [Low, High]
+				{ x: 20, y: [55.95, 78.26] },
+				{ x: 30, y: [48.27, 72.90] },
+				{ x: 40, y: [67.65, 99.65] },
+				{ x: 50, y: [25.50, 51.26] }
+			]
+			}
+		]
+	});
+	chart.render();
+}
+</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+<div id="chartContainer" style="height: 400px; width: 100%;">
+</div>
+</body>
+</html>

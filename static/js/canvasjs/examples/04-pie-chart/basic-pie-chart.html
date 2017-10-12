@@ -1,0 +1,35 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer",
+	{
+		title:{
+			text: "Pie Chart"
+		},
+		data: [
+		{
+			type: "pie",
+			dataPoints: [
+				{ y: 4181563},
+				{ y: 2175498},
+				{ y: 3125844},
+				{ y: 1176121},
+				{ y: 1727161},
+				{ y: 4303364},
+				{ y: 1717786}
+			]
+		}
+		]
+	});
+	chart.render();
+}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+</html>

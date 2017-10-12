@@ -1,0 +1,39 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+      text: "Line Chart with Different Color in a Section"
+      },
+      data: [
+      {
+        type: "line",
+        dataPoints: [
+        { x: 10, y: 71 },
+        { x: 20, y: 55 },
+        { x: 30, y: 50 },
+        { x: 40, y: 65, lineColor:"red" }, //**Change the lineColor here
+        { x: 50, y: 68 },
+        { x: 60, y: 28 },
+        { x: 70, y: 34 },
+        { x: 80, y: 14 },
+        { x: 90, y: 23},
+        ]
+      }
+      ]
+    });
+
+    chart.render();
+  }
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;">
+	</div>
+</body>
+</html>

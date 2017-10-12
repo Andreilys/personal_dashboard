@@ -1,0 +1,82 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer",
+			{
+				title: {
+					text: "Products Sold by ABC ltd. in 2011"
+				},
+				animationEnabled: true,
+				axisY: {
+					title: "Sales"
+				},
+				axisX: {
+					title: "Seasons"
+				},
+				toolTip: {
+					shared: true
+				},
+				data: [
+				{
+					type: "stackedArea100",
+					name: "Mosquito Repellents",
+					showInLegend: "true",
+					dataPoints: [
+					{ y: 83450, label: "spring" },
+					{ y: 51240, label: "summer" },
+					{ y: 64120, label: "fall" },
+					{ y: 71450, label: "winter" }
+
+					]
+				}, {
+					type: "stackedArea100",
+					name: "Liquid Soap",
+					showInLegend: "true",
+					dataPoints: [
+					{ y: 20140, label: "spring" },
+					{ y: 30170, label: "summer" },
+					{ y: 24410, label: "autumn" },
+					{ y: 38120, label: "fall" }
+
+					]
+				}, {
+					type: "stackedArea100",
+					name: "Napkins",
+					showInLegend: "true",
+					dataPoints: [
+					{ y: 45120, label: "spring" },
+					{ y: 50350, label: "summer" },
+					{ y: 48410, label: "autumn" },
+					{ y: 53120, label: "fall" }
+
+					]
+				}, {
+					type: "stackedArea100",
+					name: "Sanitizer",
+					showInLegend: "true",
+					dataPoints: [
+					{ y: 11050, label: "spring" },
+					{ y: 16100, label: "summer" },
+					{ y: 15010, label: "autumn" },
+					{ y: 23100, label: "fall" }
+
+					]
+				}
+
+				]
+			});
+
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;">
+	</div>
+</body>
+</html>

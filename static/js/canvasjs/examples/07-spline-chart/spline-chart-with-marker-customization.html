@@ -1,0 +1,38 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title: {
+					text: "Spline Chart with Marker Customization"
+				},
+				data: [{
+					type: "spline",
+					markerSize: 10,
+					dataPoints: [
+					  { x: 10, y: 230 },
+					  { x: 20, y: 710, markerType: "triangle" },
+					  { x: 30, y: 380 },
+					  { x: 40, y: 567, markerColor: "red" },
+					  { x: 50, y: 280 },
+					  { x: 60, y: 507 },
+					  { x: 70, y: 680 },
+					  { x: 80, y: 287 },
+					  { x: 90, y: 460 },
+					  { x: 100, y: 509 }
+					]
+				}]
+			});
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+  window.onload = function () {
+
+
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      zoomEnabled: true,
+      zoomType: "xy",
+      title:{
+        text: "Enable Zooming on X & Y Axis"
+      },
+      legend: {
+        horizontalAlign: "right",
+        verticalAlign: "center"
+      },
+      axisY:{
+        includeZero: false
+      },
+      data: data,  // random generator below
+
+   });
+
+    chart.render();
+  }
+
+   var limit = 1000;    //increase number of dataPoints by increasing this
+
+    var y = 0;
+    var data = []; var dataSeries = { type: "area" };
+    var dataPoints = [];
+    for (var i = 0; i < limit; i += 1) {
+        y += (Math.random() * 10 - 5);
+         dataPoints.push({
+          x: i - limit / 2,
+          y: y
+           });
+        }
+     dataSeries.dataPoints = dataPoints;
+     data.push(dataSeries);
+
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;">
+	</div>
+</body>
+</html>

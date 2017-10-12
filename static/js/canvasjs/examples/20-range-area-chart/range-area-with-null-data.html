@@ -1,0 +1,55 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+<script type="text/javascript">
+window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer",
+	{
+		title:{
+			text: "Monthly Temperature variation in New Delhi",
+		},		
+		exportEnabled: true,
+                animationEnabled: true,
+		axisY: {
+			title: "Temperature (°C)",
+		},     
+		axisX: {
+			valueFormatString: "MMM",
+		},
+		toolTip: {
+			content: "Date: {x} </br> <strong>Temperature: </strong> </br> Min: {y[0]}°C, Max: {y[1]}°C",
+		},
+		data: [
+		{
+			type: "rangeSplineArea",
+			indexLabel: "{y[#index]}",
+			dataPoints: [  
+				{x: new Date(2013,00,01), y: [08, 20]},	
+				{x: new Date(2013,01,01), y: [10, 24]},	
+				{x: new Date(2013,02,01), y: [16, 29]},	
+				{x: new Date(2013,03,01), y: [21, 36]},	
+				{x: new Date(2013,04,01), y: [26, 39]},	
+				{x: new Date(2013,05,01), y: [22, 39]},	
+				{x: new Date(2013,06,01), y: null},		
+				{x: new Date(2013,07,01), y: [20, 34]},		
+				{x: new Date(2013,08,01), y: [20, 34]},	
+				{x: new Date(2013,09,01), y: [19, 33]},	
+				{x: new Date(2013,10,01), y: [13, 28]},	
+				{x: new Date(2013,11,01), y: [09, 23]}
+			]
+		}
+		]
+	});
+	chart.render();
+}
+</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+ 
+
+</html>

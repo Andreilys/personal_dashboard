@@ -1,0 +1,41 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<title>CanvasJS Example - jQuery Line Chart</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+	<script src="../../jquery.canvasjs.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			$(".chartContainer").CanvasJSChart({
+				title: {
+					text: "Basic JQuery Line Charts"
+				},
+				axisX: {
+					interval: 10
+				},
+				data: [
+				{
+					type: "line", //try changing to column, area
+					dataPoints: [
+						  { x: 10, y: 450 },
+						  { x: 20, y: 414 },
+						  { x: 30, y: 520 },
+						  { x: 40, y: 460 },
+						  { x: 50, y: 450 },
+						  { x: 60, y: 500 },
+						  { x: 70, y: 480 },
+						  { x: 80, y: 480 },
+						  { x: 90, y: 410 },
+						  { x: 100, y: 500 },
+					]
+				}
+				]
+			});
+		});
+	</script>
+</head>
+<body>
+	<div class="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+</html>

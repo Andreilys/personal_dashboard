@@ -1,0 +1,59 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title: {
+					text: "Coal Reserves of Countries"
+				},
+				axisY: {
+					title: "Coal (bn tonnes)",
+					valueFormatString: "#0.#,.",
+				},
+				data: [{
+					type: "stackedColumn",
+					legendText: "Anthracite & Bituminous",
+					showInLegend: "true",
+					dataPoints: [
+						{ y: 111338, label: "USA" },
+						{ y: 49088, label: "Russia" },
+						{ y: 62200, label: "China" },
+						{ y: 90085, label: "India" },
+						{ y: 38600, label: "Australia" },
+						{ y: 25400, label: "Germany" },
+						{ y: 33873, label: "Ukraine" },
+						{ y: 6746, label: "Colombia" },
+						{ y: 6582, label: "Canada" }
+					]
+				}, {
+					type: "stackedColumn",
+					legendText: "SubBituminous & Lignite",
+					showInLegend: "true",
+					indexLabel: "#total bn",
+					yValueFormatString: "#0.#,.",
+					indexLabelPlacement: "outside",
+					dataPoints: [
+						{ y: 135305, label: "USA" },
+						{ y: 107922, label: "Russia" },
+						{ y: 52300, label: "China" },
+						{ y: 3360, label: "India" },
+						{ y: 39900, label: "Australia" },
+						{ y: 3680, label: "Germany" },
+						{ y: 3200, label: "Ukraine" },
+						{ y: 0, label: "Colombia" },
+						{ y: 6582, label: "Canada" }
+					]
+				}
+				]
+			});
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+</html>

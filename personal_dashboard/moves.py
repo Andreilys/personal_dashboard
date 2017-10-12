@@ -35,10 +35,10 @@ class Moves():
 		#This is meant as a catch in case no steps have been recorded today
 		try:
 			current_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=1&access_token=' + self.access_token).json()
-			current_days_steps = str(current_days_steps[0]['summary'][0]["steps"]) + " steps"
-			return "Steps today: " + str(current_days_steps)
+			current_days_steps = str(current_days_steps[0]['summary'][0]["steps"])
+			return current_days_steps
 		except:
-			return "Steps today: 0"
+			return 0
 
 
 	def get_past_seven_days_steps(self):
@@ -51,7 +51,7 @@ class Moves():
 
 	def get_average_past_seven_steps(self):
 		seven_days_steps_arr = self.get_past_seven_days_steps()
-		return "Past 7 day avg. " + str(round(mean(seven_days_steps_arr)))
+		return "Past 7 day avg. " + str(round(mean(seven_days_steps_arr))) + " steps"
 
 
 	#Turn this method into a visualizaton for map

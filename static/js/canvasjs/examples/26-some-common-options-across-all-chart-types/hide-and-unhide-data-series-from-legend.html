@@ -1,0 +1,77 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title: {
+					text: "Click on legend items to hide/unhide dataseries"
+				},
+				legend: {
+					cursor: "pointer",
+					itemclick: function (e) {
+						if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+							e.dataSeries.visible = false;
+						} else {
+							e.dataSeries.visible = true;
+						}
+
+						e.chart.render();
+					}
+				},
+				data: [{
+					showInLegend: true,
+					type: "line",
+					dataPoints: [
+						{ x: 10, y: 5 },
+						{ x: 20, y: 9 },
+						{ x: 30, y: 17 },
+						{ x: 40, y: 32 },
+						{ x: 50, y: 22 },
+						{ x: 60, y: 14 },
+						{ x: 70, y: 25 },
+						{ x: 80, y: 18 },
+						{ x: 90, y: 20 }
+					]
+				}, {
+					showInLegend: true,
+					type: "line",
+					dataPoints: [
+						{ x: 10, y: 31 },
+						{ x: 20, y: 35 },
+						{ x: 30, y: 30 },
+						{ x: 40, y: 35 },
+						{ x: 50, y: 35 },
+						{ x: 60, y: 38 },
+						{ x: 70, y: 38 },
+						{ x: 80, y: 34 },
+						{ x: 90, y: 44 }
+					]
+				}, {
+					showInLegend: true,
+					type: "line",
+					dataPoints: [
+						{ x: 10, y: 25 },
+						{ x: 20, y: 30 },
+						{ x: 30, y: 20 },
+						{ x: 40, y: 45 },
+						{ x: 50, y: 30 },
+						{ x: 60, y: 10 },
+						{ x: 70, y: 15 },
+						{ x: 80, y: 18 },
+						{ x: 90, y: 20 }
+					]
+				}]
+			});
+
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;">
+	</div>
+</body>
+</html>

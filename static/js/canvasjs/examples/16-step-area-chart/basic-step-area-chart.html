@@ -1,0 +1,49 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title: {
+					text: "Basic Step Line Chart"
+				},
+				axisY: {
+					includeZero: false,
+				},
+
+				data: [
+				{
+					type: "stepArea",
+					dataPoints: [					
+					{ x: new Date(2012, 1), y: 8.3 },
+					{ x: new Date(2012, 2), y: 8.2 },
+					{ x: new Date(2012, 3), y: 8.1 },
+					{ x: new Date(2012, 4), y: 8.2 },
+					{ x: new Date(2012, 5), y: 8.2 },
+					{ x: new Date(2012, 6), y: 8.2 },
+					{ x: new Date(2012, 7), y: 8.1 },
+					{ x: new Date(2012, 8), y: 7.8 },
+					{ x: new Date(2012, 9), y: 7.9 },
+					{ x: new Date(2012, 10), y: 7.8 },
+					{ x: new Date(2012, 11), y: 7.8 },
+					{ x: new Date(2013, 0), y: 7.9 },
+					{ x: new Date(2013, 1), y: 7.7 },
+					{ x: new Date(2013, 2), y: 7.6 },
+					{ x: new Date(2013, 3), y: 7.5 }
+					]
+				}
+
+				]
+			});
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+
+</html>

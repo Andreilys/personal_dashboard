@@ -1,0 +1,42 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">
+window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer",
+	{
+		title: {
+			text: "Basic Range Spline Area Chart"
+		},
+		axisX: {
+          interval: 10
+		},
+		data: [
+		{
+			type: "rangeSplineArea",          
+			dataPoints: [
+				{ x: 10, y: [8.86, 50.76] },
+				{ x: 20, y: [5.95, 38.26] },
+				{ x: 30, y: [28.27, 52.90] },
+				{ x: 40, y: [57.65, 78.65] },
+				{ x: 50, y: [15.50, 31.26] },
+              	{ x: 60, y: [18.86, 55.76] },
+				{ x: 70, y: [55.95, 98.26] },
+				{ x: 80, y: [48.27, 72.90] },
+				{ x: 90, y: [67.65, 86.65] },
+				{ x: 100, y: [25.50, 71.26] }
+			]
+		}		
+		]
+	});
+	chart.render();
+}
+</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+<body>
+<div id="chartContainer" style="height: 400px; width: 100%;">
+</div>
+</body>
+</html>

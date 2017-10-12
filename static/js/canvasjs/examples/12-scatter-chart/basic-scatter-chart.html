@@ -1,0 +1,79 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title: {
+					text: "Basic Scatter Chart"
+				},
+				data: [{
+					type: "scatter",
+					dataPoints: [
+					{ x: 100, y: 110 },
+					{ x: 110, y: 120 },
+					{ x: 130, y: 125 },
+					{ x: 150, y: 128 },
+					{ x: 180, y: 160 },
+					{ x: 200, y: 220 },
+					{ x: 207, y: 220 },
+					{ x: 210, y: 220 },
+					{ x: 245, y: 220 },
+					{ x: 265, y: 253 },
+					{ x: 285, y: 304 },
+					{ x: 300, y: 403 },
+					{ x: 304, y: 304 },
+					{ x: 306, y: 406 },
+					{ x: 310, y: 404 },
+					{ x: 315, y: 510 },
+					{ x: 319, y: 420 },
+					{ x: 344, y: 303 },
+					{ x: 374, y: 302 },
+					{ x: 400, y: 821 },
+					{ x: 405, y: 804 },
+					{ x: 405, y: 906 },
+					{ x: 423, y: 830 },
+					{ x: 441, y: 930 },
+					{ x: 452, y: 630 },
+					{ x: 454, y: 990 },
+					{ x: 466, y: 420 },
+					{ x: 485, y: 820 },
+					{ x: 500, y: 904 },
+					{ x: 503, y: 920 },
+					{ x: 507, y: 702 },
+					{ x: 530, y: 904 },
+					{ x: 533, y: 903 },
+					{ x: 567, y: 1010 },
+					{ x: 587, y: 402 },
+					{ x: 600, y: 1020 },
+					{ x: 604, y: 1010 },
+					{ x: 604, y: 1040 },
+					{ x: 609, y: 940 },
+					{ x: 610, y: 940 },
+					{ x: 640, y: 900 },
+					{ x: 641, y: 1060 },
+					{ x: 644, y: 1040 },
+					{ x: 660, y: 1240 },
+					{ x: 664, y: 1340 },
+					{ x: 704, y: 1040 },
+					{ x: 732, y: 1060 },
+					{ x: 763, y: 1100 },
+					{ x: 781, y: 1200 },
+					{ x: 785, y: 1300 },
+					{ x: 809, y: 1040 },
+					{ x: 905, y: 1340 }
+					]
+				}]
+			});
+			chart.render();
+		}
+	</script>
+	<script src="../../canvasjs.min.js"></script>
+	<title>CanvasJS Example</title>
+</head>
+
+<body>
+	<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+</body>
+
+</html>

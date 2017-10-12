@@ -1,7 +1,6 @@
-var prev_data = null;           // remember data fetched last time
+var prev_data = Object();           // remember data fetched last time
 var waiting_for_update = false; // are we currently waiting?
 var LONG_POLL_DURATION = 60000; // how long should we wait? (msec)
-
 
 /**
  * Load data from /data, optionally providing a query parameter read
@@ -66,20 +65,102 @@ function display_data(data) {
         $('#weather_hourly').html(data.weather_hourly);
         $('#temp').html(data.temp);
         $('#weather_today').html(data.weather_today);
-        $('#current_steps').html(data.current_steps);
+        $('#current_steps').html("Steps today: " + String(data.current_steps)  + " steps");
         $('#average_past_seven_steps').html(data.average_past_seven_steps),
         $('#coding').html('<embed id="coding_time" src="https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/7979f8f3-d3f7-40d7-8dc1-0f18f054c272.svg"></embed> <embed id="coding_lang" src="https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/b837f770-ca01-4fbe-ba68-7d1b03c76752.svg"></embed>');
         $('#chess_rating').html(data.chess_rating);
         $('#chess_games').html(data.chess_games);
         $('#daily_pomodoros').html(data.daily_pomodoros);
         $('#past_seven_days_pomodoros').html(data.past_seven_days_pomodoros);
-
+        //remove loading text from HTML
         $('#loading').remove();
+
+        unproductivity_doughnut = get_unproductivity_doughnut()
+        steps_doughnut = get_steps_doughnut()
+        //This is meant to update the doughnut for unproductivity since my goal is to
+        // have less than 1 hour of unproductive time each day
+        var max_unproductivity_value = 1.5
+        // We need to get the difference between last update and current update.
+        // first we have to check if prev_Data is null so we don't throw an error
+        var difference_in_unproductivity = prev_data.hasOwnProperty(rescue_time_daily_unproductivity) ? data.rescue_time_daily_unproductivity - prev_data.rescue_time_daily_unproductivity : data.rescue_time_daily_unproductivity;
+        if ((unproductivity_doughnut.segments[0].value >= max_unproductivity_value) || (difference_in_unproductivity >= max_unproductivity_value)) {
+          unproductivity_doughnut.segments[0].value = max_unproductivity_value;
+          unproductivity_doughnut.segments[1].value = 0;
+          steps_doughnut.update()
+        } else {
+          unproductivity_doughnut.segments[0].value = unproductivity_doughnut.segments[0].value + difference_in_unproductivity;
+          unproductivity_doughnut.segments[1].value = unproductivity_doughnut.segments[1].value - difference_in_unproductivity;
+          unproductivity_doughnut.update();
+        }
+
+        //This is meant to update the steps doughnut since my goal is to have
+        // at least 5000 steps a day
+        var max_steps_value = 5000
+        // We need to get the difference between last update and current update.
+        // first we have to check if prev_Data is null so we don't throw an error
+        console.log(data.current_steps)
+        var difference_in_steps = prev_data.hasOwnProperty(current_steps) ? data.current_steps - prev_data.current_steps : data.current_steps;
+        if ((steps_doughnut.segments[0].value >= max_steps_value) || (difference_in_steps >= max_steps_value)) {
+          console.log('working')
+          steps_doughnut.segments[0].value = max_steps_value;
+          console.log(steps_doughnut.segments[0].value)
+          console.log(steps_doughnut)
+          steps_doughnut.segments[1].value = 0;
+          steps_doughnut.update()
+        } else {
+          console.log('workin?')
+          steps_doughnut.segments[0].value = steps_doughnut.segments[0].value + difference_in_steps
+          steps_doughnut.segments[1].value = steps_doughnut.segments[1].value - difference_in_steps
+          steps_doughnut.update()
+        }
         // remember this data, in case want to compare it to next update
         prev_data = data;
       }
 }
 
+function get_unproductivity_doughnut(){
+    var max_value = 1.5;
+    chartOptions = {
+        segmentShowStroke: false,
+        percentageInnerCutout: 75,
+        animation: false
+    };
+
+    chartData = [{
+        value: 0,
+        color: '#ff0000'
+    },{
+        value: max_value,
+        color: '#DDDDDD'
+    }];
+    var ctx = $('#unproductivity_doughnut').get(0).getContext("2d");
+    var unproductivity_dougnut = new Chart(ctx).Doughnut(chartData,chartOptions);
+    return unproductivity_dougnut
+}
+
+function get_steps_doughnut(){
+  var max_value = 5000
+  chartOptions = {
+    segmentShowStroke: false,
+    percentageInnerCutout: 75,
+    animation: false
+  };
+
+  chartData = [{
+      value: 0,
+      color: '#4FD134'
+  },{
+      value: max_value,
+      color: '#DDDDDD'
+  }];
+  var ctx = $('#steps_doughnut').get(0).getContext("2d");
+  var steps_doughnut = new Chart(ctx).Doughnut(chartData,chartOptions);
+  return steps_doughnut
+}
+
+
 $(document).ready(function() {
+  //Create unproductivity_doughnut
+
   load_data();
 });
