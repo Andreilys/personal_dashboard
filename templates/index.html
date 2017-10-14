@@ -3,21 +3,36 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
 
   <title>Personal Dashboard</title>
-  <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='css/styles.css')}}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="static/js/canvasjs/assets/bootstrap/bootstrap4-alpha3.min.css">
+
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+  <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='css/styles.css')}}">
   <script src="{{ url_for('static', filename='js/scripts.js')}}"> </script>
   <link rel="shortcut icon" href="static/favicon.ico" type="gear">
+  <script src="static/js/canvasjs/assets/jquery/jquery-3.1.0.min.js"></script>
+  <script src="static/js/canvasjs/assets/tether/tether.min.js"></script>
+  <script type="text/javascript" src="static/js/canvasjs/canvasjs.min.js"></script>
+    <script src="static/js/canvasjs/assets/jquery.scrollspeed/jquery.scrollspeed.min.js"></script>
+  <script src="static/js/canvasjs/assets/jquery.inview/jquery.inview.min.js"></script>
+
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 </head>
 <body>
-  <div class="quote"> <i>{{quote[0]}}</i><br> <strong>{{quote[1]}}</strong>
+  <div class="quote">
+    <i>{{quote[0]}}</i><br> <strong>{{quote[1]}}</strong>
   </div>
-    <span style="position: absolute;padding-left: 40%;">
+    <!-- <span style="position: absolute;padding-left: 40%;">
       <canvas id="unproductivity_doughnut" width="100%" height="100%" float:right></canvas>
       <p>Daily Unproductivity</p>
     </span>
@@ -25,9 +40,31 @@
       <canvas id="steps_doughnut" width="100%" height="100%" float: left></canvas>
       <p>Daily Steps</p>
     </span>
+  </span> -->
+	<div class="container">
+  <h3>Daily Goals</h3>
 
+  <!--Daily doughnut charts -->
 
-  </span>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="inview" id="steps_doughnut"></div>
+      <h3 class="align-center">Steps</h3>
+    </div>
+
+    <div class="col-md-4">
+      <div class="inview" id="pomodoro_doughnut"></div>
+      <h3 class="align-center">Pomodoro Timer</h3>
+    </div>
+
+    <div class="col-md-4">
+      <div class="inview" id="unproductivity_doughnut"></div>
+      <h3 class="align-center">Unproductivity</h3>
+    </div>
+  </div>
+</div>
+  <!-- row sales doughnt charts -->
+  <hr>
     <!-- TODO fix the number of calls to the dark sky API before
     <p id="temp"></li>
     <p id="weather_hourly"></li>

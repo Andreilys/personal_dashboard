@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+ 	<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+		<title>Annual Sales And Website Traffic - 2015</title>
+
+    <!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="assets/bootstrap/bootstrap4-alpha3.min.css">
+		<!-- Google Font Roboto -->
+		<link rel="stylesheet" href="assets/fonts/font-roboto.css">
+
+		<style>
+			body {
+				background-color: #000000;
+				color: #ffffff;
+				font-family: "arial", Helvetica, Arial, sans-serif;
+				font-size: 16px;
+				line-height: 1.5;
+				padding-bottom: 3.5rem;
+				padding-top: 3.5rem;
+			}
+
+			h1, h2, h3, h4, h5, h6 {
+				font-weight: 300;
+			}
+
+      canvas {
+        font-family: "Roboto", Helvetica, Arial, sans-serif;
+      }
+
+			hr {
+				border-top: 1px solid #727273;
+				margin-bottom: 2rem;
+				margin-top: 2rem;
+			}
+
+			.align-center {
+				text-align: center;
+			}
+
+			#steps_doughnut, #pomodoro_doughnut, #unproductivity_doughnut {
+				height: 280px;
+				margin-top: 1rem;
+				width: 100%;
+			}
+		}
+		</style>
+
+		<!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='css/styles.css')}}">
+    <script src="{{ url_for('static', filename='js/scripts.js')}}"> </script>
+    <link rel="shortcut icon" href="static/favicon.ico" type="gear">
+    <script src="static/js/canvasjs/assets/jquery/jquery-3.1.0.min.js"></script>
+    <script src="static/js/canvasjs/assets/tether/tether.min.js"></script>
+    <script src="static/js/canvasjs/assets/bootstrap/bootstrap4-alpha3.min.js"></script>
+    <script type="text/javascript" src="static/js/canvasjs/canvasjs.min.js"></script>
+      <script src="static/js/canvasjs/assets/jquery.scrollspeed/jquery.scrollspeed.min.js"></script>
+    <script src="static/js/canvasjs/assets/jquery.inview/jquery.inview.min.js"></script>
+		<script>
+			$(function () {
+				var totalRevenue = 15341110,
+						totalUsers = 7687036;
+
+				// CanvasJS doughnut chart to show annual sales percentage from United States(US)
+				var steps_doughnut = new CanvasJS.Chart("steps_doughnut", {
+					animationEnabled: true,
+					backgroundColor: "transparent",
+					title: {
+						fontColor: "#848484",
+						fontSize: 60,
+						horizontalAlign: "center",
+						text: "47%",
+            fontFamily: "Roboto",
+						verticalAlign: "center"
+					},
+					toolTip: {
+						backgroundColor: "#ffffff",
+						borderThickness: 0,
+						cornerRadius: 0,
+						fontColor: "#424242"
+					},
+					data: [
+						{
+							explodeOnClick: false,
+							innerRadius: "94%",
+							radius: "90%",
+							startAngle: 270,
+							type: "doughnut",
+							dataPoints: [
+								{ y: 10, color: "#c70000", toolTipContent: "United States: $<span>" + CanvasJS.formatNumber(Math.round(47 / 100 * totalRevenue), '#,###,###') + "</span>" },
+								{ y: 90, color: "#424242", toolTipContent: null }
+							]
+						}
+					]
+				});
+
+				// CanvasJS doughnut chart to show annual sales percentage from Netherlands(NL)
+				var pomodoro_doughnut = new CanvasJS.Chart("pomodoro_doughnut", {
+					animationEnabled: true,
+					backgroundColor: "transparent",
+					title: {
+						fontColor: "#848484",
+						fontSize: 60,
+						horizontalAlign: "center",
+						text: "19%",
+            fontFamily: "Roboto",
+						verticalAlign: "center"
+					},
+					toolTip: {
+						backgroundColor: "#ffffff",
+						borderThickness: 0,
+						cornerRadius: 0,
+						fontColor: "#424242"
+					},
+					data: [
+						{
+							explodeOnClick: false,
+							innerRadius: "96%",
+							radius: "90%",
+							startAngle: 270,
+							type: "doughnut",
+							dataPoints: [
+								{ y: 19, color: "#c70000", toolTipContent: "Netherlands: $<span>" + CanvasJS.formatNumber(Math.round(19 / 100 * totalRevenue), '#,###,###') + "</span>" },
+								{ y: 81, color: "#424242", toolTipContent: null }
+							]
+						}
+					]
+				});
+
+				// CanvasJS doughnut chart to show annual sales percentage from Germany(DE)
+				var unproductivity_doughnut = new CanvasJS.Chart("unproductivity_doughnut", {
+					animationEnabled: true,
+					backgroundColor: "transparent",
+					title: {
+						fontColor: "#848484",
+						fontSize: 60,
+						horizontalAlign: "center",
+						text: "12%",
+            fontFamily: "Roboto",
+						verticalAlign: "center"
+					},
+					toolTip: {
+						backgroundColor: "#ffffff",
+						borderThickness: 0,
+						cornerRadius: 0,
+						fontColor: "#424242"
+					},
+					data: [
+						{
+							explodeOnClick: false,
+							innerRadius: "96%",
+							radius: "90%",
+							startAngle: 270,
+							type: "doughnut",
+							dataPoints: [
+								{ y: 12, color: "#c70000", toolTipContent: "Netherlands: $<span>" + CanvasJS.formatNumber(Math.round(12 / 100 * totalRevenue), '#,###,###') + "</span>" },
+								{ y: 88, color: "#424242", toolTipContent: null }
+							]
+						}
+					]
+				});
+
+							jQuery.scrollSpeed(100, 400); // for smooth mouse wheel scrolling
+
+				// jQuery.inview plugin
+				$('.inview').one('inview', function (e, isInView) {
+					if (isInView) {
+						switch (this.id) {
+							case "steps_doughnut": steps_doughnut.render();
+								break;
+							case "pomodoro_doughnut": pomodoro_doughnut.render();
+								break;
+							case "unproductivity_doughnut": unproductivity_doughnut.render();
+								break;
+						}
+					}
+				});
+
+			});
+
+		</script>
+
+  </head>
+  <body>
+    <div class="quote">
+      <i>{{quote[0]}}</i><br> <strong>{{quote[1]}}</strong>
+    </div>
+		<div class="container">
+			<h3>Daily Goals</h3>
+
+			<!-- sales doughnut charts -->
+			<div class="row">
+				<div class="col-md-4">
+					<div class="inview" id="steps_doughnut"></div>
+					<h3 class="align-center">Steps</h3>
+				</div>
+
+				<div class="col-md-4">
+					<div class="inview" id="pomodoro_doughnut"></div>
+					<h3 class="align-center">Pomodoro Timer</h3>
+				</div>
+
+				<div class="col-md-4">
+					<div class="inview" id="unproductivity_doughnut"></div>
+					<h3 class="align-center">Unproductivity</h3>
+				</div>
+			</div>
+			<!-- row sales doughnt charts -->
+
+			<hr>
+
+      <h1 id="loading"> Loading Data.... </h1>
+      <div id="coding">
+      </div>
+
+      <TABLE class="data_table" border="1">
+      <TR><TH>Daily Rescuetime<td><p>Productivity: <p id="rescue_time_daily_productivity"></p></p><p>Unproductivity: <p id="rescue_time_daily_unproductivity"></p> </p> <p>Top Three sources: <p id="rescue_time_daily_top_three"></p></p> </td>
+      <TR><TH>Weekly Rescuetime<td><p>Productivity: <p id="rescue_time_past_seven_productivity"></p></p><p>Unproductivity: <p id="rescue_time_past_seven_unproductivity"></p> </p> <p>Top Five sources: <p id="rescue_time_past_seven_top_five"></p></p> </td>
+      <TR><TH>Steps<td><p id="current_steps"></p><p id="average_past_seven_steps"></p></td>
+      <TR><TH>Chess<td><p id="chess_rating"></p><p id="chess_games"></p></td>
+      <TR><TH>Pomodoros<td>Daily Pomodoro's: <p id="daily_pomodoros"></p>Past 7 Days Pomdoro's: <p id="past_seven_days_pomodoros"></p></td>
+      <TR><TH>Weight<td id="weight"></td>
+      <TR><TH>Todoist<td><p id="total_tasks"></p><p id="daily_completed_tasks"></p><p id="past_seven_completed_tasks"></p></td>
+      <TR><TH>Spotify<td>Top tracks this month: <p id="top_tracks"></p>Top Artists this month:<p id="top_artists"></p></td>
+      </TABLE>
+
+
+	</body>
+</html>

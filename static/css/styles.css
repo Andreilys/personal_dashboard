@@ -35,3 +35,37 @@
   margin:auto;
   text-align: center;
 }
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "arial", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  padding-bottom: 3.5rem;
+  padding-top: 3.5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+}
+
+canvas {
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+}
+
+hr {
+  border-top: 1px solid #727273;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.align-center {
+  text-align: center;
+}
+
+#steps_doughnut, #pomodoro_doughnut, #unproductivity_doughnut {
+  height: 280px;
+  margin-top: 1rem;
+  width: 100%;
+}
