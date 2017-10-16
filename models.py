@@ -1,36 +1,33 @@
-from flask_sqlalchemy import SQLAlchemy
 import datetime
+from app import db
+from sqlalchemy.dialects.postgresql import JSON
 
-db = SQLAlchemy()
 
-class BaseModel(db.Model):
-    """Base data model for all objects"""
-    __abstract__ = True
+class PersonalData(db.Model):
+    __tablename__ = 'personal_data'
 
-    def __init__(self, *args):
-        super().__init__(*args)
+    id = db.Column(db.Integer, primary_key=True)
+    rescue_time_daily = db.Column(JSON)
+    rescue_time_weekly = db.Column(JSON)
+    quote = db.Column(db.String(200))
+    weight = db.Column(db.Integer)
+    chess_rating = db.Column(db.Integer)
+    steps = db.Column(db.Integer)
+    steps_avg = db.Column(db.Integer)
+    pomodoros = db.Column(JSON)
+    date = db.Column(db.DateTime)
+
+    def __init__(self, url, result_all, result_no_stop_words):
+        self.url = url
+        self.rescue_time_daily = rescue_time_daily
+        self.rescue_time_weekly = rescue_time_weekly
+        self.quote = quote
+        self.weight = weight
+        self.chess_rating = chess_rating
+        self.steps = steps
+        self.steps_avg = steps_avg
+        self.pomodoros = pomodoros
+        self.date = date
 
     def __repr__(self):
-        """Define a base way to print models"""
-        return '%s(%s)' % (self.__class__.__name__, {
-            column: value
-            for column, value in self._to_dict().items()
-        })
-
-    def json(self):
-        """
-                Define a base way to jsonify models, dealing with datetime objects
-        """
-        return {
-            column: value if not isinstance(value, datetime.date) else value.strftime('%Y-%m-%d')
-            for column, value in self._to_dict().items()
-        }
-
-
-class Station(BaseModel, db.Model):
-    """Model for the stations table"""
-    __tablename__ = 'stations'
-
-    id = db.Column(db.Integer, primary_key = True)
-    lat = db.Column(db.Float)
-    lng = db.Column(db.Float)
+        return '<id {}>'.format(self.id)

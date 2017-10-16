@@ -32,7 +32,7 @@ git clone https://github.com/Andreilys/personal_dashboard
 
 ## Support
 
-Please [open an issue](https://github.com/fraction/readme-boilerplate/issues/new) for support.
+Please [open an issue](https://github.com/Andreilys/personal_dashboard/issues/new) for support.
 
 
 ## Contributing

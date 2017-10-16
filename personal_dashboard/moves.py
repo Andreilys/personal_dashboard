@@ -51,7 +51,7 @@ class Moves():
 
 	def get_average_past_seven_steps(self):
 		seven_days_steps_arr = self.get_past_seven_days_steps()
-		return "Past 7 day avg. " + str(round(mean(seven_days_steps_arr))) + " steps"
+		return round(mean(seven_days_steps_arr))
 
 
 	#Turn this method into a visualizaton for map

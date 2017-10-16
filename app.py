@@ -13,12 +13,17 @@ from personal_dashboard.moves import Moves
 from personal_dashboard.chess import Chess
 from personal_dashboard.toggl import Toggl
 import psycopg2
+import os
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+db = SQLAlchemy(app)
 
+from models import PersonalData
 
 @app.route('/')
 def hello_world():
@@ -65,7 +70,9 @@ def data():
             'average_past_seven_steps' : moves.get_average_past_seven_steps(),
             'chess_rating' : chess.get_games(),
             'chess_games' : chess.get_rating(),
+            'chess_int_rating' : chess.get_int_rating(),
             'daily_pomodoros' : str(toggl.get_daily_pomodoros()),
+            #This is the integer version which gets stored in the database and used for doughnut chart
             'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
             'past_seven_days_pomodoros' : str(toggl.get_past_seven_days_pomodoros())
             }

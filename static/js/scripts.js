@@ -69,7 +69,7 @@ function display_data(data) {
         $('#temp').html(data.temp);
         $('#weather_today').html(data.weather_today);
         $('#current_steps').html("Steps today: " + String(data.current_steps)  + " steps");
-        $('#average_past_seven_steps').html(data.average_past_seven_steps),
+        $('#average_past_seven_steps').html("Past 7 day avg. " +String(data.average_past_seven_steps) + " steps");
         $('#chess_rating').html(data.chess_rating);
         $('#chess_games').html(data.chess_games);
         $('#daily_pomodoros').html(data.daily_pomodoros);
@@ -126,14 +126,19 @@ function update_doughnuts(steps_doughnut, pomodoro_doughnut, unproductive_doughn
       steps_doughnut.options.title.text = String(current_steps_percent) + "%";
       steps_doughnut.options.data[0].dataPoints[0].y = current_steps_percent;
       steps_doughnut.options.data[0].dataPoints[1].y = 100 - current_steps_percent;
+      steps_doughnut.options.data[0].dataPoints[0].toolTipContent = String(data.current_steps) + " steps",
     //Updating pomodoro doughnut
       pomodoro_doughnut.options.title.text = String(current_pomodoro_percent) + "%";
       pomodoro_doughnut.options.data[0].dataPoints[0].y = current_pomodoro_percent;
       pomodoro_doughnut.options.data[0].dataPoints[1].y = 100 - current_pomodoro_percent;
+      pomodoro_doughnut.options.data[0].dataPoints[0].toolTipContent = String(total_pomodoros) + " hours",
+
     //Updating unproductivity doughnut
     unproductive_doughnut.options.title.text = String(current_unproductive_percent) + "%";
     unproductive_doughnut.options.data[0].dataPoints[0].y = current_unproductive_percent;
     unproductive_doughnut.options.data[0].dataPoints[1].y = 100 - current_unproductive_percent;
+    unproductive_doughnut.options.data[0].dataPoints[0].toolTipContent= String(data.rescue_time_daily_unproductivity) + " hours",
+
     //Re-rendering the doughnuts
     steps_doughnut.render();
     pomodoro_doughnut.render();
