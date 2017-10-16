@@ -14,7 +14,7 @@ from personal_dashboard.chess import Chess
 from personal_dashboard.toggl import Toggl
 import psycopg2
 import os
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -23,7 +23,7 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
-from models import PersonalData
+from models import *
 
 @app.route('/')
 def hello_world():
