@@ -1,7 +1,10 @@
 var prev_data = Object();           // remember data fetched last time
 var waiting_for_update = false; // are we currently waiting?
 var LONG_POLL_DURATION = 60000; // how long should we wait? (msec)
-
+var first_time_rendering_chart = true;
+var global_steps_doughnut = Object(),
+  global_pomodoro_doughnut = Object(),
+  global_unproductive_doughnut = Object();
 /**
  * Load data from /data, optionally providing a query parameter read
  * from the #format select
@@ -74,6 +77,16 @@ function display_data(data) {
         //remove loading text from HTML
         $('#loading').remove();
 
+        if (first_time_rendering_chart) {
+          global_steps_doughnut = create_steps_doughnut(data);
+          global_pomodoro_doughnut = create_pomodoro_doughnut(data);
+          global_unproductive_doughnut = create_unproductive_doughnut(data);
+          first_time_rendering_chart = false;
+        }
+        else {
+          update_doughnuts(global_steps_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
+        }
+
         $.ajax({
             type: 'GET',
             url: 'https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json',
@@ -92,91 +105,130 @@ function display_data(data) {
               console.log(response.data);
             },
           });
-
-        // unproductivity_doughnut = get_unproductivity_doughnut()
-        // steps_doughnut = get_steps_doughnut()
-        // //This is meant to update the doughnut for unproductivity since my goal is to
-        // // have less than 1 hour of unproductive time each day
-        // var max_unproductivity_value = 1
-        // // We need to get the difference between last update and current update.
-        // // first we have to check if prev_Data is null so we don't throw an error
-        // var difference_in_unproductivity = prev_data.hasOwnProperty(rescue_time_daily_unproductivity) ? data.rescue_time_daily_unproductivity - prev_data.rescue_time_daily_unproductivity : data.rescue_time_daily_unproductivity;
-        // if ((unproductivity_doughnut.segments[0].value >= max_unproductivity_value) || (difference_in_unproductivity >= max_unproductivity_value)) {
-        //   unproductivity_doughnut.segments[0].value = max_unproductivity_value;
-        //   unproductivity_doughnut.segments[1].value = 0;
-        //   steps_doughnut.update()
-        // } else {
-        //   unproductivity_doughnut.segments[0].value = unproductivity_doughnut.segments[0].value + difference_in_unproductivity;
-        //   unproductivity_doughnut.segments[1].value = unproductivity_doughnut.segments[1].value - difference_in_unproductivity;
-        //   unproductivity_doughnut.update();
-        // }
-        //
-        // //This is meant to update the steps doughnut since my goal is to have
-        // // at least 5000 steps a day
-        // var max_steps_value = 5000
-        // // We need to get the difference between last update and current update.
-        // // first we have to check if prev_Data is null so we don't throw an error
-        // var difference_in_steps = prev_data.hasOwnProperty(current_steps) ? data.current_steps - prev_data.current_steps : data.current_steps;
-        // if ((steps_doughnut.segments[0].value >= max_steps_value) || (difference_in_steps >= max_steps_value)) {
-        //   steps_doughnut.segments[0].value = max_steps_value;
-        //   steps_doughnut.segments[1].value = 0;
-        //   steps_doughnut.update()
-        // } else {
-        //   steps_doughnut.segments[0].value = steps_doughnut.segments[0].value + difference_in_steps
-        //   steps_doughnut.segments[1].value = steps_doughnut.segments[1].value - difference_in_steps
-        //   steps_doughnut.update()
-        // }
         // remember this data, in case want to compare it to next update
         prev_data = data;
       }
 }
 
-// function get_unproductivity_doughnut(){
-//     var max_value = 1.5;
-//     chartOptions = {
-//         segmentShowStroke: false,
-//         percentageInnerCutout: 75,
-//         animation: false
-//     };
-//
-//     chartData = [{
-//         value: 0,
-//         color: '#ff0000'
-//     },{
-//         value: max_value,
-//         color: '#DDDDDD'
-//     }];
-//     var ctx = $('#unproductivity_doughnut').get(0).getContext("2d");
-//     var unproductivity_dougnut = new Chart(ctx).Doughnut(chartData,chartOptions);
-//     return unproductivity_dougnut
-// }
-//
-// function get_steps_doughnut(){
-//   var max_value = 5000
-//   chartOptions = {
-//     segmentShowStroke: false,
-//     percentageInnerCutout: 75,
-//     animation: false
-//   };
-//
-//   chartData = [{
-//       value: 0,
-//       color: '#4FD134'
-//   },{
-//       value: max_value,
-//       color: '#DDDDDD'
-//   }];
-//   var ctx = $('#steps_doughnut').get(0).getContext("2d");
-//   var steps_doughnut = new Chart(ctx).Doughnut(chartData,chartOptions);
-//   return steps_doughnut
-// }
 
-function create_doughnuts(){
-  $(function () {
-    var totalRevenue = 15341110,
-        totalUsers = 7687036;
+function update_doughnuts(steps_doughnut, pomodoro_doughnut, unproductive_doughnut, data) {
+  var total_pomodoros = 0;
+  for (var key in data.daily_doughnut_pomodoro){
+    total_pomodoros += data.daily_doughnut_pomodoro[key];
+  }
+  var pomodoro_goal = 3,
+      current_pomodoro_percent = total_pomodoros > pomodoro_goal ? 100 : Math.round(total_pomodoros/pomodoro_goal * 100),
+      steps_goal = 5000,
+      current_steps_percent = data.current_steps > steps_goal ? 100 : Math.round(data.current_steps/steps_goal * 100),
+      unproductivity_goal = 1,
+      current_unproductive_percent = data.rescue_time_daily_unproductivity > unproductivity_goal ? 100 : Math.round(data.rescue_time_daily_unproductivity/unproductivity_goal * 100);
+    //Updating steps doughnut
+      steps_doughnut.options.title.text = String(current_steps_percent) + "%";
+      steps_doughnut.options.data[0].dataPoints[0].y = current_steps_percent;
+      steps_doughnut.options.data[0].dataPoints[1].y = 100 - current_steps_percent;
+    //Updating pomodoro doughnut
+      pomodoro_doughnut.options.title.text = String(current_pomodoro_percent) + "%";
+      pomodoro_doughnut.options.data[0].dataPoints[0].y = current_pomodoro_percent;
+      pomodoro_doughnut.options.data[0].dataPoints[1].y = 100 - current_pomodoro_percent;
+    //Updating unproductivity doughnut
+    unproductive_doughnut.options.title.text = String(current_unproductive_percent) + "%";
+    unproductive_doughnut.options.data[0].dataPoints[0].y = current_unproductive_percent;
+    unproductive_doughnut.options.data[0].dataPoints[1].y = 100 - current_unproductive_percent;
+    //Re-rendering the doughnuts
+    steps_doughnut.render();
+    pomodoro_doughnut.render();
+    unproductive_doughnut.render();
+}
 
-    // CanvasJS doughnut chart to show annual sales percentage from United States(US)
+
+function create_pomodoro_doughnut(data){
+  var total_pomodoros = 0;
+  for (var key in data.daily_doughnut_pomodoro){
+    total_pomodoros += data.daily_doughnut_pomodoro[key];
+  }
+  var pomodoro_goal = 3,
+      current_pomodoro_percent = total_pomodoros > pomodoro_goal ? 100 : Math.round(total_pomodoros/pomodoro_goal * 100);
+  var pomodoro_doughnut = new CanvasJS.Chart("pomodoro_doughnut", {
+    animationEnabled: true,
+    backgroundColor: "transparent",
+    title: {
+      fontColor: "#848484",
+      fontSize: 60,
+      horizontalAlign: "center",
+      text: String(current_pomodoro_percent) + "%",
+      fontFamily: "Roboto",
+      verticalAlign: "center"
+    },
+    toolTip: {
+      backgroundColor: "#ffffff",
+      borderThickness: 0,
+      cornerRadius: 0,
+      fontColor: "#424242"
+    },
+    data: [
+      {
+        explodeOnClick: false,
+        innerRadius: "94%",
+        radius: "90%",
+        startAngle: 270,
+        type: "doughnut",
+        dataPoints: [
+          { y: current_pomodoro_percent, color: "#33702a", toolTipContent: String(total_pomodoros) + " hours"},
+          { y: 100 - current_pomodoro_percent, color: "#424242", toolTipContent: null }
+        ]
+      }
+    ]
+  });
+
+  pomodoro_doughnut.render()
+  return pomodoro_doughnut;
+}
+
+
+function create_unproductive_doughnut(data){
+  var unproductivity_goal = 1,
+      current_unproductive_percent = data.rescue_time_daily_unproductivity > unproductivity_goal ? 100 : Math.round(data.rescue_time_daily_unproductivity/unproductivity_goal * 100);
+  var unproductive_doughnut = new CanvasJS.Chart("unproductivity_doughnut", {
+    animationEnabled: true,
+    backgroundColor: "transparent",
+    title: {
+      fontColor: "#848484",
+      fontSize: 60,
+      horizontalAlign: "center",
+      text: String(current_unproductive_percent) + "%",
+      fontFamily: "Roboto",
+      verticalAlign: "center"
+    },
+    toolTip: {
+      backgroundColor: "#ffffff",
+      borderThickness: 0,
+      cornerRadius: 0,
+      fontColor: "#424242"
+    },
+    data: [
+      {
+        explodeOnClick: false,
+        innerRadius: "94%",
+        radius: "90%",
+        startAngle: 270,
+        type: "doughnut",
+        dataPoints: [
+          { y: current_unproductive_percent, color: "#b30000", toolTipContent: String(data.rescue_time_daily_unproductivity) + " hours"},
+          { y: 100 - current_unproductive_percent, color: "#424242", toolTipContent: null }
+        ]
+      }
+    ]
+  });
+
+  unproductive_doughnut.render()
+  return unproductive_doughnut;
+}
+
+
+//This creates and returns the steps doughnut chart
+function create_steps_doughnut(data) {
+    var steps_goal = 5000,
+        current_steps_percent = data.current_steps > steps_goal ? 100 : Math.round(data.current_steps/steps_goal * 100);
     var steps_doughnut = new CanvasJS.Chart("steps_doughnut", {
       animationEnabled: true,
       backgroundColor: "transparent",
@@ -184,7 +236,7 @@ function create_doughnuts(){
         fontColor: "#848484",
         fontSize: 60,
         horizontalAlign: "center",
-        text: "47%",
+        text: String(current_steps_percent) + "%",
         fontFamily: "Roboto",
         verticalAlign: "center"
       },
@@ -202,100 +254,19 @@ function create_doughnuts(){
           startAngle: 270,
           type: "doughnut",
           dataPoints: [
-            { y: 10, color: "#c70000", toolTipContent: "United States: $<span>" + CanvasJS.formatNumber(Math.round(47 / 100 * totalRevenue), '#,###,###') + "</span>" },
-            { y: 90, color: "#424242", toolTipContent: null }
+            { y: current_steps_percent, color: "#33702a", toolTipContent: String(data.current_steps) + " steps" },
+            { y: 100 - current_steps_percent, color: "#424242", toolTipContent: null }
           ]
         }
       ]
     });
-
-    // CanvasJS doughnut chart to show annual sales percentage from Netherlands(NL)
-    var pomodoro_doughnut = new CanvasJS.Chart("pomodoro_doughnut", {
-      animationEnabled: true,
-      backgroundColor: "transparent",
-      title: {
-        fontColor: "#848484",
-        fontSize: 60,
-        horizontalAlign: "center",
-        text: "19%",
-        fontFamily: "Roboto",
-        verticalAlign: "center"
-      },
-      toolTip: {
-        backgroundColor: "#ffffff",
-        borderThickness: 0,
-        cornerRadius: 0,
-        fontColor: "#424242"
-      },
-      data: [
-        {
-          explodeOnClick: false,
-          innerRadius: "96%",
-          radius: "90%",
-          startAngle: 270,
-          type: "doughnut",
-          dataPoints: [
-            { y: 19, color: "#c70000", toolTipContent: "Netherlands: $<span>" + CanvasJS.formatNumber(Math.round(19 / 100 * totalRevenue), '#,###,###') + "</span>" },
-            { y: 81, color: "#424242", toolTipContent: null }
-          ]
-        }
-      ]
-    });
-
-    // CanvasJS doughnut chart to show annual sales percentage from Germany(DE)
-    var unproductivity_doughnut = new CanvasJS.Chart("unproductivity_doughnut", {
-      animationEnabled: true,
-      backgroundColor: "transparent",
-      title: {
-        fontColor: "#848484",
-        fontSize: 60,
-        horizontalAlign: "center",
-        text: "12%",
-        fontFamily: "Roboto",
-        verticalAlign: "center"
-      },
-      toolTip: {
-        backgroundColor: "#ffffff",
-        borderThickness: 0,
-        cornerRadius: 0,
-        fontColor: "#424242"
-      },
-      data: [
-        {
-          explodeOnClick: false,
-          innerRadius: "96%",
-          radius: "90%",
-          startAngle: 270,
-          type: "doughnut",
-          dataPoints: [
-            { y: 12, color: "#c70000", toolTipContent: "Netherlands: $<span>" + CanvasJS.formatNumber(Math.round(12 / 100 * totalRevenue), '#,###,###') + "</span>" },
-            { y: 88, color: "#424242", toolTipContent: null }
-          ]
-        }
-      ]
-    });
-
-          jQuery.scrollSpeed(100, 400); // for smooth mouse wheel scrolling
-
     // jQuery.inview plugin
-    $('.inview').one('inview', function (e, isInView) {
-      if (isInView) {
-        switch (this.id) {
-          case "steps_doughnut": steps_doughnut.render();
-            break;
-          case "pomodoro_doughnut": pomodoro_doughnut.render();
-            break;
-          case "unproductivity_doughnut": unproductivity_doughnut.render();
-            break;
-        }
-      }
-    });
-
-  });
+    steps_doughnut.render()
+    return steps_doughnut;
 }
+
 
 $(document).ready(function() {
   //Create unproductivity_doughnut
-  create_doughnuts();
   load_data();
 });

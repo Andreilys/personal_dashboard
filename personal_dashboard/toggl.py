@@ -39,6 +39,7 @@ class Toggl():
                     pomodoroDict[description] = float(round(time_in_hours, 2))
         return pomodoroDict
 
+
     def get_daily_pomodoros(self):
         dates = [time.strftime("%Y-%m-%d")]
         return self.get_pomodoros(dates)

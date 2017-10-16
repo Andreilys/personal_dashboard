@@ -66,6 +66,7 @@ def data():
             'chess_rating' : chess.get_games(),
             'chess_games' : chess.get_rating(),
             'daily_pomodoros' : str(toggl.get_daily_pomodoros()),
+            'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
             'past_seven_days_pomodoros' : str(toggl.get_past_seven_days_pomodoros())
             }
     return jsonify(info)
