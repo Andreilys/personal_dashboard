@@ -5,6 +5,9 @@ var first_time_rendering_chart = true;
 var global_steps_doughnut = Object(),
   global_pomodoro_doughnut = Object(),
   global_unproductive_doughnut = Object();
+const STEPS_GOAL = 5000;
+const POMODORO_GOAL = 3;
+const UNPRODUCTIVITY_GOAL = 1;
 /**
  * Load data from /data, optionally providing a query parameter read
  * from the #format select
@@ -59,7 +62,7 @@ function display_data(data) {
         $('#rescue_time_past_seven_unproductivity').html(data.rescue_time_past_seven_unproductivity);
         $('#rescue_time_past_seven_top_five').html(data.rescue_time_past_seven_top_five);
         // $('#next_bus').html(data.next_bus);
-        $('#weight').html(data.weight);
+        $('#weight').html(String(data.weight) + " lbs");
         $('#total_tasks').html("Number of outstanding tasks: " + data.total_tasks);
         $('#daily_completed_tasks').html("Number of tasks completed today: " + data.daily_completed_tasks);
         $('#past_seven_completed_tasks').html("Number of tasks completed in the last 7 days: " + data.past_seven_completed_tasks);
@@ -74,6 +77,8 @@ function display_data(data) {
         $('#chess_games').html(data.chess_games);
         $('#daily_pomodoros').html(data.daily_pomodoros);
         $('#past_seven_days_pomodoros').html(data.past_seven_days_pomodoros);
+        $('#quote_content').html(data.quote_content);
+        $('#quote_author').html(data.quote_author);
         //remove loading text from HTML
         $('#loading').remove();
 
@@ -81,6 +86,18 @@ function display_data(data) {
           global_steps_doughnut = create_steps_doughnut(data);
           global_pomodoro_doughnut = create_pomodoro_doughnut(data);
           global_unproductive_doughnut = create_unproductive_doughnut(data);
+          var cal = new CalHeatMap();
+          cal.init({
+              itemSelector: "#cal-heatmap",
+              domain: "year",
+              subDomain: "day",
+              data: '/datesCompletedGoals',
+              dataType: "json",
+              start: new Date(2017, 0),
+              cellSize: 10,
+              range: 1,
+              displayLegend: false
+          });
           first_time_rendering_chart = false;
         }
         else {
@@ -116,12 +133,9 @@ function update_doughnuts(steps_doughnut, pomodoro_doughnut, unproductive_doughn
   for (var key in data.daily_doughnut_pomodoro){
     total_pomodoros += data.daily_doughnut_pomodoro[key];
   }
-  var pomodoro_goal = 3,
-      current_pomodoro_percent = total_pomodoros > pomodoro_goal ? 100 : Math.round(total_pomodoros/pomodoro_goal * 100),
-      steps_goal = 5000,
-      current_steps_percent = data.current_steps > steps_goal ? 100 : Math.round(data.current_steps/steps_goal * 100),
-      unproductivity_goal = 1,
-      current_unproductive_percent = data.rescue_time_daily_unproductivity > unproductivity_goal ? 100 : Math.round(data.rescue_time_daily_unproductivity/unproductivity_goal * 100);
+  var current_pomodoro_percent = total_pomodoros > POMODORO_GOAL ? 100 : Math.round(total_pomodoros/POMODORO_GOAL * 100),
+      current_steps_percent = data.current_steps > STEPS_GOAL ? 100 : Math.round(data.current_steps/STEPS_GOAL * 100),
+      current_unproductive_percent = data.rescue_time_daily_unproductivity > UNPRODUCTIVITY_GOAL ? 100 : Math.round(data.rescue_time_daily_unproductivity/UNPRODUCTIVITY_GOAL * 100);
     //Updating steps doughnut
       steps_doughnut.options.title.text = String(current_steps_percent) + "%";
       steps_doughnut.options.data[0].dataPoints[0].y = current_steps_percent;
@@ -151,8 +165,7 @@ function create_pomodoro_doughnut(data){
   for (var key in data.daily_doughnut_pomodoro){
     total_pomodoros += data.daily_doughnut_pomodoro[key];
   }
-  var pomodoro_goal = 3,
-      current_pomodoro_percent = total_pomodoros > pomodoro_goal ? 100 : Math.round(total_pomodoros/pomodoro_goal * 100);
+  var current_pomodoro_percent = total_pomodoros > POMODORO_GOAL ? 100 : Math.round(total_pomodoros/POMODORO_GOAL * 100);
   var pomodoro_doughnut = new CanvasJS.Chart("pomodoro_doughnut", {
     animationEnabled: true,
     backgroundColor: "transparent",
@@ -191,8 +204,7 @@ function create_pomodoro_doughnut(data){
 
 
 function create_unproductive_doughnut(data){
-  var unproductivity_goal = 1,
-      current_unproductive_percent = data.rescue_time_daily_unproductivity > unproductivity_goal ? 100 : Math.round(data.rescue_time_daily_unproductivity/unproductivity_goal * 100);
+  var current_unproductive_percent = data.rescue_time_daily_unproductivity > UNPRODUCTIVITY_GOAL ? 100 : Math.round(data.rescue_time_daily_unproductivity/UNPRODUCTIVITY_GOAL * 100);
   var unproductive_doughnut = new CanvasJS.Chart("unproductivity_doughnut", {
     animationEnabled: true,
     backgroundColor: "transparent",
@@ -232,8 +244,7 @@ function create_unproductive_doughnut(data){
 
 //This creates and returns the steps doughnut chart
 function create_steps_doughnut(data) {
-    var steps_goal = 5000,
-        current_steps_percent = data.current_steps > steps_goal ? 100 : Math.round(data.current_steps/steps_goal * 100);
+    var current_steps_percent = data.current_steps > STEPS_GOAL ? 100 : Math.round(data.current_steps/STEPS_GOAL * 100);
     var steps_doughnut = new CanvasJS.Chart("steps_doughnut", {
       animationEnabled: true,
       backgroundColor: "transparent",

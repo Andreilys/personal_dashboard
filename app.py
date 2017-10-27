@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify
 import time, threading, random, webbrowser
 from personal_dashboard.bus_directions import NextBus
-from personal_dashboard.quotes import QUOTE
+from personal_dashboard.quotes import Quote
 from flask import send_from_directory
 from personal_dashboard.rescuetime import RescueTime
 from personal_dashboard.withings import Withings
@@ -15,6 +15,7 @@ from personal_dashboard.toggl import Toggl
 import psycopg2
 import os
 from flask_sqlalchemy import SQLAlchemy
+import time
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -27,7 +28,14 @@ from models import *
 
 @app.route('/')
 def hello_world():
-    return render_template('index.html', quote=QUOTE)
+    return render_template('index.html')
+
+
+@app.route("/datesCompletedGoals", methods=['GET'])
+def dates_completed_goals():
+    now = time.time()
+    todayDict = {str(now) : 100}
+    return jsonify(todayDict)
 
 
 @app.route("/data", methods=['GET'])
@@ -49,13 +57,13 @@ def data():
     moves = Moves()
     chess = Chess()
     toggl = Toggl()
+    quote = Quote()
     info = { 'rescue_time_daily_productivity': rescue_time.get_current_days_data()["productive_hours"],
             'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
             'rescue_time_daily_top_three' :  rescue_time.get_current_days_data()["top_three_sources"],
             'rescue_time_past_seven_productivity' : rescue_time.get_past_seven_days_data()["productive_hours"],
             'rescue_time_past_seven_unproductivity' : rescue_time.get_past_seven_days_data()["unproductive_hours"],
             'rescue_time_past_seven_top_five' : rescue_time.get_past_seven_days_data()["top_five_sources"],
-            'quote' : QUOTE,
             # 'next_bus' : next_bus,
             'weight' : withings.weight,
             'total_tasks' : todoist.get_total_tasks(),
@@ -72,10 +80,24 @@ def data():
             'chess_games' : chess.get_rating(),
             'chess_int_rating' : chess.get_int_rating(),
             'daily_pomodoros' : str(toggl.get_daily_pomodoros()),
+            'quote_content' : quote.content,
+            'quote_author' : quote.author,
             #This is the integer version which gets stored in the database and used for doughnut chart
             'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
             'past_seven_days_pomodoros' : str(toggl.get_past_seven_days_pomodoros())
             }
+    try:
+        personal_data = PersonalData(rescue_time_daily=rescue_time.get_current_days_data(),
+            rescue_time_weekly=rescue_time.get_past_seven_days_data(), quote=quote.content + " - " + quote.author,
+            weight=info['weight'], chess_rating=chess.get_int_rating(), steps=info['current_steps'],
+            steps_avg=info['average_past_seven_steps'], pomodoros=info['daily_doughnut_pomodoro'],
+            date=datetime.datetime.now()
+            )
+        db.session.add(personal_data)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        print("Unable to add items to database")
     return jsonify(info)
 
 

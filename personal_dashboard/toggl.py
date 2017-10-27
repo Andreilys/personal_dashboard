@@ -3,6 +3,7 @@ from .personal_info import TOGGL_API_TOKEN
 import base64
 import decimal
 import time
+import math
 import datetime as DT
 
 
@@ -28,15 +29,15 @@ class Toggl():
         for index, time_entry in enumerate(self.json):
             end_time = time_entry['start'].split('T')[0]
             if end_time in dates:
-                time_in_hours = decimal.Decimal(time_entry['duration']/60/60)
+                time_in_hours = time_entry['duration']/60/60
                 description = time_entry['description']
                 if time_in_hours < 0:
                     epoch_time = int(time.time())
-                    time_in_hours = decimal.Decimal((epoch_time + time_entry['duration'])/60/60)
+                    time_in_hours = (epoch_time + time_entry['duration'])/60/60
                 if description in pomodoroDict:
-                    pomodoroDict[description] += float(round(time_in_hours, 2))
+                    pomodoroDict[description] += round(time_in_hours, 2)
                 else:
-                    pomodoroDict[description] = float(round(time_in_hours, 2))
+                    pomodoroDict[description] = round(time_in_hours, 2)
         return pomodoroDict
 
 

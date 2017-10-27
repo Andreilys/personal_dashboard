@@ -17,8 +17,7 @@ class PersonalData(db.Model):
     pomodoros = db.Column(JSON)
     date = db.Column(db.DateTime)
 
-    def __init__(self, url, result_all, result_no_stop_words):
-        self.url = url
+    def __init__(self, rescue_time_daily, rescue_time_weekly, quote, weight, chess_rating, steps, steps_avg, pomodoros, date):
         self.rescue_time_daily = rescue_time_daily
         self.rescue_time_weekly = rescue_time_weekly
         self.quote = quote

@@ -24,13 +24,17 @@
     <script src="static/js/canvasjs/assets/jquery.scrollspeed/jquery.scrollspeed.min.js"></script>
   <script src="static/js/canvasjs/assets/jquery.inview/jquery.inview.min.js"></script>
 
+  <!-- Cal Heat map-->
+  <script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 </head>
 <body>
   <div class="quote">
-    <i>{{quote[0]}}</i><br> <strong>{{quote[1]}}</strong>
+    <i id="quote_content"></i><br> <strong id="quote_author"></strong>
   </div>
     <!-- <span style="position: absolute;padding-left: 40%;">
       <canvas id="unproductivity_doughnut" width="100%" height="100%" float:right></canvas>
@@ -63,7 +67,8 @@
     </div>
   </div>
 </div>
-  <!-- row sales doughnt charts -->
+<div class="inview" id="cal-heatmap"></div>
+<h6 style="text-align:center">Daily Goals Chain</h6>
   <hr>
     <!-- TODO fix the number of calls to the dark sky API before
     <p id="temp"></li>

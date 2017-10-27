@@ -11,7 +11,7 @@ class Withings():
             with open('personal_dashboard/nokia_data.pkl', 'rb') as input:
                 nokia = pickle.load(input)
                 measures = nokia.get_measures(limit=1)
-                self.weight = str(round(float(measures[0].weight)*2.20462, 2)) + " lbs"
+                self.weight = round(float(measures[0].weight)*2.20462, 2)
         except:
             auth = NokiaAuth(WITHINGS_KEYS['API_KEY'], WITHINGS_KEYS['API_SECRET'])
             authorize_url = auth.get_authorize_url()
