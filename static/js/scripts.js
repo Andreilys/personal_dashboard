@@ -4,7 +4,8 @@ var LONG_POLL_DURATION = 60000; // how long should we wait? (msec)
 var first_time_rendering_chart = true;
 var global_steps_doughnut = Object(),
   global_pomodoro_doughnut = Object(),
-  global_unproductive_doughnut = Object();
+  global_unproductive_doughnut = Object(),
+  global_cal = Object();
 const STEPS_GOAL = 5000;
 const POMODORO_GOAL = 3;
 const UNPRODUCTIVITY_GOAL = 1;
@@ -86,8 +87,8 @@ function display_data(data) {
           global_steps_doughnut = create_steps_doughnut(data);
           global_pomodoro_doughnut = create_pomodoro_doughnut(data);
           global_unproductive_doughnut = create_unproductive_doughnut(data);
-          var cal = new CalHeatMap();
-          cal.init({
+          global_cal = new CalHeatMap();
+          global_cal.init({
               itemSelector: "#cal-heatmap",
               domain: "year",
               subDomain: "day",
@@ -102,6 +103,8 @@ function display_data(data) {
         }
         else {
           update_doughnuts(global_steps_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
+          console.log("updating")
+          global_cal.update('/datesCompletedGoals')
         }
 
         $.ajax({

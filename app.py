@@ -16,6 +16,12 @@ import psycopg2
 import os
 from flask_sqlalchemy import SQLAlchemy
 import time
+import datetime as dt
+
+
+STEPS_GOAL = 0
+FOCUS_GOAL = 0
+UNPRODUCTIVITY_GOAL = 0
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -33,9 +39,36 @@ def hello_world():
 
 @app.route("/datesCompletedGoals", methods=['GET'])
 def dates_completed_goals():
-    now = time.time()
-    todayDict = {str(now) : 100}
-    return jsonify(todayDict)
+    now = dt.datetime.now()
+    rescue_time = RescueTime()
+    toggl = Toggl().get_daily_pomodoros()
+    moves = Moves()
+    total_pomodoros = sum(toggl.values())
+    #Check that we are almost done the day, we use two minutes in case the url
+    #doesn't get pinged during the 59th minute for whatever reason
+    if now.hour == 23 and (now.minute == 58 or now.minute == 59):
+        if moves.get_current_days_steps() >= STEPS_GOAL and \
+        total_pomodoros >= FOCUS_GOAL and \
+        rescue_time.get_current_days_data()["unproductive_hours"] < 1:
+            now = time.time()
+            todayDict = {str(now) : 100}
+            try:
+                goalCompletion = GoalCompletion(date=todayDict)
+                db.session.add(goalCompletion)
+                db.session.commit()
+            except Exception as e:
+                print(e)
+                print("Unable to add items to database")
+    try:
+        session = db.session()
+        rows = session.execute("SELECT * FROM dates_completed_goals")
+        datesDict={}
+        for row in rows:
+            datesDict={**datesDict, **row[0]}
+        return jsonify(datesDict)
+    except psycopg2.DatabaseError as e:
+        print('Error %s') % e
+        sys.exit(1)
 
 
 @app.route("/data", methods=['GET'])
@@ -86,18 +119,18 @@ def data():
             'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
             'past_seven_days_pomodoros' : str(toggl.get_past_seven_days_pomodoros())
             }
-    try:
-        personal_data = PersonalData(rescue_time_daily=rescue_time.get_current_days_data(),
-            rescue_time_weekly=rescue_time.get_past_seven_days_data(), quote=quote.content + " - " + quote.author,
-            weight=info['weight'], chess_rating=chess.get_int_rating(), steps=info['current_steps'],
-            steps_avg=info['average_past_seven_steps'], pomodoros=info['daily_doughnut_pomodoro'],
-            date=datetime.datetime.now()
-            )
-        db.session.add(personal_data)
-        db.session.commit()
-    except Exception as e:
-        print(e)
-        print("Unable to add items to database")
+    # try:
+    #     personal_data = PersonalData(rescue_time_daily=rescue_time.get_current_days_data(),
+    #         rescue_time_weekly=rescue_time.get_past_seven_days_data(), quote=quote.content + " - " + quote.author,
+    #         weight=info['weight'], chess_rating=chess.get_int_rating(), steps=info['current_steps'],
+    #         steps_avg=info['average_past_seven_steps'], pomodoros=info['daily_doughnut_pomodoro'],
+    #         date=datetime.datetime.now()
+    #         )
+    #     db.session.add(personal_data)
+    #     db.session.commit()
+    # except Exception as e:
+    #     print(e)
+    #     print("Unable to add items to database")
     return jsonify(info)
 
 
