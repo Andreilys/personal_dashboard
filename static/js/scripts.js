@@ -5,6 +5,7 @@ var first_time_rendering_chart = true;
 var global_steps_doughnut = Object(),
   global_pomodoro_doughnut = Object(),
   global_unproductive_doughnut = Object(),
+  global_coding_chart = Object(),
   global_cal = Object();
 const STEPS_GOAL = 5000;
 const POMODORO_GOAL = 3;
@@ -87,23 +88,12 @@ function display_data(data) {
           global_steps_doughnut = create_steps_doughnut(data);
           global_pomodoro_doughnut = create_pomodoro_doughnut(data);
           global_unproductive_doughnut = create_unproductive_doughnut(data);
-          global_cal = new CalHeatMap();
-          global_cal.init({
-              itemSelector: "#cal-heatmap",
-              domain: "year",
-              subDomain: "day",
-              data: '/datesCompletedGoals',
-              dataType: "json",
-              start: new Date(2017, 0),
-              cellSize: 10,
-              range: 1,
-              displayLegend: false
-          });
+          global_cal = create_goal_calendar();
+          // global_coding_chart = create_coding_chart(wakatime_data);
           first_time_rendering_chart = false;
         }
         else {
           update_doughnuts(global_steps_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
-          console.log("updating")
           global_cal.update('/datesCompletedGoals')
         }
 
@@ -130,6 +120,64 @@ function display_data(data) {
       }
 }
 
+function create_goal_calendar(){
+  calendar = new CalHeatMap();
+  calendar.init({
+      itemSelector: "#cal-heatmap",
+      domain: "year",
+      subDomain: "day",
+      data: '/datesCompletedGoals',
+      dataType: "json",
+      start: new Date(2017, 0),
+      cellSize: 10,
+      range: 1,
+      displayLegend: false
+  });
+  return calendar;
+}
+
+function create_coding_chart(wakatime_data) {
+  var coding_chart = new CanvasJS.Chart("coding_time", {
+    animationEnabled: true,
+    backgroundColor: "transparent",
+    theme: "theme2",
+    axisX: {
+      labelFontSize: 14,
+      valueFormatString: "MMM YYYY"
+    },
+    axisY: {
+      labelFontSize: 14,
+      prefix: "$"
+    },
+    toolTip: {
+      borderThickness: 0,
+      cornerRadius: 0
+    },
+    data: [
+      {
+        type: "column",
+        yValueFormatString: "$###,###.##",
+        dataPoints: [
+          { x: new Date("1 Jan 2015"), y: 868800 },
+          { x: new Date("1 Feb 2015"), y: 1071550 },
+          { x: new Date("1 Mar 2015"), y: 1286200 },
+          { x: new Date("1 Apr 2015"), y: 1106900 },
+          { x: new Date("1 May 2015"), y: 1033800 },
+          { x: new Date("1 Jun 2015"), y: 1017160 },
+          { x: new Date("1 Jul 2015"), y: 1458000 },
+          { x: new Date("1 Aug 2015"), y: 1165850 },
+          { x: new Date("1 Sep 2015"), y: 1594150 },
+          { x: new Date("1 Oct 2015"), y: 1501700 },
+          { x: new Date("1 Nov 2015"), y: 1588400 },
+          { x: new Date("1 Dec 2015"), y: 1648600 }
+        ]
+      }
+    ]
+  });
+
+  coding_chart.render();
+  return coding_chart;
+}
 
 function update_doughnuts(steps_doughnut, pomodoro_doughnut, unproductive_doughnut, data) {
   var total_pomodoros = 0;

@@ -65,6 +65,7 @@ def dates_completed_goals():
         datesDict={}
         for row in rows:
             datesDict={**datesDict, **row[0]}
+        session.close()
         return jsonify(datesDict)
     except psycopg2.DatabaseError as e:
         print('Error %s') % e
