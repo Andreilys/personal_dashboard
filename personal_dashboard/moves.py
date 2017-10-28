@@ -35,7 +35,7 @@ class Moves():
 		#This is meant as a catch in case no steps have been recorded today
 		try:
 			current_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=1&access_token=' + self.access_token).json()
-			current_days_steps = str(current_days_steps[0]['summary'][0]["steps"])
+			current_days_steps = current_days_steps[0]['summary'][0]["steps"]
 			return current_days_steps
 		except:
 			return 0
