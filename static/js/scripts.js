@@ -8,7 +8,7 @@ var global_steps_doughnut = Object(),
   global_coding_chart = Object(),
   global_cal = Object();
 const STEPS_GOAL = 5000;
-const POMODORO_GOAL = 3;
+const POMODORO_GOAL = 2.5;
 const UNPRODUCTIVITY_GOAL = 1;
 /**
  * Load data from /data, optionally providing a query parameter read

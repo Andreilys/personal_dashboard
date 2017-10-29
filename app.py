@@ -19,9 +19,9 @@ import time
 import datetime as dt
 
 
-STEPS_GOAL = 0
-FOCUS_GOAL = 0
-UNPRODUCTIVITY_GOAL = 0
+STEPS_GOAL = 5000
+FOCUS_GOAL = 2.5
+UNPRODUCTIVITY_GOAL = 1
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
