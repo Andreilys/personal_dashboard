@@ -1,5 +1,5 @@
 import requests
-from .personal_info import TOGGL_API_TOKEN
+from personal_info import TOGGL_API_TOKEN
 import base64
 import decimal
 import time
