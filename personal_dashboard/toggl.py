@@ -1,5 +1,5 @@
 import requests
-from personal_info import TOGGL_API_TOKEN
+from .personal_info import TOGGL_API_TOKEN
 import base64
 import decimal
 import time
@@ -57,6 +57,3 @@ class Toggl():
             date = date.strftime("%Y-%m-%d")
             dates.append(date)
         return self.get_pomodoros(dates)
-
-toggl = Toggl()
-print(toggl.get_daily_pomodoros())
