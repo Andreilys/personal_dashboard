@@ -1,5 +1,5 @@
 import requests
-from .personal_info import TOGGL_API_TOKEN
+from personal_info import TOGGL_API_TOKEN
 import base64
 import decimal
 import time
@@ -20,24 +20,27 @@ class Toggl():
         authHeader = "Basic " + str(base64.b64encode(authHeader.encode()))[2:]
         authHeader = authHeader.replace('\'', "")
         headers['Authorization'] = authHeader
-        url = 'https://www.toggl.com/api/v8/time_entries?api_token=fab0834862bcf57035b57bb39f0ae13f'
+        url = 'https://www.toggl.com/api/v8/time_entries?api_token='+TOGGL_API_TOKEN
         self.json = requests.get(url, headers=headers).json()
 
 
     def get_pomodoros(self, dates):
         pomodoroDict = {}
+        print(self.json[0])
         for index, time_entry in enumerate(self.json):
             end_time = time_entry['start'].split('T')[0]
             if end_time in dates:
                 time_in_hours = time_entry['duration']/60/60
+                print(time_entry['duration']/60)
                 description = time_entry['description']
-                if time_in_hours < 0:
-                    epoch_time = int(time.time())
-                    time_in_hours = (epoch_time + time_entry['duration'])/60/60
-                if description in pomodoroDict:
-                    pomodoroDict[description] += round(time_in_hours, 2)
-                else:
-                    pomodoroDict[description] = round(time_in_hours, 2)
+                if description != 'Pomodoro Break':
+                    if time_in_hours < 0:
+                        epoch_time = int(time.time())
+                        time_in_hours = (epoch_time + time_entry['duration'])/60/60
+                    if description in pomodoroDict:
+                        pomodoroDict[description] += round(time_in_hours, 2)
+                    else:
+                        pomodoroDict[description] = round(time_in_hours, 2)
         return pomodoroDict
 
 
@@ -54,3 +57,6 @@ class Toggl():
             date = date.strftime("%Y-%m-%d")
             dates.append(date)
         return self.get_pomodoros(dates)
+
+toggl = Toggl()
+print(toggl.get_daily_pomodoros())
