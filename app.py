@@ -12,6 +12,7 @@ from personal_dashboard.darksky import DarkSky
 from personal_dashboard.moves import Moves
 from personal_dashboard.chess import Chess
 from personal_dashboard.toggl import Toggl
+import requests
 import psycopg2
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -46,12 +47,12 @@ def dates_completed_goals():
     total_pomodoros = sum(toggl.values())
     #Check that we are almost done the day, we use two minutes in case the url
     #doesn't get pinged during the 59th minute for whatever reason
-    if now.hour == 23 and (now.minute == 58 or now.minute == 59):
+    if now.hour == 6 and (now.minute == 25 or now.minute == 26):
         if moves.get_current_days_steps() >= STEPS_GOAL and \
         total_pomodoros >= FOCUS_GOAL and \
         rescue_time.get_current_days_data()["unproductive_hours"] < 1:
             now = time.time()
-            todayDict = {str(now) : 100}
+            todayDict = {'1509622119.75177' : 100}
             try:
                 goalCompletion = GoalCompletion(date=todayDict)
                 db.session.add(goalCompletion)
@@ -92,6 +93,8 @@ def data():
     chess = Chess()
     toggl = Toggl()
     quote = Quote()
+    coding_time = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json').json()['data']
+    coding_type = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/27967d19-0ce0-42a6-9f4a-c3c2440cf575.json').json()['data']
     info = { 'rescue_time_daily_productivity': rescue_time.get_current_days_data()["productive_hours"],
             'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
             'rescue_time_daily_top_three' :  rescue_time.get_current_days_data()["top_three_sources"],
@@ -118,7 +121,9 @@ def data():
             'quote_author' : quote.author,
             #This is the integer version which gets stored in the database and used for doughnut chart
             'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
-            'past_seven_days_pomodoros' : str(toggl.get_past_seven_days_pomodoros())
+            'past_seven_days_pomodoros' : str(toggl.get_past_seven_days_pomodoros()),
+            'coding_time' : coding_time,
+            'coding_type' : coding_type
             }
     # try:
     #     personal_data = PersonalData(rescue_time_daily=rescue_time.get_current_days_data(),

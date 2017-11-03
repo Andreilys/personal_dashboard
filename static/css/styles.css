@@ -12,25 +12,6 @@
   margin: auto;
 }
 
-#coding_time {
-  display: inline;
-   width:30%;
-   height:30%;
-   margin:auto;
-   position:relative;
-   left:15%
-}
-
-#coding_lang {
-  display: inline;
-  width:30%;
-  height:30%;
-  float:right;
-  margin:auto;
-  position:relative;
-  right:15%
-}
-
 #loading {
   margin:auto;
   text-align: center;
@@ -77,4 +58,24 @@ hr {
 
 .container {
   margin-bottom: 4%;
+}
+
+
+.card-header {
+  background-color: #37474F;
+  border-radius: 0 !important;
+  color:	white;
+  margin-bottom: 0;
+  padding:	1rem;
+}
+
+.card-block {
+  border: 1px solid #cccccc;
+  height: 500px;
+}
+
+.shadow {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
+              0 1px 18px 0 rgba(0, 0, 0, 0.12),
+              0 3px 5px -1px rgba(0, 0, 0, 0.2);
 }

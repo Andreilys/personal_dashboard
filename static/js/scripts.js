@@ -6,6 +6,7 @@ var global_steps_doughnut = Object(),
   global_pomodoro_doughnut = Object(),
   global_unproductive_doughnut = Object(),
   global_coding_chart = Object(),
+  global_coding_type_chart = Object(),
   global_cal = Object();
 const STEPS_GOAL = 5000;
 const POMODORO_GOAL = 2.5;
@@ -84,37 +85,25 @@ function display_data(data) {
         //remove loading text from HTML
         $('#loading').remove();
 
+        // {'data': [{'name': 'Python', 'percent': 61.39}, {'name': 'JavaScript', 'percent': 25.49}, {'name': 'HTML', 'percent': 10.29}, {'name': 'CSS', 'percent': 2.83}]}
+        //
+        coding_time = format_coding_data(data.coding_time);
+        coding_type = format_coding_type_data(data.coding_type)
         if (first_time_rendering_chart) {
-          global_steps_doughnut = create_steps_doughnut(data);
-          global_pomodoro_doughnut = create_pomodoro_doughnut(data);
-          global_unproductive_doughnut = create_unproductive_doughnut(data);
-          global_cal = create_goal_calendar();
-          // global_coding_chart = create_coding_chart(wakatime_data);
-          first_time_rendering_chart = false;
+            global_steps_doughnut = create_steps_doughnut(data);
+            global_pomodoro_doughnut = create_pomodoro_doughnut(data);
+            global_unproductive_doughnut = create_unproductive_doughnut(data);
+            global_cal = create_goal_calendar();
+            global_coding_chart = create_coding_chart(coding_time);
+            global_coding_type_chart = create_coding_type_chart(coding_type)
+            first_time_rendering_chart = false;
         }
         else {
           update_doughnuts(global_steps_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
-          global_cal.update('/datesCompletedGoals')
+          update_coding_chart(global_coding_chart, coding_time);
+          global_cal.update('/datesCompletedGoals');
         }
 
-        $.ajax({
-            type: 'GET',
-            url: 'https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json',
-            dataType: 'jsonp',
-            success: function(response) {
-              console.log(response.data);
-            },
-          });
-
-
-          $.ajax({
-            type: 'GET',
-            url: 'https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/27967d19-0ce0-42a6-9f4a-c3c2440cf575.json',
-            dataType: 'jsonp',
-            success: function(response) {
-              console.log(response.data);
-            },
-          });
         // remember this data, in case want to compare it to next update
         prev_data = data;
       }
@@ -136,18 +125,58 @@ function create_goal_calendar(){
   return calendar;
 }
 
-function create_coding_chart(wakatime_data) {
+// Row 2: Start of Coding data
+//Helper function to format the dates for Chartjs column graph
+function changing_date_format(coding_time_unformatted){
+  coding_time_formatted = []
+  for (data of coding_time_unformatted){
+    months_days = data['range']['date'].split('-').slice(1).join('-');
+    year = data['range']['date'].split('-')[0];
+    new_date = months_days + "-" + year
+    data['range']['date'] = new_date
+    coding_time_formatted.push(data)
+  }
+  return coding_time_formatted
+}
+
+
+function format_coding_data(coding_time_unformatted){
+  coding_time_formatted = changing_date_format(coding_time_unformatted)
+  coding_time = []
+  for (data of coding_time_formatted) {
+    coding_time.push({x: new Date(data['range']['date']), y: data['grand_total']['total_seconds']/60/60});
+  }
+  return coding_time
+}
+
+function format_coding_type_data(coding_type_unformated){
+  coding_type = []
+  for (data of coding_type_unformated) {
+    coding_type.push({name: data['name'], y: data['percent'], indexLabel: String(data['name']) + " - " + String(data['percent']) + "%", legendText: data['name']});
+  }
+  return coding_type
+}
+
+function update_coding_chart(coding_chart, coding_time){
+    coding_chart.options.data.dataPoints = coding_time
+    global_coding_chart = coding_chart;
+    $('#coding_chart').remove();
+    $('#card-block').append('div id="coding_type"></div>')
+    global_coding_chart = create_coding_chart(coding_time);
+    global_coding_chart.render();
+}
+
+function create_coding_chart(coding_time) {
   var coding_chart = new CanvasJS.Chart("coding_time", {
     animationEnabled: true,
     backgroundColor: "transparent",
     theme: "theme2",
     axisX: {
       labelFontSize: 14,
-      valueFormatString: "MMM YYYY"
+      valueFormatString: "MMM DD"
     },
     axisY: {
       labelFontSize: 14,
-      prefix: "$"
     },
     toolTip: {
       borderThickness: 0,
@@ -156,29 +185,57 @@ function create_coding_chart(wakatime_data) {
     data: [
       {
         type: "column",
-        yValueFormatString: "$###,###.##",
-        dataPoints: [
-          { x: new Date("1 Jan 2015"), y: 868800 },
-          { x: new Date("1 Feb 2015"), y: 1071550 },
-          { x: new Date("1 Mar 2015"), y: 1286200 },
-          { x: new Date("1 Apr 2015"), y: 1106900 },
-          { x: new Date("1 May 2015"), y: 1033800 },
-          { x: new Date("1 Jun 2015"), y: 1017160 },
-          { x: new Date("1 Jul 2015"), y: 1458000 },
-          { x: new Date("1 Aug 2015"), y: 1165850 },
-          { x: new Date("1 Sep 2015"), y: 1594150 },
-          { x: new Date("1 Oct 2015"), y: 1501700 },
-          { x: new Date("1 Nov 2015"), y: 1588400 },
-          { x: new Date("1 Dec 2015"), y: 1648600 }
-        ]
+        color: "#27a6e5",
+        yValueFormatString: "###,###.##",
+        dataPoints: coding_time
       }
     ]
   });
-
   coding_chart.render();
   return coding_chart;
 }
 
+
+function update_coding_type_chart(){
+
+}
+
+function create_coding_type_chart(){
+  var create_coding_type_chart = new CanvasJS.Chart("coding_type", {
+    animationEnabled: true,
+    theme: "theme2",
+    legend: {
+      fontSize: 12,
+      display: true,
+      position: 'top',
+      fullWidth: true,
+      reverse: false,
+    },
+    toolTip: {
+      borderThickness: 0,
+      content: "<span style='\"'color: {color};'\"'>{name}</span>: {y}",
+      cornerRadius: 0
+    },
+    data: [
+      {
+        indexLabelFontColor: "#676464",
+        indexLabelFontSize: 10,
+        legendMarkerType: "square",
+        legendText: "{indexLabel}",
+        showInLegend: true,
+        startAngle:  90,
+        type: "pie",
+        dataPoints: coding_type
+      }
+    ]
+  });
+
+  create_coding_type_chart.render();
+  return create_coding_type_chart;
+}
+
+
+//Row 1 - Start of Doughuts
 function update_doughnuts(steps_doughnut, pomodoro_doughnut, unproductive_doughnut, data) {
   var total_pomodoros = 0;
   for (var key in data.daily_doughnut_pomodoro){
@@ -249,7 +306,7 @@ function create_pomodoro_doughnut(data){
     ]
   });
 
-  pomodoro_doughnut.render()
+  pomodoro_doughnut.render();
   return pomodoro_doughnut;
 }
 

@@ -26,12 +26,10 @@ class Toggl():
 
     def get_pomodoros(self, dates):
         pomodoroDict = {}
-        print(self.json[0])
         for index, time_entry in enumerate(self.json):
             end_time = time_entry['start'].split('T')[0]
             if end_time in dates:
                 time_in_hours = time_entry['duration']/60/60
-                print(time_entry['duration']/60)
                 description = time_entry['description']
                 if description != 'Pomodoro Break':
                     if time_in_hours < 0:

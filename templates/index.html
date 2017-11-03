@@ -36,20 +36,9 @@
   <div class="quote">
     <i id="quote_content"></i><br> <strong id="quote_author"></strong>
   </div>
-    <!-- <span style="position: absolute;padding-left: 40%;">
-      <canvas id="unproductivity_doughnut" width="100%" height="100%" float:right></canvas>
-      <p>Daily Unproductivity</p>
-    </span>
-    <span>
-      <canvas id="steps_doughnut" width="100%" height="100%" float: left></canvas>
-      <p>Daily Steps</p>
-    </span>
-  </span> -->
 	<div class="container">
   <h3>Daily Goals</h3>
-
   <!--Daily doughnut charts -->
-
   <div class="row">
     <div class="col-md-4">
       <div class="inview" id="steps_doughnut"></div>
@@ -67,18 +56,35 @@
     </div>
   </div>
 </div>
+
+<!-- Calendar heatmap -->
 <div class="inview" id="cal-heatmap"></div>
 <h6 style="text-align:center">Daily Goals Chain</h6>
 <hr>
 
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-md-4">
-      <canvas id="coding_time" width="800" height="450"></canvas>
-      <h3 class="align-center">Coding Time</h3>
+<div class="container">
+<div class="row m-b-1">
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Coding Time</h4>
+      <div class="card-block">
+        <div id="coding_time"></div>
+      </div>
     </div>
   </div>
-</div> -->
+
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Coding Type</h4>
+      <div class="card-block">
+        <div id="coding_type"></div>
+      </div>
+    </div>
+  </div>
+</div> <!-- row -->
+
+
+</div> <!-- container -->
 
     <!-- TODO fix the number of calls to the dark sky API before
     <p id="temp"></li>
