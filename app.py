@@ -47,11 +47,12 @@ def dates_completed_goals():
     total_pomodoros = sum(toggl.values())
     #Check that we are almost done the day, we use two minutes in case the url
     #doesn't get pinged during the 59th minute for whatever reason
-    if now.hour == 6 and (now.minute == 25 or now.minute == 26):
+    if now.hour == 6 and (now.minute == 30 or now.minute == 31):
         if moves.get_current_days_steps() >= STEPS_GOAL and \
         total_pomodoros >= FOCUS_GOAL and \
         rescue_time.get_current_days_data()["unproductive_hours"] < 1:
             now = time.time()
+            print("adding")
             todayDict = {'1509622119.75177' : 100}
             try:
                 goalCompletion = GoalCompletion(date=todayDict)
