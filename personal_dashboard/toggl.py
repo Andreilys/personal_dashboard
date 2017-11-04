@@ -59,26 +59,32 @@ class Toggl():
             dates.append(date)
         return self.get_pomodoros(dates)
 
-    # for use in the create_rescuetime_bar funciton in scripts.js
+    # for use in the create_toggl_bar function in scripts.js
     def get_daily_week_view(self):
-        dates = []
-        productive_array_values = []
-        unproductive_array_values = []
-        counter = 6
-        for date in range(7):
-            productive_sum = 0
-            unproductive_sum = 0
-            date, data = self.get_rescuetime_data(counter)
-            counter -= 1
-            for item in data:
-                #The 5 here is referring to the productivity/unproductivity identifier
-                if item[5] > 0:
-                    productive_sum += item[1]/60/60
-                elif item[5] < 0:
-                    unproductive_sum += item[1]/60/60
-            dates.append(date.strftime("%d/%m"))
-            productive_array_values.append(round(productive_sum,2))
-            unproductive_array_values.append(round(unproductive_sum, 2))
-        rescuetime_data = [{"label" : "Productive Hours", "backgroundColor": "#33702a", "data" : productive_array_values},
-                        {"label" : "Unproductive Hours", "backgroundColor": "#b30000", "data" : unproductive_array_values}]
-        return rescuetime_data, dates
+        toggl_data = []
+        pomodoros = self.get_past_seven_days_pomodoros()
+        #This is to loop through all the different descriptions in Toggl
+        for pomodoro in pomodoros:
+            counter = 6
+            weekly_data = [pomodoro]
+            #We loop through a given week to find the times for this specific Toggl description
+            for i in range(7):
+                today = DT.date.today()
+                date = today - DT.timedelta(days=counter)
+                counter -= 1
+                date = date.strftime("%Y-%m-%d")
+                year = date.split('-')[0]
+                month = date.split('-')[1]
+                day = date.split('-')[2]
+                #Here we need to get the pomodoros for that specific day
+                pomodoros = self.get_pomodoros(date)
+                for second_pomodoro in pomodoros:
+                    if second_pomodoro == pomodoro:
+                        daily_data = {'year' : year, 'month' : month, 'day' : day, 'value' : pomodoros[pomodoro]}
+                        weekly_data.append(daily_data)
+            toggl_data.append(weekly_data)
+        return toggl_data
+
+
+toggl = Toggl()
+toggl.get_daily_week_view()

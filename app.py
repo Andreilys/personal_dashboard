@@ -126,7 +126,8 @@ def data():
             'coding_time' : coding_time,
             'coding_type' : coding_type,
             'rescuetime_bar_data' : rescuetime_bar_data[0],
-            'rescuetime_bar_data_dates' : rescuetime_bar_data[1]
+            'rescuetime_bar_data_dates' : rescuetime_bar_data[1],
+            'toggl_bar_data' : toggl.get_daily_week_view()
             }
     # try:
     #     personal_data = PersonalData(rescue_time_daily=rescue_time.get_current_days_data(),

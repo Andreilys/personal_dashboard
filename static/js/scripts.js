@@ -93,26 +93,30 @@ function display_data(data) {
         //
         coding_time = format_coding_data(data.coding_time);
         coding_type = format_coding_type_data(data.coding_type)
+        toggl_data = format_toggl_data(data.past_seven_days_pomodoros)
+        toggl_bar_data = format_toggl_data_bar(data.toggl_bar_data)
+        rescuetime_data = format_rescuetime_data(data.rescue_time_past_seven_productivity, data.rescue_time_past_seven_unproductivity);
         if (first_time_rendering_chart) {
             global_steps_doughnut = create_steps_doughnut(data);
             global_pomodoro_doughnut = create_pomodoro_doughnut(data);
             global_unproductive_doughnut = create_unproductive_doughnut(data);
             global_cal = create_goal_calendar();
             global_coding_chart = create_coding_chart(coding_time);
-            global_coding_type_chart = create_coding_type_chart(coding_type);
-            global_rescuetime_pie = create_rescuetime_pie(data.rescue_time_past_seven_productivity, data.rescue_time_past_seven_unproductivity);
+            global_coding_type_chart = create_pie(coding_type, "coding_type");
+            global_rescuetime_pie = create_pie(rescuetime_data, "rescuetime_pie")
             global_rescuetime_bar = create_rescuetime_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates);
-            global_toggl_pie = create_toggl_pie(data.past_seven_days_pomodoros);
-            create_toggl_bar(data.past_seven_days_pomodoros)
+            global_toggl_pie = create_pie(toggl_data, "toggl_pie")
+            global_toggl_bar = create_toggl_bar(toggl_bar_data)
             first_time_rendering_chart = false;
         }
         else {
           update_doughnuts(global_steps_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
           update_coding_chart(coding_time);
           update_coding_type_chart(coding_type);
-          update_rescuetime_pie(data.rescue_time_past_seven_productivity, data.rescue_time_past_seven_unproductivity);
+          update_rescuetime_pie(rescuetime_data);
           update_rescuetime_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates);
-          update_toggl_pie(data.past_seven_days_pomodoros);
+          update_toggl_pie(toggl_data);
+          update_toggl_bar(toggl_bar_data);
           global_cal.update('/datesCompletedGoals');
         }
 
@@ -360,43 +364,8 @@ function create_coding_chart(coding_time) {
 
 
 function update_coding_type_chart(coding_type){
-  global_coding_type_chart = create_coding_type_chart(coding_type);
+  global_coding_type_chart = create_pie(coding_type, "coding_type");
   global_coding_type_chart.render();
-
-}
-
-function create_coding_type_chart(){
-  var create_coding_type_chart = new CanvasJS.Chart("coding_type", {
-    animationEnabled: true,
-    theme: "theme2",
-    legend: {
-      fontSize: 12,
-      display: true,
-      position: 'bottom',
-      fullWidth: true,
-      reverse: false,
-    },
-    toolTip: {
-      borderThickness: 0,
-      content: "<span style='\"'color: {color};'\"'>{name}</span>: {y}%",
-      cornerRadius: 0
-    },
-    data: [
-      {
-        indexLabelFontColor: "#676464",
-        indexLabelFontSize: 10,
-        legendMarkerType: "square",
-        legendText: "{indexLabel}",
-        showInLegend: true,
-        startAngle:  90,
-        type: "pie",
-        dataPoints: coding_type
-      }
-    ]
-  });
-
-  create_coding_type_chart.render();
-  return create_coding_type_chart;
 }
 
 //Row 3 Rescuetime Data
@@ -409,8 +378,8 @@ function format_rescuetime_data(rescue_time_past_seven_productivity, rescue_time
 }
 
 
-function update_rescuetime_pie(rescue_time_past_seven_productivity, rescue_time_past_seven_unproductivity){
-  global_rescuetime_pie = create_rescuetime_pie(rescue_time_past_seven_productivity, rescue_time_past_seven_unproductivity);
+function update_rescuetime_pie(rescuetime_data){
+  global_rescuetime_pie = create_pie(rescuetime_data, "rescuetime_pie");
   global_rescuetime_pie.render();
 }
 
@@ -447,6 +416,40 @@ function create_rescuetime_pie(rescue_time_past_seven_productivity, rescue_time_
   });
   rescuetime_pie.render();
   return rescuetime_pie;
+}
+
+
+function create_pie(data, html_id){
+  var pie = new CanvasJS.Chart(html_id, {
+    animationEnabled: true,
+    theme: "theme2",
+    legend: {
+      fontSize: 12,
+      display: true,
+      position: 'bottom',
+      fullWidth: true,
+      reverse: false,
+    },
+    toolTip: {
+      borderThickness: 0,
+      content: "<span style='\"'color: {color};'\"'>{name}</span>: {y}",
+      cornerRadius: 0
+    },
+    data: [
+      {
+        indexLabelFontColor: "#676464",
+        indexLabelFontSize: 10,
+        legendMarkerType: "square",
+        legendText: "{indexLabel}",
+        showInLegend: true,
+        startAngle:  90,
+        type: "pie",
+        dataPoints: data
+      }
+    ]
+  });
+  pie.render();
+  return pie;
 }
 
 function update_rescuetime_bar(rescuetime_data, dates){
@@ -496,7 +499,7 @@ function format_toggl_data(toggl_data){
 
 
 function update_toggl_pie(toggl_data){
-  global_toggl_pie = create_toggl_pie(toggl_data);
+  global_toggl_pie = create_pie(toggl_data, "toggl_pie");
   global_toggl_pie.render();
 }
 
@@ -507,7 +510,7 @@ function create_toggl_pie(toggl_data){
     animationEnabled: true,
     theme: "theme2",
     legend: {
-      fontSize: 14,
+      fontSize: 12,
       display: true,
       position: 'bottom',
       fullWidth: true,
@@ -535,53 +538,33 @@ function create_toggl_pie(toggl_data){
   return toggl_pie;
 }
 //
-// function format_toggl_data_bar(toggl_data){
-//   toggl_data_formatted = []
-//   for (data in toggl_data){
-//     data_points_formatted = []
-//     for (other_data in data){
-//       data_points_formatted.push(x: new Date(other_data['date']), y: other_data['value'])
-//     }
-//     toggl_data_formatted.push({type:"stackedBar", dataPoints: data_points_formatted})
-//   }
-//   return toggl_data_formatted;
-// }
+function format_toggl_data_bar(toggl_data){
+  formatted_data = [];
+  for (let data of toggl_data) {
+    toggl_type = data.shift()
+    data_points_formatted = [];
+    for (let other_data of data) {
+        data_points_formatted.push({x: new Date(other_data['year'], other_data['month']-1, other_data['day']), y: other_data['value']})
+    }
+    formatted_data.push({type:"stackedBar", legendText: toggl_type, showInLegend: "true", dataPoints: data_points_formatted})
+  }
+  return formatted_data;
+}
 
 
 function update_toggl_bar(toggl_data){
-  global_toggl_bar = create_toggl_bar(rescuetime_data, dates);
+  global_toggl_bar = create_toggl_bar(toggl_data);
   global_toggl_bar.render();
 }
 
 
 function create_toggl_bar(toggl_data){
-  // toggl_data_formatted = format_toggl_data_bar(toggl_data)
   var chart = new CanvasJS.Chart("toggl_bar",
     {
-      data: [
-        {
-        type: "stackedBar",
-         dataPoints: [
-        { x: new Date(2012, 01, 1), y: 71 },
-        { x: new Date(2012, 02, 1), y: 55},
-        { x: new Date(2012, 03, 1), y: 50 },
-        { x: new Date(2012, 04, 1), y: 65 },
-        { x: new Date(2012, 05, 1), y: 95 }
-
-        ]
+      axisX: {
+        valueFormatString: "MMM DD"
       },
-        {
-        type: "stackedBar",
-         dataPoints: [
-           { x: new Date(2012, 01, 1), y: 71 },
-           { x: new Date(2012, 02, 1), y: 55},
-           { x: new Date(2012, 03, 1), y: 50 },
-           { x: new Date(2012, 04, 1), y: 65 },
-           { x: new Date(2012, 05, 1), y: 95 }
-
-        ]
-      }
-      ]
+      data: toggl_data
     });
     chart.render();
     return chart;

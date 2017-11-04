@@ -80,7 +80,7 @@ class RescueTime:
             return date, response.json()["rows"]
 
     #This function is used to return dates and a formatted list containing dictionaries
-    # for use in the create_rescuetime_bar funciton in scripts.js
+    # for use in the create_rescuetime_bar function in scripts.js
     def get_daily_week_view(self):
         dates = []
         productive_array_values = []
