@@ -1,5 +1,8 @@
 import requests
-from .personal_info import TOGGL_API_TOKEN
+try:
+    from .personal_info import TOGGL_API_TOKEN
+except:
+    from personal_info import TOGGL_API_TOKEN
 import base64
 import decimal
 import time
@@ -55,3 +58,27 @@ class Toggl():
             date = date.strftime("%Y-%m-%d")
             dates.append(date)
         return self.get_pomodoros(dates)
+
+    # for use in the create_rescuetime_bar funciton in scripts.js
+    def get_daily_week_view(self):
+        dates = []
+        productive_array_values = []
+        unproductive_array_values = []
+        counter = 6
+        for date in range(7):
+            productive_sum = 0
+            unproductive_sum = 0
+            date, data = self.get_rescuetime_data(counter)
+            counter -= 1
+            for item in data:
+                #The 5 here is referring to the productivity/unproductivity identifier
+                if item[5] > 0:
+                    productive_sum += item[1]/60/60
+                elif item[5] < 0:
+                    unproductive_sum += item[1]/60/60
+            dates.append(date.strftime("%d/%m"))
+            productive_array_values.append(round(productive_sum,2))
+            unproductive_array_values.append(round(unproductive_sum, 2))
+        rescuetime_data = [{"label" : "Productive Hours", "backgroundColor": "#33702a", "data" : productive_array_values},
+                        {"label" : "Unproductive Hours", "backgroundColor": "#b30000", "data" : unproductive_array_values}]
+        return rescuetime_data, dates

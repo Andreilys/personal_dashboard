@@ -72,3 +72,34 @@ class RescueTime:
         unproductive_hours = round(unproductive_hours, 2)
         weekly_data = {"productive_hours" : productive_hours, "unproductive_hours" : unproductive_hours, "top_five_sources" : ", ".join(top_five_sources)}
         return weekly_data
+
+    def get_rescuetime_data(self, date):
+            today = DT.date.today()
+            date = today - DT.timedelta(days=date)
+            response = requests.get("https://www.rescuetime.com/anapi/data?key={0}&perspective=rank&interval=week&restrict_begin={1}&restrict_end={2}&format=json".format(RESCUETIME_API_KEY, str(date), str(date)))
+            return date, response.json()["rows"]
+
+    #This function is used to return dates and a formatted list containing dictionaries
+    # for use in the create_rescuetime_bar funciton in scripts.js
+    def get_daily_week_view(self):
+        dates = []
+        productive_array_values = []
+        unproductive_array_values = []
+        counter = 6
+        for date in range(7):
+            productive_sum = 0
+            unproductive_sum = 0
+            date, data = self.get_rescuetime_data(counter)
+            counter -= 1
+            for item in data:
+                #The 5 here is referring to the productivity/unproductivity identifier
+                if item[5] > 0:
+                    productive_sum += item[1]/60/60
+                elif item[5] < 0:
+                    unproductive_sum += item[1]/60/60
+            dates.append(date.strftime("%d/%m"))
+            productive_array_values.append(round(productive_sum,2))
+            unproductive_array_values.append(round(unproductive_sum, 2))
+        rescuetime_data = [{"label" : "Productive Hours", "backgroundColor": "#33702a", "data" : productive_array_values},
+                        {"label" : "Unproductive Hours", "backgroundColor": "#b30000", "data" : unproductive_array_values}]
+        return rescuetime_data, dates

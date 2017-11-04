@@ -21,7 +21,7 @@ import datetime as dt
 
 
 STEPS_GOAL = 5000
-FOCUS_GOAL = 2.5
+FOCUS_GOAL = 2.4
 UNPRODUCTIVITY_GOAL = 1
 
 app = Flask(__name__)
@@ -95,6 +95,7 @@ def data():
     quote = Quote()
     coding_time = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json').json()['data']
     coding_type = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/27967d19-0ce0-42a6-9f4a-c3c2440cf575.json').json()['data']
+    rescuetime_bar_data = rescue_time.get_daily_week_view()
     info = { 'rescue_time_daily_productivity': rescue_time.get_current_days_data()["productive_hours"],
             'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
             'rescue_time_daily_top_three' :  rescue_time.get_current_days_data()["top_three_sources"],
@@ -121,9 +122,11 @@ def data():
             'quote_author' : quote.author,
             #This is the integer version which gets stored in the database and used for doughnut chart
             'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
-            'past_seven_days_pomodoros' : str(toggl.get_past_seven_days_pomodoros()),
+            'past_seven_days_pomodoros' : toggl.get_past_seven_days_pomodoros(),
             'coding_time' : coding_time,
-            'coding_type' : coding_type
+            'coding_type' : coding_type,
+            'rescuetime_bar_data' : rescuetime_bar_data[0],
+            'rescuetime_bar_data_dates' : rescuetime_bar_data[1]
             }
     # try:
     #     personal_data = PersonalData(rescue_time_daily=rescue_time.get_current_days_data(),

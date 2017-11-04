@@ -23,7 +23,7 @@
   <script type="text/javascript" src="static/js/canvasjs/canvasjs.min.js"></script>
     <script src="static/js/canvasjs/assets/jquery.scrollspeed/jquery.scrollspeed.min.js"></script>
   <script src="static/js/canvasjs/assets/jquery.inview/jquery.inview.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
   <!-- Cal Heat map-->
   <script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
   <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
@@ -66,7 +66,7 @@
 <div class="row m-b-1">
   <div class="col-lg-6">
     <div class="card shadow">
-      <h4 class="card-header">Coding Time</h4>
+      <h4 class="card-header">Weekly Coding Time</h4>
       <div class="card-block">
         <div id="coding_time"></div>
       </div>
@@ -75,9 +75,52 @@
 
   <div class="col-lg-6">
     <div class="card shadow">
-      <h4 class="card-header">Coding Type</h4>
+      <h4 class="card-header">Weekly Coding Type</h4>
       <div class="card-block">
         <div id="coding_type"></div>
+      </div>
+    </div>
+  </div>
+</div> <!-- row -->
+
+<div class="row m-b-1">
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Daily Time Spent Online</h4>
+      <div class="card-block">
+        <canvas id="rescuetime_bar"></canvas>
+        <hr>
+        <p style="color:black"><strong>Top Five Sources:</strong> <p style="color:black" id="rescue_time_past_seven_top_five"></p></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Total Weekly Time Spent Online</h4>
+      <div class="card-block">
+        <div id="rescuetime_pie"></div>
+      </div>
+    </div>
+  </div>
+</div> <!-- row -->
+
+
+<div class="row m-b-1">
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Daily Focus Time</h4>
+      <div class="card-block">
+        <div id="toggl_bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Total Weekly Focus Time</h4>
+      <div class="card-block">
+        <div id="toggl_pie"></div>
       </div>
     </div>
   </div>
@@ -95,11 +138,8 @@
 </div>
 
 <TABLE class="data_table" border="1">
-<TR><TH>Daily Rescuetime<td><p>Productivity: <p id="rescue_time_daily_productivity"></p></p><p>Unproductivity: <p id="rescue_time_daily_unproductivity"></p> </p> <p>Top Three sources: <p id="rescue_time_daily_top_three"></p></p> </td>
-<TR><TH>Weekly Rescuetime<td><p>Productivity: <p id="rescue_time_past_seven_productivity"></p></p><p>Unproductivity: <p id="rescue_time_past_seven_unproductivity"></p> </p> <p>Top Five sources: <p id="rescue_time_past_seven_top_five"></p></p> </td>
 <TR><TH>Steps<td><p id="current_steps"></p><p id="average_past_seven_steps"></p></td>
 <TR><TH>Chess<td><p id="chess_rating"></p><p id="chess_games"></p></td>
-<TR><TH>Pomodoros<td>Daily Pomodoro's: <p id="daily_pomodoros"></p>Past 7 Days Pomdoro's: <p id="past_seven_days_pomodoros"></p></td>
 <TR><TH>Weight<td id="weight"></td>
 <TR><TH>Todoist<td><p id="total_tasks"></p><p id="daily_completed_tasks"></p><p id="past_seven_completed_tasks"></p></td>
 <TR><TH>Spotify<td>Top tracks this month: <p id="top_tracks"></p>Top Artists this month:<p id="top_artists"></p></td>
