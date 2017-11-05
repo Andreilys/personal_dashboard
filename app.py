@@ -77,14 +77,12 @@ def dates_completed_goals():
 @app.route("/data", methods=['GET'])
 def data():
     global first_time_loading
-    if (!first_time_loading):
+    if (not first_time_loading):
         first_time_loading = False
         session = db.session()
         dictionary = session.execute("SELECT * FROM personal_data WHERE id=(select max(id) from personal_data)")
         for diction in dictionary:
-            print("working")
             personal_info_dict = diction[1]
-        print("this should work?")
         session.close()
         return jsonify(personal_info_dict)
     else:
