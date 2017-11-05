@@ -37,6 +37,7 @@
     <i id="quote_content"></i><br> <strong id="quote_author"></strong>
   </div>
 	<div class="container">
+  <h1 id="loading"> Loading Data.... </h1>
   <h3>Daily Goals</h3>
   <!--Daily doughnut charts -->
   <div class="row">
@@ -133,7 +134,7 @@
       <div class="card-block">
         <canvas id="steps_bar"></canvas>
         <hr>
-        <p style="color:black"><strong>Places Visited This Week:</strong> <p style="color:black" id="moves_places"></p></p>
+        <p><strong>Places Visited This Week:</strong> <p id="moves_places"></p></p>
       </div>
     </div>
   </div>
@@ -142,7 +143,29 @@
     <div class="card shadow">
       <h4 class="card-header">Weight</h4>
       <div class="card-block">
-        <div id="weight_line"></div>
+        <canvas id="weight_line"></canvas>
+      </div>
+    </div>
+  </div>
+</div> <!-- row -->
+
+<div class="row m-b-1">
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Chess - <span id="chess_rating"></span></h4>
+      <div class="card-block">
+        <div id="chess_pie"></div>
+    </div>
+  </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Spotify</h4>
+      <div class="card-block">
+        <TABLE class="data_table" border="1">
+        <TR><td><p> <strong>Top Tracks This Month:</strong> </p><p id="top_tracks"></p> <p><strong>Top Artists This Month: </strong></p><p id="top_artists"></p></td></TR>
+        </TABLE>
       </div>
     </div>
   </div>
@@ -154,17 +177,6 @@
     <p id="temp"></li>
     <p id="weather_hourly"></li>
     <p id="weather_today"></li> -->
-<h1 id="loading"> Loading Data.... </h1>
-<div id="coding">
-</div>
-
-<TABLE class="data_table" border="1">
-<TR><TH>Steps<td><p id="current_steps"></p><p id="average_past_seven_steps"></p></td>
-<TR><TH>Chess<td><p id="chess_rating"></p><p id="chess_games"></p></td>
-<TR><TH>Weight<td id="weight"></td>
-<TR><TH>Todoist<td><p id="total_tasks"></p><p id="daily_completed_tasks"></p><p id="past_seven_completed_tasks"></p></td>
-<TR><TH>Spotify<td>Top tracks this month: <p id="top_tracks"></p>Top Artists this month:<p id="top_artists"></p></td>
-</TABLE>
 
 </body>
 </html>

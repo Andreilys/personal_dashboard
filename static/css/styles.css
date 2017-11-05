@@ -2,6 +2,10 @@
        display: none;
    }
 
+p {
+  color:black;
+}
+
 .quote {
     text-align: center;
     padding: 20px;

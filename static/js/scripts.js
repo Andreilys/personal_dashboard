@@ -13,6 +13,7 @@ var global_steps_doughnut = Object(),
   global_toggl_bar = Object(),
   global_steps_bar = Object(),
   global_weight_line = Object(),
+  global_chess_pie = Object(),
   global_cal = Object();
 const STEPS_GOAL = 5000;
 const POMODORO_GOAL = 2.5;
@@ -82,23 +83,24 @@ function display_data(data) {
         $('#weather_today').html(data.weather_today);
         $('#current_steps').html("Steps today: " + String(data.current_steps)  + " steps");
         $('#average_past_seven_steps').html("Past 7 day avg. " +String(data.average_past_seven_steps) + " steps");
-        $('#chess_rating').html(data.chess_rating);
-        $('#chess_games').html(data.chess_games);
         $('#daily_pomodoros').html(data.daily_pomodoros);
         $('#past_seven_days_pomodoros').html(String(data.past_seven_days_pomodoros));
         $('#quote_content').html(data.quote_content);
         $('#quote_author').html(data.quote_author);
         $('#moves_places').html(data.moves_places);
+        $('#chess_rating').html(data.chess_rating);
         //remove loading text from HTML
         $('#loading').remove();
 
         // {'data': [{'name': 'Python', 'percent': 61.39}, {'name': 'JavaScript', 'percent': 25.49}, {'name': 'HTML', 'percent': 10.29}, {'name': 'CSS', 'percent': 2.83}]}
         //
         coding_time = format_coding_data(data.coding_time);
-        coding_type = format_coding_type_data(data.coding_type)
-        toggl_data = format_toggl_data(data.past_seven_days_pomodoros)
-        toggl_bar_data = format_toggl_data_bar(data.toggl_bar_data)
+        coding_type = format_coding_type_data(data.coding_type);
+        toggl_data = format_toggl_data(data.past_seven_days_pomodoros);
+        toggl_bar_data = format_toggl_data_bar(data.toggl_bar_data);
+        weight_data = format_weight_data(data.weight_line_data, data.weight_line_dates);
         rescuetime_data = format_rescuetime_data(data.rescue_time_past_seven_productivity, data.rescue_time_past_seven_unproductivity);
+        chess_pie_data = format_chess_pie_data(data.chess_games)
         if (first_time_rendering_chart) {
             global_steps_doughnut = create_steps_doughnut(data);
             global_pomodoro_doughnut = create_pomodoro_doughnut(data);
@@ -112,19 +114,21 @@ function display_data(data) {
             //We can use rescuetime bar data dates since its the same information
             global_steps_bar = create_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar");
             global_toggl_bar = create_toggl_bar(toggl_bar_data);
-            global_weight_line = create_line(data.weight_line_data);
+            global_weight_line = create_line(weight_data, "weight_line");
+            global_chess_pie = create_pie(chess_pie_data, "chess_pie");
             first_time_rendering_chart = false;
         }
         else {
           update_doughnuts(global_steps_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
           update_coding_chart(coding_time);
           update_coding_type_chart(coding_type);
-          update_rescuetime_pie(rescuetime_data);
+          update_pie(rescuetime_data, "rescuetime_pie", global_rescuetime_pie);
+          update_pie(chess_pie_data, "chess_pie", global_chess_pie);
+          update_pie(toggl_data, "toggl_pie", global_toggl_pie);
           update_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates, "rescuetime_bar", global_rescuetime_bar);
           //We can use rescuetime bar data dates since its the same information
           update_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar", global_steps_bar)
-          update_lne(data.weight_line_data);
-          update_toggl_pie(toggl_data);
+          update_line(weight_data, "weight_line", global_weight_line);
           update_toggl_bar(toggl_bar_data);
           global_cal.update('/datesCompletedGoals');
         }
@@ -342,6 +346,11 @@ function update_coding_chart(coding_time){
     global_coding_chart.render();
 }
 
+function update_coding_type_chart(coding_type){
+  global_coding_type_chart = create_pie(coding_type, "coding_type");
+  global_coding_type_chart.render();
+}
+
 function create_coding_chart(coding_time) {
   var coding_chart = new CanvasJS.Chart("coding_time", {
     animationEnabled: true,
@@ -372,11 +381,6 @@ function create_coding_chart(coding_time) {
 }
 
 
-function update_coding_type_chart(coding_type){
-  global_coding_type_chart = create_pie(coding_type, "coding_type");
-  global_coding_type_chart.render();
-}
-
 //Row 3 Rescuetime Data
 function format_rescuetime_data(rescue_time_past_seven_productivity, rescue_time_past_seven_unproductivity){
   rescuetime_weekly_data = [];
@@ -387,9 +391,11 @@ function format_rescuetime_data(rescue_time_past_seven_productivity, rescue_time
 }
 
 
-function update_rescuetime_pie(rescuetime_data){
-  global_rescuetime_pie = create_pie(rescuetime_data, "rescuetime_pie");
-  global_rescuetime_pie.render();
+function update_pie(data, html_id, global_var_chart){
+  console.log(html_id)
+  console.log(data)
+  global_var_chart = create_pie(data, html_id);
+  global_var_chart.render();
 }
 
 
@@ -427,6 +433,13 @@ function create_rescuetime_pie(rescue_time_past_seven_productivity, rescue_time_
   return rescuetime_pie;
 }
 
+
+function update_pie(data, html_id, global_var_chart){
+  console.log(html_id)
+  console.log(data)
+  global_var_chart = create_pie(data, html_id);
+  global_var_chart.render();
+}
 
 function create_pie(data, html_id){
   var pie = new CanvasJS.Chart(html_id, {
@@ -536,45 +549,6 @@ function format_toggl_data(toggl_data){
 }
 
 
-function update_toggl_pie(toggl_data){
-  global_toggl_pie = create_pie(toggl_data, "toggl_pie");
-  global_toggl_pie.render();
-}
-
-
-function create_toggl_pie(toggl_data){
-  var toggl_data_formatted = format_toggl_data(toggl_data);
-  var toggl_pie = new CanvasJS.Chart("toggl_pie", {
-    animationEnabled: true,
-    theme: "theme2",
-    legend: {
-      fontSize: 12,
-      display: true,
-      position: 'bottom',
-      fullWidth: true,
-      reverse: false,
-    },
-    toolTip: {
-      borderThickness: 0,
-      content: "<span style='\"'color: {color};'\"'>{name}</span>: {y}",
-      cornerRadius: 0
-    },
-    data: [
-      {
-        indexLabelFontColor: "#676464",
-        indexLabelFontSize: 10,
-        legendMarkerType: "square",
-        legendText: "{indexLabel}",
-        showInLegend: true,
-        startAngle:  90,
-        type: "pie",
-        dataPoints: toggl_data_formatted
-      }
-    ]
-  });
-  toggl_pie.render();
-  return toggl_pie;
-}
 //
 function format_toggl_data_bar(toggl_data){
   formatted_data = [];
@@ -617,12 +591,58 @@ function format_moves_data(rescue_time_past_seven_productivity, rescue_time_past
   return rescuetime_weekly_data;
 }
 
-function create_line(data){
-
+function format_weight_data(weight_data, dates){
+  formatted_dataset = []
+  dataset = []
+  for (let index in weight_data) {
+    data = {x: new Date(dates[index]), y: weight_data[index]}
+    dataset.push(data)
+  }
+  formatted_dataset.push({data: dataset, label:"Weight", borderColor: "#3e95cd", fill: false})
+  return {labels:dates, datasets: formatted_dataset}
 }
 
-function update_line(data){
-  
+
+function update_line(data, html_id, global_var_chart){
+  global_var_chart = create_line(data, html_id)
+  global_var_chart.render()
+}
+
+
+function create_line(data_set, html_id){
+  var line_chart = new Chart(document.getElementById(html_id), {
+    type: 'line',
+    data: data_set,
+    options: {
+            scales: {
+                xAxes:
+                  [{
+                    time: {
+                        unit: 'month'
+                      }
+                }]
+            },
+            animation: {
+                duration: 0, // general animation time
+            },
+            hover: {
+                animationDuration: 0, // duration of animations when hovering an item
+            },
+            responsiveAnimationDuration: 0, // animation duration after a resize
+        }
+  });
+  line_chart.render();
+  return line_chart;
+}
+
+//Row 5: Chess
+function format_chess_pie_data(chess_data){
+  chess_data_formatted = [];
+  total = chess_data['wins'] + chess_data['losses'] + chess_data['draws'];
+  chess_data_formatted.push({name: "Wins", y: chess_data['wins'], indexLabel: "Wins" + " - " + String(chess_data['wins']) + " (" + String((chess_data['wins']/total*100).toFixed(2)) + "%)", legendText: "Wins"});
+  chess_data_formatted.push({name: "Losses", y: chess_data['losses'], indexLabel: "Losses" + " - " + String(chess_data['losses']) + " (" + String((chess_data['losses']/total*100).toFixed(2)) + "%)", legendText: "Losses"});
+  chess_data_formatted.push({name: "Draws", y: chess_data['draws'], indexLabel: "Draws" + " - " + String(chess_data['draws']) + " (" + String((chess_data['draws']/total*100).toFixed(2)) + "%)", legendText: "Draws"});
+  return chess_data_formatted;
 }
 
 $(document).ready(function() {

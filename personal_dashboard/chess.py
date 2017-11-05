@@ -13,7 +13,8 @@ class Chess():
 
 
     def get_games(self):
-        return "Wins: {0}, Losses: {1}, Draws: {2}".format(self.win, self.loss, self.draw)
+        chess_dict = {"wins" : self.win, "losses" : self.loss, "draws" : self.draw}
+        return chess_dict
 
 
     def get_rating(self):

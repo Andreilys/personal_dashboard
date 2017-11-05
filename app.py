@@ -23,6 +23,7 @@ import datetime as dt
 STEPS_GOAL = 5000
 FOCUS_GOAL = 2.4
 UNPRODUCTIVITY_GOAL = 1
+first_time_loading = True
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -75,74 +76,79 @@ def dates_completed_goals():
 
 @app.route("/data", methods=['GET'])
 def data():
-    """
-    Primary data source for AJAX/REST queries. Gets the server's current
-    time two ways: as raw data, and as a formatted string. NB While other
-    Python JSON emitters will directly encode arrays and other data types,
-    Flask.jsonify() appears to require a dict.
-    """
-    #Sleeping to avoid too many pings to API's
-    time.sleep(10)
-    rescue_time = RescueTime()
-    # next_bus = NextBus().get_next_bus()
-    withings = Withings()
-    todoist = Todoist()
-    spotify = Spotify()
-    darksky = DarkSky()
-    moves = Moves()
-    chess = Chess()
-    toggl = Toggl()
-    quote = Quote()
-    coding_time = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json').json()['data']
-    coding_type = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/27967d19-0ce0-42a6-9f4a-c3c2440cf575.json').json()['data']
-    rescuetime_bar_data = rescue_time.get_daily_week_view()
-    info = { 'rescue_time_daily_productivity': rescue_time.get_current_days_data()["productive_hours"],
-            'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
-            'rescue_time_daily_top_three' :  rescue_time.get_current_days_data()["top_three_sources"],
-            'rescue_time_past_seven_productivity' : rescue_time.get_past_seven_days_data()["productive_hours"],
-            'rescue_time_past_seven_unproductivity' : rescue_time.get_past_seven_days_data()["unproductive_hours"],
-            'rescue_time_past_seven_top_five' : rescue_time.get_past_seven_days_data()["top_five_sources"],
-            # 'next_bus' : next_bus,
-            'weight' : withings.weight,
-            'total_tasks' : todoist.get_total_tasks(),
-            'past_seven_completed_tasks' : todoist.get_past_seven_completed_tasks(),
-            'daily_completed_tasks' : todoist.get_daily_completed_tasks(),
-            'top_tracks' : spotify.get_monthly_top_tracks(),
-            'top_artists' : spotify.get_monthly_top_artists(),
-            'temp' : darksky.temp,
-            'weather_today' : darksky.weather_today,
-            'current_steps' : moves.get_current_days_steps(),
-            'average_past_seven_steps' : moves.get_average_past_seven_steps(),
-            'chess_rating' : chess.get_games(),
-            'chess_games' : chess.get_rating(),
-            'chess_int_rating' : chess.get_int_rating(),
-            'daily_pomodoros' : str(toggl.get_daily_pomodoros()),
-            'quote_content' : quote.content,
-            'quote_author' : quote.author,
-            'moves_places' : moves.get_past_seven_days_places(),
-            'steps_bar_data' : moves.get_daily_week_view(),
-            #This is the integer version which gets stored in the database and used for doughnut chart
-            'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
-            'past_seven_days_pomodoros' : toggl.get_past_seven_days_pomodoros(),
-            'coding_time' : coding_time,
-            'coding_type' : coding_type,
-            'rescuetime_bar_data' : rescuetime_bar_data[0],
-            'rescuetime_bar_data_dates' : rescuetime_bar_data[1],
-            'toggl_bar_data' : toggl.get_daily_week_view()
-            }
-    # try:
-    #     personal_data = PersonalData(rescue_time_daily=rescue_time.get_current_days_data(),
-    #         rescue_time_weekly=rescue_time.get_past_seven_days_data(), quote=quote.content + " - " + quote.author,
-    #         weight=info['weight'], chess_rating=chess.get_int_rating(), steps=info['current_steps'],
-    #         steps_avg=info['average_past_seven_steps'], pomodoros=info['daily_doughnut_pomodoro'],
-    #         date=datetime.datetime.now()
-    #         )
-    #     db.session.add(personal_data)
-    #     db.session.commit()
-    # except Exception as e:
-    #     print(e)
-    #     print("Unable to add items to database")
-    return jsonify(info)
+    global first_time_loading
+    if (first_time_loading):
+        first_time_loading = False
+        session = db.session()
+        dictionary = session.execute("SELECT * FROM personal_data WHERE id=(select max(id) from personal_data)")
+        for diction in dictionary:
+            personal_info_dict= diction[1]
+        session.close()
+        return jsonify(personal_info_dict)
+    else:
+        #Sleeping to avoid too many pings to API's
+        time.sleep(10)
+        rescue_time = RescueTime()
+        # next_bus = NextBus().get_next_bus()
+        withings = Withings()
+        todoist = Todoist()
+        spotify = Spotify()
+        darksky = DarkSky()
+        moves = Moves()
+        chess = Chess()
+        toggl = Toggl()
+        quote = Quote()
+        withings_line_data = withings.get_weight_line_data()
+        coding_time = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json').json()['data']
+        coding_type = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/27967d19-0ce0-42a6-9f4a-c3c2440cf575.json').json()['data']
+        rescuetime_bar_data = rescue_time.get_daily_week_view()
+        info = { 'rescue_time_daily_productivity': rescue_time.get_current_days_data()["productive_hours"],
+                'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
+                'rescue_time_daily_top_three' :  rescue_time.get_current_days_data()["top_three_sources"],
+                'rescue_time_past_seven_productivity' : rescue_time.get_past_seven_days_data()["productive_hours"],
+                'rescue_time_past_seven_unproductivity' : rescue_time.get_past_seven_days_data()["unproductive_hours"],
+                'rescue_time_past_seven_top_five' : rescue_time.get_past_seven_days_data()["top_five_sources"],
+                # 'next_bus' : next_bus,
+                'weight' : withings.weight,
+                'total_tasks' : todoist.get_total_tasks(),
+                'past_seven_completed_tasks' : todoist.get_past_seven_completed_tasks(),
+                'daily_completed_tasks' : todoist.get_daily_completed_tasks(),
+                'top_tracks' : spotify.get_monthly_top_tracks(),
+                'top_artists' : spotify.get_monthly_top_artists(),
+                'temp' : darksky.temp,
+                'weather_today' : darksky.weather_today,
+                'current_steps' : moves.get_current_days_steps(),
+                'average_past_seven_steps' : moves.get_average_past_seven_steps(),
+                'chess_games' : chess.get_games(),
+                'chess_rating' : chess.get_rating(),
+                'chess_int_rating' : chess.get_int_rating(),
+                'daily_pomodoros' : str(toggl.get_daily_pomodoros()),
+                'quote_content' : quote.content,
+                'quote_author' : quote.author,
+                'moves_places' : moves.get_past_seven_days_places(),
+                'steps_bar_data' : moves.get_daily_week_view(),
+                #This is the integer version which gets stored in the database and used for doughnut chart
+                'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
+                'past_seven_days_pomodoros' : toggl.get_past_seven_days_pomodoros(),
+                'coding_time' : coding_time,
+                'coding_type' : coding_type,
+                'rescuetime_bar_data' : rescuetime_bar_data[0],
+                'rescuetime_bar_data_dates' : rescuetime_bar_data[1],
+                'toggl_bar_data' : toggl.get_daily_week_view(),
+                'weight_line_data' : withings_line_data[0],
+                'weight_line_dates' : withings_line_data[1]
+                }
+        now = dt.datetime.now()
+        if now.minute == 0:
+            try:
+                personal_data = PersonalData(personal_data_dictionary=info)
+                db.session.add(personal_data)
+                db.session.commit()
+                db.session.close()
+            except Exception as e:
+                print(e)
+                print("Unable to add items to database")
+        return jsonify(info)
 
 
 @app.route("/updated")
