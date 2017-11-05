@@ -105,7 +105,6 @@ function display_data(data) {
             global_steps_doughnut = create_steps_doughnut(data);
             global_pomodoro_doughnut = create_pomodoro_doughnut(data);
             global_unproductive_doughnut = create_unproductive_doughnut(data);
-            global_cal = create_goal_calendar();
             global_coding_chart = create_coding_chart(coding_time);
             global_coding_type_chart = create_pie(coding_type, "coding_type");
             global_rescuetime_pie = create_pie(rescuetime_data, "rescuetime_pie")
@@ -116,9 +115,12 @@ function display_data(data) {
             global_toggl_bar = create_toggl_bar(toggl_bar_data);
             global_weight_line = create_line(weight_data, "weight_line");
             global_chess_pie = create_pie(chess_pie_data, "chess_pie");
+            global_cal = create_goal_calendar();
+            global_cal.update('/datesCompletedGoals');
             first_time_rendering_chart = false;
         }
         else {
+          global_cal.update('/datesCompletedGoals');
           update_doughnuts(global_steps_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
           update_coding_chart(coding_time);
           update_coding_type_chart(coding_type);
@@ -130,7 +132,6 @@ function display_data(data) {
           update_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar", global_steps_bar)
           update_line(weight_data, "weight_line", global_weight_line);
           update_toggl_bar(toggl_bar_data);
-          global_cal.update('/datesCompletedGoals');
         }
 
         // remember this data, in case want to compare it to next update
@@ -392,8 +393,6 @@ function format_rescuetime_data(rescue_time_past_seven_productivity, rescue_time
 
 
 function update_pie(data, html_id, global_var_chart){
-  console.log(html_id)
-  console.log(data)
   global_var_chart = create_pie(data, html_id);
   global_var_chart.render();
 }
@@ -435,8 +434,6 @@ function create_rescuetime_pie(rescue_time_past_seven_productivity, rescue_time_
 
 
 function update_pie(data, html_id, global_var_chart){
-  console.log(html_id)
-  console.log(data)
   global_var_chart = create_pie(data, html_id);
   global_var_chart.render();
 }
@@ -645,7 +642,9 @@ function format_chess_pie_data(chess_data){
   return chess_data_formatted;
 }
 
+
 $(document).ready(function() {
   //Create unproductivity_doughnut
+  $.ajax({ url: '/load_variable'});
   load_data();
 });

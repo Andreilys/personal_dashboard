@@ -36,8 +36,6 @@ from models import *
 
 @app.route('/')
 def hello_world():
-    global first_time_loading
-    first_time_loading = True
     return render_template('index.html')
 
 
@@ -74,6 +72,14 @@ def dates_completed_goals():
     except psycopg2.DatabaseError as e:
         print('Error %s') % e
         sys.exit(1)
+
+
+@app.route("/load_variable", methods=['GET'])
+def load_variable():
+    global first_time_loading
+    first_time_loading = True
+    print(first_time_loading)
+    return "True"
 
 
 @app.route("/data", methods=['GET'])
