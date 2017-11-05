@@ -77,7 +77,7 @@ def dates_completed_goals():
 @app.route("/data", methods=['GET'])
 def data():
     global first_time_loading
-    if (not first_time_loading):
+    if (first_time_loading):
         first_time_loading = False
         session = db.session()
         dictionary = session.execute("SELECT * FROM personal_data WHERE id=(select max(id) from personal_data)")
@@ -139,16 +139,15 @@ def data():
                 'weight_line_dates' : withings_line_data[1]
                 }
         now = dt.datetime.now()
-        # if now.minute == 0:
-        try:
-            personal_data = PersonalData(personal_data_dictionary=info)
-            db.session.add(personal_data)
-            db.session.commit()
-            print("adding")
-            db.session.close()
-        except Exception as e:
-            print(e)
-            print("Unable to add items to database")
+        if now.minute == 0:
+            try:
+                personal_data = PersonalData(personal_data_dictionary=info)
+                db.session.add(personal_data)
+                db.session.commit()
+                db.session.close()
+            except Exception as e:
+                print(e)
+                print("Unable to add items to database")
         return jsonify(info)
 
 
