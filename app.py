@@ -82,7 +82,8 @@ def data():
         session = db.session()
         dictionary = session.execute("SELECT * FROM personal_data WHERE id=(select max(id) from personal_data)")
         for diction in dictionary:
-            personal_info_dict= diction[1]
+            print("working")
+            personal_info_dict = diction[1]
         session.close()
         return jsonify(personal_info_dict)
     else:
