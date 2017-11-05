@@ -36,6 +36,8 @@ from models import *
 
 @app.route('/')
 def hello_world():
+    global first_time_loading
+    first_time_loading = True
     return render_template('index.html')
 
 
