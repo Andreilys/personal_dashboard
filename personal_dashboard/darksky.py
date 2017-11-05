@@ -11,7 +11,6 @@ class DarkSky():
         if r.status_code != 403:
             json = r.json()
             self.weather_today = json["hourly"]["summary"]
-            self.weather_hourly = json["minutely"]["summary"]
             degree_sign= u'\N{DEGREE SIGN}'
             self.temp = str(json["currently"]["apparentTemperature"]) + degree_sign + "C"
         else:

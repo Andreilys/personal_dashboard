@@ -11,6 +11,8 @@ var global_steps_doughnut = Object(),
   global_rescuetime_bar = Object(),
   global_toggl_pie = Object(),
   global_toggl_bar = Object(),
+  global_steps_bar = Object(),
+  global_weight_line = Object(),
   global_cal = Object();
 const STEPS_GOAL = 5000;
 const POMODORO_GOAL = 2.5;
@@ -86,6 +88,7 @@ function display_data(data) {
         $('#past_seven_days_pomodoros').html(String(data.past_seven_days_pomodoros));
         $('#quote_content').html(data.quote_content);
         $('#quote_author').html(data.quote_author);
+        $('#moves_places').html(data.moves_places);
         //remove loading text from HTML
         $('#loading').remove();
 
@@ -104,9 +107,12 @@ function display_data(data) {
             global_coding_chart = create_coding_chart(coding_time);
             global_coding_type_chart = create_pie(coding_type, "coding_type");
             global_rescuetime_pie = create_pie(rescuetime_data, "rescuetime_pie")
-            global_rescuetime_bar = create_rescuetime_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates);
-            global_toggl_pie = create_pie(toggl_data, "toggl_pie")
-            global_toggl_bar = create_toggl_bar(toggl_bar_data)
+            global_rescuetime_bar = create_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates, "rescuetime_bar");
+            global_toggl_pie = create_pie(toggl_data, "toggl_pie");
+            //We can use rescuetime bar data dates since its the same information
+            global_steps_bar = create_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar");
+            global_toggl_bar = create_toggl_bar(toggl_bar_data);
+            global_weight_line = create_line(data.weight_line_data);
             first_time_rendering_chart = false;
         }
         else {
@@ -114,7 +120,10 @@ function display_data(data) {
           update_coding_chart(coding_time);
           update_coding_type_chart(coding_type);
           update_rescuetime_pie(rescuetime_data);
-          update_rescuetime_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates);
+          update_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates, "rescuetime_bar", global_rescuetime_bar);
+          //We can use rescuetime bar data dates since its the same information
+          update_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar", global_steps_bar)
+          update_lne(data.weight_line_data);
           update_toggl_pie(toggl_data);
           update_toggl_bar(toggl_bar_data);
           global_cal.update('/datesCompletedGoals');
@@ -452,10 +461,6 @@ function create_pie(data, html_id){
   return pie;
 }
 
-function update_rescuetime_bar(rescuetime_data, dates){
-  global_rescuetime_bar = create_rescuetime_bar(rescuetime_data, dates);
-  global_rescuetime_pie.render();
-}
 
 function create_rescuetime_bar(rescuetime_data, dates){
   var ctx = document.getElementById("rescuetime_bar");
@@ -483,6 +488,39 @@ function create_rescuetime_bar(rescuetime_data, dates){
   rescuetime_bar.render()
   return rescuetime_bar;
 }
+
+function update_bar(data, dates, html_id, bar_graph){
+  bar_graph = create_bar(data, dates, html_id);
+  bar_graph.render();
+}
+
+
+function create_bar(data, dates, html_id){
+  var ctx = document.getElementById(html_id);
+  var bar = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: dates,
+      datasets: data
+    },
+    options: {
+      animation: {
+        duration: 0
+      },
+       barValueSpacing: 20,
+       scales: {
+           yAxes: [{
+               ticks: {
+                   min: 0,
+               }
+           }]
+       }
+     }
+   });
+  bar.render()
+  return bar;
+}
+
 
 //Row 4 Toggl data
 function format_toggl_data(toggl_data){
@@ -568,6 +606,23 @@ function create_toggl_bar(toggl_data){
     });
     chart.render();
     return chart;
+}
+
+//Row 4 steps and weight
+function format_moves_data(rescue_time_past_seven_productivity, rescue_time_past_seven_unproductivity){
+  rescuetime_weekly_data = [];
+  total = rescue_time_past_seven_productivity + rescue_time_past_seven_unproductivity;
+  rescuetime_weekly_data.push({name: "Productive Time", y: rescue_time_past_seven_productivity, indexLabel: "Productive Hours" + " - " + String(rescue_time_past_seven_productivity) + " (" + String((rescue_time_past_seven_productivity/total*100).toFixed(2)) + "%)", legendText: "Productive Hours"});
+  rescuetime_weekly_data.push({name: "Unproductive Time", y: rescue_time_past_seven_unproductivity, indexLabel: "Unproductive Hours" + " - " + String(rescue_time_past_seven_unproductivity) + " (" + String((rescue_time_past_seven_unproductivity/total*100).toFixed(2)) + "%)", legendText: "Unproductive Hours"});
+  return rescuetime_weekly_data;
+}
+
+function create_line(data){
+
+}
+
+function update_line(data){
+  
 }
 
 $(document).ready(function() {

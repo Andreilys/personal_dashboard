@@ -1,5 +1,8 @@
 import requests
-from .personal_info import MOVES_KEYS
+try:
+	from .personal_info import MOVES_KEYS
+except:
+	from personal_info import MOVES_KEYS
 import pickle
 from statistics import mean
 from datetime import datetime
@@ -44,6 +47,7 @@ class Moves():
 	def get_past_seven_days_steps(self):
 		past_seven_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=8&access_token=' + self.access_token).json()
 		past_seven_days_arr = []
+		# Minus one to only look at the past 7 days instead of including the current as well
 		for index in range(len(past_seven_days_steps) - 1):
 			past_seven_days_arr.append(past_seven_days_steps[index]['summary'][0]['steps'])
 		return past_seven_days_arr
@@ -56,14 +60,29 @@ class Moves():
 
 	#Turn this method into a visualizaton for map
 	def get_past_seven_days_places(self):
-		past_seven_days_places = requests.get(self.base_url + 'places/daily?pastDays=8&access_token=' + self.access_token).json()
+		past_seven_days_places = requests.get(self.base_url + 'places/daily?pastDays=7&access_token=' + self.access_token).json()
 		# first 0 is for the length of places, second 0 is for length of segments
 		past_seven_days_places_set = set()
-		for i in range(len(past_seven_days_places) - 1):
+		for i in range(len(past_seven_days_places)):
 			segment_length = len(past_seven_days_places[i]['segments'])
 			for j in range(segment_length):
 				try:
-					past_seven_days_places_set.add(place)
+					past_seven_days_places_set.add(past_seven_days_places[i]['segments'][j]['place']['name'])
 				except:
 					continue
 		return ', '.join(past_seven_days_places_set)
+
+    #This function is used to return dates and a formatted list containing dictionaries
+    # for use to create the steps_bar
+	def get_daily_week_view(self):
+		daily_steps_array = []
+		average_steps_array = []
+		avg = self.get_average_past_seven_steps()
+		for i in range(7):
+			average_steps_array.append(avg)
+		past_seven_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=7&access_token=' + self.access_token).json()
+		for steps in past_seven_days_steps:
+			daily_steps_array.append(steps['summary'][0]['steps'])
+		steps_data = [{"label" : "Daily Steps", "backgroundColor": "#33702a", "data" : daily_steps_array},
+		{"label" : "Average Steps", "backgroundColor": "#b30000", "data" : average_steps_array}]
+		return steps_data

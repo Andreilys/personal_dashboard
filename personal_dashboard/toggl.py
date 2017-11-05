@@ -84,7 +84,3 @@ class Toggl():
                         weekly_data.append(daily_data)
             toggl_data.append(weekly_data)
         return toggl_data
-
-
-toggl = Toggl()
-toggl.get_daily_week_view()

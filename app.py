@@ -109,7 +109,6 @@ def data():
             'daily_completed_tasks' : todoist.get_daily_completed_tasks(),
             'top_tracks' : spotify.get_monthly_top_tracks(),
             'top_artists' : spotify.get_monthly_top_artists(),
-            'weather_hourly' : darksky.weather_hourly,
             'temp' : darksky.temp,
             'weather_today' : darksky.weather_today,
             'current_steps' : moves.get_current_days_steps(),
@@ -120,6 +119,8 @@ def data():
             'daily_pomodoros' : str(toggl.get_daily_pomodoros()),
             'quote_content' : quote.content,
             'quote_author' : quote.author,
+            'moves_places' : moves.get_past_seven_days_places(),
+            'steps_bar_data' : moves.get_daily_week_view(),
             #This is the integer version which gets stored in the database and used for doughnut chart
             'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
             'past_seven_days_pomodoros' : toggl.get_past_seven_days_pomodoros(),
