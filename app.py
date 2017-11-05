@@ -94,8 +94,6 @@ def data():
         session.close()
         return jsonify(personal_info_dict)
     else:
-        #Sleeping to avoid too many pings to API's
-        time.sleep(10)
         rescue_time = RescueTime()
         # next_bus = NextBus().get_next_bus()
         withings = Withings()
