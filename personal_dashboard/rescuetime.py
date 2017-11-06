@@ -92,7 +92,7 @@ class RescueTime:
             date, data = self.get_rescuetime_data(counter)
             counter -= 1
             for item in data:
-                try item[5]:
+                try:
                     #The 5 here is referring to the productivity/unproductivity identifier
                     if item[5] > 0:
                         productive_sum += item[1]/60/60
