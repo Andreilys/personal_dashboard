@@ -78,7 +78,6 @@ def dates_completed_goals():
 def load_variable():
     global first_time_loading
     first_time_loading = True
-    print(first_time_loading)
     return "True"
 
 
