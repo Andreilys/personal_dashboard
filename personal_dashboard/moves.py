@@ -82,7 +82,10 @@ class Moves():
 			average_steps_array.append(avg)
 		past_seven_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=7&access_token=' + self.access_token).json()
 		for steps in past_seven_days_steps:
-			daily_steps_array.append(steps['summary'][0]['steps'])
+			if steps['summary'][0]['steps']:
+				daily_steps_array.append(steps['summary'][0]['steps'])
+			else:
+				daily_steps_array.append(0)
 		steps_data = [{"label" : "Daily Steps", "backgroundColor": "#33702a", "data" : daily_steps_array},
 		{"label" : "Average Steps", "backgroundColor": "#b30000", "data" : average_steps_array}]
 		return steps_data

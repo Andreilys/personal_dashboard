@@ -92,11 +92,14 @@ class RescueTime:
             date, data = self.get_rescuetime_data(counter)
             counter -= 1
             for item in data:
-                #The 5 here is referring to the productivity/unproductivity identifier
-                if item[5] > 0:
-                    productive_sum += item[1]/60/60
-                elif item[5] < 0:
-                    unproductive_sum += item[1]/60/60
+                try item[5]:
+                    #The 5 here is referring to the productivity/unproductivity identifier
+                    if item[5] > 0:
+                        productive_sum += item[1]/60/60
+                    elif item[5] < 0:
+                        unproductive_sum += item[1]/60/60
+                except:
+                    continue
             dates.append(date.strftime("%d/%m"))
             productive_array_values.append(round(productive_sum,2))
             unproductive_array_values.append(round(unproductive_sum, 2))
