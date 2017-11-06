@@ -21,6 +21,10 @@ p {
   text-align: center;
 }
 
+div, h6 {
+  visibility: hidden;
+}
+
 body {
   background-color: #000000;
   color: #ffffff;

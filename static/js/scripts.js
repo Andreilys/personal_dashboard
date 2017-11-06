@@ -90,8 +90,6 @@ function display_data(data) {
         $('#moves_places').html(data.moves_places);
         $('#chess_rating').html(data.chess_rating);
         //remove loading text from HTML
-        $('#loading').remove();
-
         // {'data': [{'name': 'Python', 'percent': 61.39}, {'name': 'JavaScript', 'percent': 25.49}, {'name': 'HTML', 'percent': 10.29}, {'name': 'CSS', 'percent': 2.83}]}
         //
         coding_time = format_coding_data(data.coding_time);
@@ -133,7 +131,9 @@ function display_data(data) {
           update_line(weight_data, "weight_line", global_weight_line);
           update_toggl_bar(toggl_bar_data);
         }
-
+        $('#loading').remove();
+        $("div").css("visibility", "visible");
+        $("h6").css("visibility", "visible");
         // remember this data, in case want to compare it to next update
         prev_data = data;
       }
