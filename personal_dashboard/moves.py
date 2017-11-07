@@ -64,7 +64,10 @@ class Moves():
 		# first 0 is for the length of places, second 0 is for length of segments
 		past_seven_days_places_set = set()
 		for i in range(len(past_seven_days_places)):
-			segment_length = len(past_seven_days_places[i]['segments'])
+			try:
+				segment_length = len(past_seven_days_places[i]['segments'])
+			except:
+				segment_length = 0
 			for j in range(segment_length):
 				try:
 					past_seven_days_places_set.add(past_seven_days_places[i]['segments'][j]['place']['name'])
