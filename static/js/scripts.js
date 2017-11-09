@@ -643,7 +643,17 @@ function format_chess_pie_data(chess_data){
 }
 
 
+function load_first_time() {
+    $.ajax({ url: '/firstTimeLoad',
+             success: function(data) {
+                          display_data(data);
+                      },
+    });
+    return true;
+}
+
 $(document).ready(function() {
   //Create unproductivity_doughnut
+  load_first_time();
   load_data();
 });
