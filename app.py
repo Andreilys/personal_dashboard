@@ -71,6 +71,7 @@ def dates_completed_goals():
     except psycopg2.DatabaseError as e:
         print('Error %s') % e
         sys.exit(1)
+        
 
 @app.route("/firstTimeLoad", methods=['GET'])
 def first_time_load():
@@ -81,10 +82,11 @@ def first_time_load():
     session.close()
     return jsonify(personal_info_dict)
 
+
 @app.route("/data", methods=['GET'])
 def data():
+    print("pinging data")
     rescue_time = RescueTime()
-    # next_bus = NextBus().get_next_bus()
     withings = Withings()
     todoist = Todoist()
     spotify = Spotify()
@@ -97,27 +99,19 @@ def data():
     coding_time = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json').json()['data']
     coding_type = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/27967d19-0ce0-42a6-9f4a-c3c2440cf575.json').json()['data']
     rescuetime_bar_data = rescue_time.get_daily_week_view()
-    info = { 'rescue_time_daily_productivity': rescue_time.get_current_days_data()["productive_hours"],
-            'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
-            'rescue_time_daily_top_three' :  rescue_time.get_current_days_data()["top_three_sources"],
+    info = {'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
+            'current_steps' : moves.get_current_days_steps(),
             'rescue_time_past_seven_productivity' : rescue_time.get_past_seven_days_data()["productive_hours"],
             'rescue_time_past_seven_unproductivity' : rescue_time.get_past_seven_days_data()["unproductive_hours"],
             'rescue_time_past_seven_top_five' : rescue_time.get_past_seven_days_data()["top_five_sources"],
-            # 'next_bus' : next_bus,
             'weight' : withings.weight,
             'total_tasks' : todoist.get_total_tasks(),
-            'past_seven_completed_tasks' : todoist.get_past_seven_completed_tasks(),
-            'daily_completed_tasks' : todoist.get_daily_completed_tasks(),
             'top_tracks' : spotify.get_monthly_top_tracks(),
             'top_artists' : spotify.get_monthly_top_artists(),
             'temp' : darksky.temp,
             'weather_today' : darksky.weather_today,
-            'current_steps' : moves.get_current_days_steps(),
-            'average_past_seven_steps' : moves.get_average_past_seven_steps(),
             'chess_games' : chess.get_games(),
             'chess_rating' : chess.get_rating(),
-            'chess_int_rating' : chess.get_int_rating(),
-            'daily_pomodoros' : str(toggl.get_daily_pomodoros()),
             'quote_content' : quote.content,
             'quote_author' : quote.author,
             'moves_places' : moves.get_past_seven_days_places(),
@@ -155,6 +149,7 @@ def updated():
     loop to wait for an update. app.config is handy place to stow global app
     data.
     """
+    time.sleep(10)
     return "changed!"
 
 

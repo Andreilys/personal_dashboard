@@ -1,7 +1,6 @@
-var prev_data = Object();           // remember data fetched last time
 var waiting_for_update = false; // are we currently waiting?
 var LONG_POLL_DURATION = 100000; // how long should we wait? (msec)
-var first_time_rendering_chart = true;
+var first_time_loading = true;
 var global_steps_doughnut = Object(),
   global_pomodoro_doughnut = Object(),
   global_unproductive_doughnut = Object(),
@@ -26,7 +25,6 @@ function load_data() {
     $.ajax({ url: '/data',
              success: function(data) {
                           display_data(data);
-                          wait_for_update();
                       },
     });
     return true;
@@ -51,47 +49,28 @@ function wait_for_update() {
                  timeout:  LONG_POLL_DURATION,
                });
     }
-
-    // wait_for_update guard to ensure not re-entering already running wait code
-    // added after user suggestion. This check has not been needed in my apps
-    // and testing, but concurrency is an area where an abundance of caution is
-    // often the best policy.
 }
 
+//Used to sleep the display data so we don't have multiple threads going
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 /**
  * show the data acquired by load_data()
  */
-function display_data(data) {
-    if (data && (data != prev_data)) {      // if there is data, and it's changed
-        // update the contents of several HTML divs via jQuery
-        $('#rescue_time_daily_productivity').html(data.rescue_time_daily_productivity);
-        $('#rescue_time_daily_unproductivity').html(data.rescue_time_daily_unproductivity);
-        $('#rescue_time_daily_top_three').html(data.rescue_time_daily_top_three);
-        $('#rescue_time_past_seven_productivity').html(data.rescue_time_past_seven_productivity);
-        $('#rescue_time_past_seven_unproductivity').html(data.rescue_time_past_seven_unproductivity);
+async function display_data(data) {
+    if (data) {
         $('#rescue_time_past_seven_top_five').html(data.rescue_time_past_seven_top_five);
-        // $('#next_bus').html(data.next_bus);
-        $('#weight').html(String(data.weight) + " lbs");
-        $('#total_tasks').html("Number of outstanding tasks: " + data.total_tasks);
-        $('#daily_completed_tasks').html("Number of tasks completed today: " + data.daily_completed_tasks);
-        $('#past_seven_completed_tasks').html("Number of tasks completed in the last 7 days: " + data.past_seven_completed_tasks);
+        $('#total_tasks').html("Todo List " + data.total_tasks);
         $('#top_tracks').html(data.top_tracks);
         $('#top_artists').html(data.top_artists);
-        $('#weather_hourly').html(data.weather_hourly);
         $('#temp').html(data.temp);
         $('#weather_today').html(data.weather_today);
-        $('#current_steps').html("Steps today: " + String(data.current_steps)  + " steps");
-        $('#average_past_seven_steps').html("Past 7 day avg. " +String(data.average_past_seven_steps) + " steps");
-        $('#daily_pomodoros').html(data.daily_pomodoros);
-        $('#past_seven_days_pomodoros').html(String(data.past_seven_days_pomodoros));
         $('#quote_content').html(data.quote_content);
         $('#quote_author').html(data.quote_author);
         $('#moves_places').html(data.moves_places);
         $('#chess_rating').html(data.chess_rating);
-        //remove loading text from HTML
-        // {'data': [{'name': 'Python', 'percent': 61.39}, {'name': 'JavaScript', 'percent': 25.49}, {'name': 'HTML', 'percent': 10.29}, {'name': 'CSS', 'percent': 2.83}]}
-        //
         coding_time = format_coding_data(data.coding_time);
         coding_type = format_coding_type_data(data.coding_type);
         toggl_data = format_toggl_data(data.past_seven_days_pomodoros);
@@ -99,7 +78,7 @@ function display_data(data) {
         weight_data = format_weight_data(data.weight_line_data, data.weight_line_dates);
         rescuetime_data = format_rescuetime_data(data.rescue_time_past_seven_productivity, data.rescue_time_past_seven_unproductivity);
         chess_pie_data = format_chess_pie_data(data.chess_games)
-        if (first_time_rendering_chart) {
+        if (first_time_loading) {
             global_steps_doughnut = create_steps_doughnut(data);
             global_pomodoro_doughnut = create_pomodoro_doughnut(data);
             global_unproductive_doughnut = create_unproductive_doughnut(data);
@@ -115,7 +94,6 @@ function display_data(data) {
             global_chess_pie = create_pie(chess_pie_data, "chess_pie");
             global_cal = create_goal_calendar();
             global_cal.update('/datesCompletedGoals');
-            first_time_rendering_chart = false;
         }
         else {
           global_cal.update('/datesCompletedGoals');
@@ -134,8 +112,15 @@ function display_data(data) {
         $('#loading').remove();
         $("div").css("visibility", "visible");
         $("h6").css("visibility", "visible");
-        // remember this data, in case want to compare it to next update
-        prev_data = data;
+      }
+      if (first_time_loading){
+        first_time_loading = false;
+        wait_for_update();
+      } else {
+        console.log('Taking a break...');
+        await sleep(120000);
+        console.log('120 second later');
+        wait_for_update();
       }
 }
 
@@ -655,5 +640,4 @@ function load_first_time() {
 $(document).ready(function() {
   //Create unproductivity_doughnut
   load_first_time();
-  load_data();
 });

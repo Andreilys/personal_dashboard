@@ -19,6 +19,3 @@ class Chess():
 
     def get_rating(self):
         return "<a href='{0}'>Blitz Chess rating: {1}</a>".format(self.url, self.rating)
-
-    def get_int_rating(self):
-        return self.rating

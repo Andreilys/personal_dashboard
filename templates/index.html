@@ -34,6 +34,10 @@
 </head>
 <body>
   <div id="loading" style="visibility: visible;">Loading...</div>
+  <!-- <div class="list">
+      <p id="total_tasks"></p>
+      <span id="weather_today"></span> (<span id="temp"></span>)
+  </div> -->
   <div class="quote">
     <i id="quote_content"></i><br> <strong id="quote_author"></strong>
   </div>
@@ -134,7 +138,7 @@
       <div class="card-block">
         <canvas id="steps_bar"></canvas>
         <hr>
-        <p><strong>Places Visited This Week:</strong> <p id="moves_places"></p></p>
+        <p><strong style="color:black;">Places Visited This Week:</strong> <p id="moves_places"></p></p>
       </div>
     </div>
   </div>
@@ -172,11 +176,5 @@
 </div> <!-- row -->
 
 </div> <!-- container -->
-
-    <!-- TODO fix the number of calls to the dark sky API before
-    <p id="temp"></li>
-    <p id="weather_hourly"></li>
-    <p id="weather_today"></li> -->
-
 </body>
 </html>
