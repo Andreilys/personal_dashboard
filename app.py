@@ -84,6 +84,7 @@ def load_variable():
 @app.route("/data", methods=['GET'])
 def data():
     global first_time_loading
+    print(first_time_loading)
     if (first_time_loading):
         first_time_loading = False
         session = db.session()
