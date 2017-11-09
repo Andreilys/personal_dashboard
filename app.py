@@ -155,7 +155,6 @@ def updated():
     loop to wait for an update. app.config is handy place to stow global app
     data.
     """
-    time.sleep(10)
     return "changed!"
 
 
