@@ -23,6 +23,7 @@ import datetime as dt
 STEPS_GOAL = 5000
 FOCUS_GOAL = 2.4
 UNPRODUCTIVITY_GOAL = 1
+first_time_loading = True
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -74,6 +75,7 @@ def dates_completed_goals():
 
 @app.route("/data", methods=['GET'])
 def data():
+    global first_time_loading
     if (first_time_loading):
         first_time_loading = False
         session = db.session()
