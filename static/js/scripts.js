@@ -645,6 +645,9 @@ function format_chess_pie_data(chess_data){
 
 $(document).ready(function() {
   //Create unproductivity_doughnut
-  $.ajax({ url: '/load_variable'});
-  load_data();
+  $.ajax({ url: '/load_variable',
+           success: () {
+                      load_data();
+                    },
+  });
 });
