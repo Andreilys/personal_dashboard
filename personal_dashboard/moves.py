@@ -97,3 +97,6 @@ class Moves():
 		steps_data = [{"label" : "Daily Steps", "backgroundColor": "#33702a", "data" : daily_steps_array},
 		{"label" : "Average Steps", "backgroundColor": "#b30000", "data" : average_steps_array}]
 		return steps_data
+
+moves = Moves()
+print(moves.get_current_days_steps())
