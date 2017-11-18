@@ -38,12 +38,16 @@ class Moves():
 		#This is meant as a catch in case no steps have been recorded today
 		try:
 			current_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=1&access_token=' + self.access_token).json()
-			current_days_steps = current_days_steps[0]['summary'][1]["steps"]
-			return current_days_steps
+			step_count = 0
+			for i in range(len(current_days_steps[0]["summary"])):
+				try:
+					step_count += current_days_steps[0]["summary"][i]["steps"]
+				except:
+					pass
+			return step_count
 		except Exception as e:
 			print(e)
 			return 0
-
 
 	def get_past_seven_days_steps(self):
 		past_seven_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=8&access_token=' + self.access_token).json()
