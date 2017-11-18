@@ -1,5 +1,5 @@
 var waiting_for_update = false; // are we currently waiting?
-var LONG_POLL_DURATION = 100000; // how long should we wait? (msec)
+var LONG_POLL_DURATION = 10000; // how long should we wait? (msec)
 var first_time_loading = true;
 var global_steps_doughnut = Object(),
   global_pomodoro_doughnut = Object(),
@@ -44,7 +44,7 @@ function wait_for_update() {
                  success:  load_data,        // if /update signals results ready, load them!
                  complete: function () {
                     waiting_for_update = false;
-                    setTimeout(wait_for_update, 500000); // if the wait_for_update poll times out, rerun
+                    setTimeout(wait_for_update, 50000); // if the wait_for_update poll times out, rerun
                  },
                  timeout:  LONG_POLL_DURATION,
                });
@@ -117,9 +117,7 @@ async function display_data(data) {
         first_time_loading = false;
         wait_for_update();
       } else {
-        console.log('Taking a break...');
         await sleep(120000);
-        console.log('120 second later');
         wait_for_update();
       }
 }
@@ -638,6 +636,5 @@ function load_first_time() {
 }
 
 $(document).ready(function() {
-  //Create unproductivity_doughnut
   load_first_time();
 });

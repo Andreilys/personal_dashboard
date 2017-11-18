@@ -71,7 +71,7 @@ def dates_completed_goals():
     except psycopg2.DatabaseError as e:
         print('Error %s') % e
         sys.exit(1)
-        
+
 
 @app.route("/firstTimeLoad", methods=['GET'])
 def first_time_load():
@@ -79,13 +79,14 @@ def first_time_load():
     dictionary = session.execute("SELECT * FROM personal_data WHERE id=(select max(id) from personal_data)")
     for diction in dictionary:
         personal_info_dict = diction[1]
+    print(personal_info_dict)
+    print(personal_info_dict['coding_time'])
     session.close()
     return jsonify(personal_info_dict)
 
 
 @app.route("/data", methods=['GET'])
 def data():
-    print("pinging data")
     rescue_time = RescueTime()
     withings = Withings()
     todoist = Todoist()
