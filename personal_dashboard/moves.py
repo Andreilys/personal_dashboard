@@ -54,8 +54,13 @@ class Moves():
 		past_seven_days_arr = []
 		# Minus one to only look at the past 7 days instead of including the current as well
 		for index in range(len(past_seven_days_steps) - 1):
-			past_seven_days_arr.append(past_seven_days_steps[index]['summary'][0]['steps'])
+			for i in range(len(past_seven_days_steps[index]["summary"])):
+				try:
+					past_seven_days_arr.append(past_seven_days_steps[index]["summary"][i]["steps"])
+				except:
+					pass
 		return past_seven_days_arr
+
 
 
 	def get_average_past_seven_steps(self):
