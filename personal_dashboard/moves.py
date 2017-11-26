@@ -49,18 +49,22 @@ class Moves():
 			print(e)
 			return 0
 
+
 	def get_past_seven_days_steps(self):
 		past_seven_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=8&access_token=' + self.access_token).json()
 		past_seven_days_arr = []
 		# Minus one to only look at the past 7 days instead of including the current as well
 		for index in range(len(past_seven_days_steps) - 1):
-			for i in range(len(past_seven_days_steps[index]["summary"])):
+			try:
+				day_object_length = len(past_seven_days_steps[index]["summary"])
+			except:
+				day_object_length = 0
+			for i in range(day_object_length):
 				try:
 					past_seven_days_arr.append(past_seven_days_steps[index]["summary"][i]["steps"])
 				except:
-					pass
+					past_seven_days_arr.append(0)
 		return past_seven_days_arr
-
 
 
 	def get_average_past_seven_steps(self):
