@@ -19,7 +19,7 @@ class Moves():
 		self.redirect_url = MOVES_KEYS['redirect_url']  # Callback URL for getting an access token
 		self.auth_url = 'https://api.moves-app.com/oauth/v1/'
 		self.base_url = 'https://api.moves-app.com/api/1.1/user/'
-		with open('personal_dashboard/moves_data.pkl', 'rb') as input:
+		with open('moves_data.pkl', 'rb') as input:
 			moves = pickle.load(input)
 			self.refresh_token = moves['refresh_token']
 			self.access_token = moves['access_token']

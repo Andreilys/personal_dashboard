@@ -41,10 +41,10 @@ function wait_for_update() {
     if (!waiting_for_update) {
         waiting_for_update = true;
         $.ajax({ url: '/updated',
-                 success:  load_data,        // if /update signals results ready, load them!
+                 success:  load_data(),        // if /update signals results ready, load them!
                  complete: function () {
                     waiting_for_update = false;
-                    setTimeout(wait_for_update, 50000); // if the wait_for_update poll times out, rerun
+                    setTimeout(wait_for_update, 5000); // if the wait_for_update poll times out, rerun
                  },
                  timeout:  LONG_POLL_DURATION,
                });
