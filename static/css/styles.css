@@ -21,6 +21,10 @@ div, h6 {
   visibility: hidden;
 }
 
+strong {
+  color: black;
+}
+
 body {
   background-color: #000000;
   color: #ffffff;
