@@ -68,7 +68,12 @@ class Moves():
 
 	def get_average_past_seven_steps(self):
 		seven_days_steps_arr = self.get_past_seven_days_steps()
-		return round(mean(seven_days_steps_arr))
+		try:
+			average = round(mean(seven_days_steps_arr))
+		except:
+			average = 0
+		return average
+
 
 
 	#Turn this method into a visualizaton for map
