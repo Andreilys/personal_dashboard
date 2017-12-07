@@ -12,6 +12,10 @@
   margin: auto;
 }
 
+#quote_author {
+  color: black;
+}
+
 #loading {
   margin:auto;
   text-align: center;

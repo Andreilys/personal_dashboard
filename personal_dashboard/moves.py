@@ -46,7 +46,6 @@ class Moves():
 					pass
 			return step_count
 		except Exception as e:
-			print(e)
 			return 0
 
 
