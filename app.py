@@ -1,7 +1,6 @@
 # from personal_dashboard.mint import Mint
 from flask import Flask, render_template, request, redirect, url_for, abort, session, jsonify
 import time, threading, random, webbrowser
-from personal_dashboard.bus_directions import NextBus
 from personal_dashboard.quotes import Quote
 from flask import send_from_directory
 from personal_dashboard.rescuetime import RescueTime
@@ -17,11 +16,13 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 import time
 import datetime as dt
+from personal_dashboard.personal_info import *
+from os.path import join, dirname
+from dotenv import load_dotenv
 
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
-STEPS_GOAL = 5000
-FOCUS_GOAL = 2.4
-UNPRODUCTIVITY_GOAL = 1
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])

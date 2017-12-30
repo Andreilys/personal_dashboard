@@ -106,6 +106,3 @@ class RescueTime:
         rescuetime_data = [{"label" : "Productive Hours", "backgroundColor": "#33702a", "data" : productive_array_values},
                         {"label" : "Unproductive Hours", "backgroundColor": "#b30000", "data" : unproductive_array_values}]
         return rescuetime_data, dates
-
-rt = RescueTime()
-print(rt.get_daily_week_view())

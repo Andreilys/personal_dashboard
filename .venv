@@ -1,2 +1,0 @@
-export DATABASE_URL="postgresql://localhost/qself_dashboard"
-export APP_SETTINGS="config.DevelopmentConfig"

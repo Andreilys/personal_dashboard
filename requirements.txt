@@ -3,6 +3,7 @@ alembic==0.9.6
 aniso8601==1.3.0
 arrow==0.10.0
 BitBucket==0.4a0
+blinker==1.4
 certifi==2017.7.27.1
 chardet==3.0.4
 click==6.7
@@ -11,6 +12,7 @@ django-appconf==1.0.2
 enum-compat==0.0.2
 eventlet==0.20.1
 Flask==0.12
+Flask-DebugToolbar==0.10.1
 Flask-Migrate==2.1.1
 Flask-RESTful==0.3.6
 Flask-Script==2.0.6
@@ -18,7 +20,6 @@ Flask-SocketIO==2.9.2
 Flask-SQLAlchemy==2.3.1
 gevent==1.2.1
 gevent-websocket==0.9.5
-googlemaps==2.5.1
 greenlet==0.4.12
 gunicorn==19.7.1
 idna==2.6
@@ -27,7 +28,6 @@ Jinja2==2.9.5
 Lector==0.0.3
 Mako==1.0.7
 MarkupSafe==0.23
-mintapi==1.27
 moves==0.1
 nokia==0.4.0
 numpy==1.13.1
@@ -36,6 +36,7 @@ pandas==0.20.3
 psycopg2==2.7.3.1
 pyperclip==1.5.27
 python-dateutil==2.6.1
+python-dotenv==0.7.1
 python-editor==1.0.3
 python-engineio==1.7.0
 python-socketio==1.8.0
@@ -45,7 +46,6 @@ rauth==0.7.3
 requests==2.18.4
 requests-oauth==0.4.1
 requests-oauthlib==0.8.0
-selenium==2.47.1
 six==1.10.0
 spotipy==2.4.4
 SQLAlchemy==1.1.14
