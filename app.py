@@ -123,6 +123,7 @@ def data():
             'weight_line_data' : withings_line_data[0],
             'weight_line_dates' : withings_line_data[1]
             }
+    # Save each hour to the database
     now = dt.datetime.now()
     if now.minute == 0:
         try:
