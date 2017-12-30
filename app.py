@@ -8,7 +8,6 @@ from personal_dashboard.rescuetime import RescueTime
 from personal_dashboard.withings import Withings
 from personal_dashboard.todoist import Todoist
 from personal_dashboard.spotify import Spotify
-from personal_dashboard.darksky import DarkSky
 from personal_dashboard.moves import Moves
 from personal_dashboard.chess import Chess
 from personal_dashboard.toggl import Toggl
@@ -89,7 +88,6 @@ def data():
     withings = Withings()
     todoist = Todoist()
     spotify = Spotify()
-    darksky = DarkSky()
     moves = Moves()
     chess = Chess()
     toggl = Toggl()
@@ -107,8 +105,6 @@ def data():
             'total_tasks' : todoist.get_total_tasks(),
             'top_tracks' : spotify.get_monthly_top_tracks(),
             'top_artists' : spotify.get_monthly_top_artists(),
-            'temp' : darksky.temp,
-            'weather_today' : darksky.weather_today,
             'chess_games' : chess.get_games(),
             'chess_rating' : chess.get_rating(),
             'quote_content' : quote.content,
