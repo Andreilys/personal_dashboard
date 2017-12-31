@@ -14,9 +14,9 @@ var global_steps_doughnut = Object(),
   global_weight_line = Object(),
   global_chess_pie = Object(),
   global_cal = Object();
-const STEPS_GOAL = 5000;
-const POMODORO_GOAL = 2.5;
-const UNPRODUCTIVITY_GOAL = 1;
+var STEPS_GOAL = null;
+var POMODORO_GOAL = null;
+var UNPRODUCTIVITY_GOAL = null;
 /**
  * Load data from /data, optionally providing a query parameter read
  * from the #format select
@@ -61,6 +61,13 @@ function sleep(ms) {
  */
 async function display_data(data) {
     if (data) {
+        if (STEPS_GOAL == null){
+          console.log("working")
+          STEPS_GOAL = data.steps_goal;
+          UNPRODUCTIVITY_GOAL = data.unproductivity_goal;
+          POMODORO_GOAL = data.pomodoro_goal;
+        }
+        console.log(STEPS_GOAL)
         $('#rescue_time_past_seven_top_five').html(data.rescue_time_past_seven_top_five);
         $('#total_tasks').html("Todo List " + data.total_tasks);
         $('#top_tracks').html(data.top_tracks);
@@ -380,47 +387,6 @@ function update_pie(data, html_id, global_var_chart){
   global_var_chart.render();
 }
 
-
-function create_rescuetime_pie(rescue_time_past_seven_productivity, rescue_time_past_seven_unproductivity){
-  var rescuetime_weekly_data = format_rescuetime_data(rescue_time_past_seven_productivity, rescue_time_past_seven_unproductivity);
-  var rescuetime_pie = new CanvasJS.Chart("rescuetime_pie", {
-    animationEnabled: true,
-    theme: "theme2",
-    legend: {
-      fontSize: 12,
-      display: true,
-      position: 'bottom',
-      fullWidth: true,
-      reverse: false,
-    },
-    toolTip: {
-      borderThickness: 0,
-      content: "<span style='\"'color: {color};'\"'>{name}</span>: {y}",
-      cornerRadius: 0
-    },
-    data: [
-      {
-        indexLabelFontColor: "#676464",
-        indexLabelFontSize: 10,
-        legendMarkerType: "square",
-        legendText: "{indexLabel}",
-        showInLegend: true,
-        startAngle:  90,
-        type: "pie",
-        dataPoints: rescuetime_weekly_data
-      }
-    ]
-  });
-  rescuetime_pie.render();
-  return rescuetime_pie;
-}
-
-
-function update_pie(data, html_id, global_var_chart){
-  global_var_chart = create_pie(data, html_id);
-  global_var_chart.render();
-}
-
 function create_pie(data, html_id){
   var pie = new CanvasJS.Chart(html_id, {
     animationEnabled: true,
@@ -454,33 +420,6 @@ function create_pie(data, html_id){
   return pie;
 }
 
-
-function create_rescuetime_bar(rescuetime_data, dates){
-  var ctx = document.getElementById("rescuetime_bar");
-  var rescuetime_bar = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: dates,
-      datasets: rescuetime_data
-    },
-    options: {
-      animation: {
-        duration: 0
-      },
-       barValueSpacing: 20,
-       scales: {
-           yAxes: [{
-               ticks: {
-                   min: 0,
-               }
-           }]
-       }
-     }
-   });
-
-  rescuetime_bar.render()
-  return rescuetime_bar;
-}
 
 function update_bar(data, dates, html_id, bar_graph){
   bar_graph = create_bar(data, dates, html_id);

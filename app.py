@@ -121,7 +121,10 @@ def data():
             'rescuetime_bar_data_dates' : rescuetime_bar_data[1],
             'toggl_bar_data' : toggl.get_daily_week_view(),
             'weight_line_data' : withings_line_data[0],
-            'weight_line_dates' : withings_line_data[1]
+            'weight_line_dates' : withings_line_data[1],
+            'pomodoro_goal' : FOCUS_GOAL,
+            'steps_goal' : STEPS_GOAL,
+            'unproductivity_goal' : UNPRODUCTIVITY_GOAL
         }
     # Save each hour to the database
     now = dt.datetime.now()
