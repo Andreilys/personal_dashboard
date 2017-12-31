@@ -94,8 +94,8 @@ def data():
     toggl = Toggl()
     quote = Quote()
     withings_line_data = withings.get_weight_line_data()
-    coding_time = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json').json()['data']
-    coding_type = requests.get('https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/27967d19-0ce0-42a6-9f4a-c3c2440cf575.json').json()['data']
+    coding_time = requests.get(WAKATIME_CODING_TIME).json()['data']
+    coding_type = requests.get(WAKATIME_CODING_TYPE).json()['data']
     rescuetime_bar_data = rescue_time.get_daily_week_view()
     info = {'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
             'current_steps' : moves.get_current_days_steps(),
@@ -122,7 +122,7 @@ def data():
             'toggl_bar_data' : toggl.get_daily_week_view(),
             'weight_line_data' : withings_line_data[0],
             'weight_line_dates' : withings_line_data[1]
-            }
+        }
     # Save each hour to the database
     now = dt.datetime.now()
     if now.minute == 0:

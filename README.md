@@ -3,8 +3,8 @@
 This is a personal dashboard I built to aggregate and visualize all the different tracking services that track my life. The dashboard is updated in real time and can be found at https://qself-dashboard.herokuapp.com/
 
 Right now it visualizes my:
-- Time spent online productivtily and unproductivity (Rescuetime)
-- Steps data (Moves)
+- Time spent online productivtity and unproductivity (Rescuetime)
+- Steps and location data (Moves)
 - Chess (lichess.com)
 - Weight (Withings smart scale)
 - Pomodoro time (Toggl.com)
