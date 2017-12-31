@@ -5,6 +5,7 @@ class Quote():
         #Quote generated from https://quotes.rest/#!/qod/get_qod_categories
         headers = { "Accept": "application/json"}
         r = requests.get('https://quotes.rest/qod', headers=headers)
+        #Quotes has a daily limit that we exceed unforunately
         try:
             self.content = r.json()["contents"]["quotes"][0]["quote"]
             self.author = r.json()["contents"]["quotes"][0]["author"]

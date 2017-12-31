@@ -11,11 +11,12 @@ except:
 class Withings():
     def __init__(self):
         try:
-            with open('personal_dashboard/nokia_data.pkl', 'rb') as input:
-                nokia = pickle.load(input)
+            with open('personal_dashboard/nokia_data.pkl', 'rb') as pickle_file:
+                nokia = pickle.load(pickle_file)
                 self.measures = nokia.get_measures()
                 measures = nokia.get_measures(limit=1)
                 self.weight = round(float(measures[0].weight)*2.20462, 2)
+                pickle_file.close()
         except:
             auth = NokiaAuth(WITHINGS_KEYS['API_KEY'], WITHINGS_KEYS['API_SECRET'])
             authorize_url = auth.get_authorize_url()
@@ -23,8 +24,12 @@ class Withings():
             oauth_verifier = input('Please enter your oauth_verifier: ')
             creds = auth.get_credentials(oauth_verifier)
             client = NokiaApi(creds)
-            with open('nokia_data.pkl', 'wb') as output:
+            with open('personal_dashboard/nokia_data.pkl', 'wb') as output:
                 pickle.dump(client, output, pickle.HIGHEST_PROTOCOL)
+            self.measures = client.get_measures()
+            measures = client.get_measures(limit=1)
+            #Convert Kg to Lbs
+            self.weight = round(float(measures[0].weight)*2.20462, 2)
 
 
 
