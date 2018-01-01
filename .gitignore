@@ -4,6 +4,10 @@ __pycache__/
 venv
 __init__.py
 personal_info.py
+migrations/
+.cache-12al104@queensu.ca
+moves_data.pkl
+nokia_data.pkl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
