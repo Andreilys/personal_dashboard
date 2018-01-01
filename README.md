@@ -28,9 +28,12 @@ First make sure you have python3 installed and are using it throughout, since so
 git clone https://github.com/Andreilys/personal_dashboard
 ```
 Install [Postgres](https://www.postgresql.org/download/)
-Using psql create and name your database "qself\_dashboard"
-Enter your API credentials into personal\_info\_template.py and rename it to personal\_info.py. Run these commands next:
+Now, enter your API credentials into personal\_info\_template.py and rename it to personal\_info.py. Run these commands next:
+
 ```sh
+psql 
+CREATE DATABASE qself_dashboard;
+\q
 Run python manage.py db init
 python manage.py db migrate
 python manage.py db upgrade
