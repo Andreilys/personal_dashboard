@@ -575,5 +575,5 @@ function load_first_time() {
 }
 
 $(document).ready(function() {
-  load_data()
+  load_first_time()
 });
