@@ -1,4 +1,5 @@
 # Personal Dashboard
+![](https://i.imgur.com/6eOElpe.png)
 
 This is a personal dashboard I built to aggregate and visualize all the different tracking services that track my life. The dashboard is updated in real time and can be found at https://qself-dashboard.herokuapp.com/
 
