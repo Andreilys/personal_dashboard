@@ -29,35 +29,40 @@ git clone https://github.com/Andreilys/personal_dashboard
 ```
 Install [Postgres](https://www.postgresql.org/download/)
 Using psql create and name your database "qself\_dashboard"
-Enter your API credentials into personal\_info\_template.py and rename it to personal\_info.py
-Run python manage.py db init (Or python3 if your default python isn't python3)
-Followed by:
+Enter your API credentials into personal\_info\_template.py and rename it to personal\_info.py. Run these commands next:
+```sh
+Run python manage.py db init
 python manage.py db migrate
 python manage.py db upgrade
+```
 
-Now run the application - python app.py, you'll now need to give permission to Spotify for the app to access your data (Which will save a .emailCache file) followed by withings (make sure you are just copy+pasting oauth\_verifier and not including oauth\_token) and Moves which should then create permanent pickle files in your personal\_dashboard folder.
+Now run the application with python3 app.py, you'll now need to give permission to Spotify for the app to access your data (Which will save a .emailCache file) followed by withings (make sure you are just copy+pasting oauth\_verifier and not including oauth\_token) and Moves which should then create permanent pickle files in your personal\_dashboard folder.
 
 You're done setting it up locally!
 
-**Setting up on Heroku**
+**Setting up on Heroku**\s\s
 With the application working locally, you might be interested in hosting it on the cloud, I prefer heroku so i'll walk you through instructions on how to set up there. First things first, make sure you register an account on heroku and download their [Heroku Toolbelt](https://devcenter.heroku.com/articles/heroku-cli), afterwards login with heroku login.
 
 Once logged in run these commands 
-- heroku create (your app name)
-- git remote add pro git@heroku.com:YOUR\_APP\_NAME.git
-- git add personal\_dashboard/personal\_info.py -f
-- git add migrations -f
-- git add nokia\_data.pkl -f
-- git add moves\_data.pkl -f
-- git commit -m "adding personal info and migrations folder" (may need to login to github for this)
-- git push pro master
-- heroku config:set APP\_SETTINGS=config.ProductionConfig
-- heroku addons:create heroku-postgresql:hobby-dev --app (YOUR\_APP\_NAME)
-- heroku run python manage.py db upgrade --app (YOUR\_APP\_NAME)
+ ```sh
+heroku create (your app name)
+git remote add pro git@heroku.com:YOUR\_APP\_NAME.git
+git add personal\_dashboard/personal\_info.py -f
+git add migrations -f
+git add nokia\_data.pkl -f
+git add moves\_data.pkl -f
+git commit -m "adding personal info and migrations folder" (may need to login to github for this)
+git push pro master
+heroku config:set APP\_SETTINGS=config.ProductionConfig
+heroku addons:create heroku-postgresql:hobby-dev --app (YOUR\_APP\_NAME)
+heroku run python manage.py db upgrade --app (YOUR\_APP\_NAME)
+```
 
-Thats it! Only other thing you should consider doing is setting the timezone of your heroku app so that everything is in sync, you can do this with the following command (Substituting the timezone with your own)
+Thats it! The other thing you should consider doing is setting the timezone of your heroku app so that everything is in sync, you can do this with the following command (Substituting the timezone with your own)
+
+```sh
 heroku config:add TZ="America/Los\_Angeles"
-
+```
 ## Support
 
 Please [open an issue](https://github.com/Andreilys/personal_dashboard/issues/new) for support.
