@@ -62,12 +62,10 @@ function sleep(ms) {
 async function display_data(data) {
     if (data) {
         if (STEPS_GOAL == null){
-          console.log("working")
           STEPS_GOAL = data.steps_goal;
           UNPRODUCTIVITY_GOAL = data.unproductivity_goal;
           POMODORO_GOAL = data.pomodoro_goal;
         }
-        console.log(STEPS_GOAL)
         $('#rescue_time_past_seven_top_five').html(data.rescue_time_past_seven_top_five);
         $('#total_tasks').html("Todo List " + data.total_tasks);
         $('#top_tracks').html(data.top_tracks);
@@ -131,13 +129,15 @@ async function display_data(data) {
 
 function create_goal_calendar(){
   calendar = new CalHeatMap();
+  var dt = new Date()
+  var year = dt.getYear() + 1900
   calendar.init({
       itemSelector: "#cal-heatmap",
       domain: "year",
       subDomain: "day",
       data: '/datesCompletedGoals',
       dataType: "json",
-      start: new Date(2017, 0),
+      start: new Date(year, 0),
       cellSize: 10,
       range: 1,
       displayLegend: false
@@ -575,5 +575,5 @@ function load_first_time() {
 }
 
 $(document).ready(function() {
-  load_first_time();
+  load_data()
 });

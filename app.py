@@ -128,15 +128,15 @@ def data():
         }
     # Save each hour to the database
     now = dt.datetime.now()
-    if now.minute == 0:
-        try:
-            personal_data = PersonalData(personal_data_dictionary=info)
-            db.session.add(personal_data)
-            db.session.commit()
-            db.session.close()
-        except Exception as e:
-            print(e)
-            print("Unable to add items to database")
+    # if now.minute == 0:
+    try:
+        personal_data = PersonalData(personal_data_dictionary=info, created_date=now)
+        db.session.add(personal_data)
+        db.session.commit()
+        db.session.close()
+    except Exception as e:
+        print(e)
+        print("Unable to add items to database")
     return jsonify(info)
 
 

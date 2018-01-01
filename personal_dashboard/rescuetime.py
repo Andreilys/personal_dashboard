@@ -77,6 +77,8 @@ class RescueTime:
             today = DT.date.today()
             date = today - DT.timedelta(days=date)
             response = requests.get("https://www.rescuetime.com/anapi/data?key={0}&perspective=rank&interval=week&restrict_begin={1}&restrict_end={2}&format=json".format(RESCUETIME_API_KEY, str(date), str(date)))
+            while (response.status_code == 502):
+                response = requests.get("https://www.rescuetime.com/anapi/data?key={0}&perspective=rank&interval=week&restrict_begin={1}&restrict_end={2}&format=json".format(RESCUETIME_API_KEY, str(date), str(date)))
             return date, response.json()["rows"]
 
     #This function is used to return dates and a formatted list containing dictionaries
