@@ -34,13 +34,15 @@ Enter your API credentials into personal\_info\_template.py and rename it to per
 Run python manage.py db init
 python manage.py db migrate
 python manage.py db upgrade
+#you should now be able to run the application
+python3 app.py
 ```
 
-Now run the application with python3 app.py, you'll now need to give permission to Spotify for the app to access your data (Which will save a .emailCache file) followed by withings (make sure you are just copy+pasting oauth\_verifier and not including oauth\_token) and Moves which should then create permanent pickle files in your personal\_dashboard folder.
+You'll now need to give permission to Spotify for the app to access your data (Which will save a .emailCache file) followed by withings (make sure you are just copy+pasting oauth\_verifier and not including oauth\_token) and Moves which should then create permanent pickle files in your personal\_dashboard folder.
 
 You're done setting it up locally!
 
-**Setting up on Heroku**\s\s
+**Setting up on Heroku**<br />
 With the application working locally, you might be interested in hosting it on the cloud, I prefer heroku so i'll walk you through instructions on how to set up there. First things first, make sure you register an account on heroku and download their [Heroku Toolbelt](https://devcenter.heroku.com/articles/heroku-cli), afterwards login with heroku login.
 
 Once logged in run these commands 
