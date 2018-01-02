@@ -78,11 +78,11 @@ def first_time_load():
     session = db.session()
     #In case personal_data contains no data
     try:
-        dictionary = session.execute("SELECT * FROM personal_data WHERE id=(select max(id) from personal_data)")
-        for diction in dictionary:
-            personal_info_dict = diction[1]
+        dictionary = session.execute("SELECT personal_data_dictionary FROM personal_data WHERE id=(select max(id) from personal_data)")
+        personal_info_dict = {}
+        dictionary = dictionary.fetchall()
         session.close()
-        return jsonify(personal_info_dict)
+        return jsonify(dictionary[0][0])
     except:
         personal_info_dict = data()
         return personal_info_dict

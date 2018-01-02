@@ -85,21 +85,20 @@ class Moves():
             average = 0
         return average
 
-
-
     #Turn this method into a visualizaton for map
     def get_past_seven_days_places(self):
-        past_seven_days_places = requests.get(self.base_url + 'places/daily?pastDays=7&access_token=' + self.access_token).json()
-        # first 0 is for the length of places, second 0 is for length of segments
+        past_seven_days_places = requests.get(self.base_url + 'places/daily?pastDays=7&access_token=' + self.access_token)
+        past_seven_days_places_json = past_seven_days_places.json()
+		# first 0 is for the length of places, second 0 is for length of segments
         past_seven_days_places_set = set()
-        for i in range(len(past_seven_days_places)):
+        for i in range(len(past_seven_days_places_json)):
             try:
-                segment_length = len(past_seven_days_places[i]['segments'])
+                segment_length = len(past_seven_days_places_json[i]['segments'])
             except:
                 segment_length = 0
             for j in range(segment_length):
                 try:
-                    past_seven_days_places_set.add(past_seven_days_places[i]['segments'][j]['place']['name'])
+                    past_seven_days_places_set.add(past_seven_days_places_json[i]['segments'][j]['place']['name'])
                 except:
                     continue
         return ', '.join(past_seven_days_places_set)
@@ -110,9 +109,10 @@ class Moves():
         daily_steps_array = []
         average_steps_array = []
         avg = self.get_average_past_seven_steps()
+		#fill array with 7 values of average
         for i in range(7):
             average_steps_array.append(avg)
-            past_seven_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=7&access_token=' + self.access_token).json()
+        past_seven_days_steps = requests.get(self.base_url + 'summary/daily?pastDays=7&access_token=' + self.access_token).json()
         for steps in past_seven_days_steps:
             try:
                 daily_steps_array.append(steps['summary'][0]['steps'])
