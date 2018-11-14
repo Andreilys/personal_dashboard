@@ -11,7 +11,7 @@ decorator==4.1.2
 django-appconf==1.0.2
 enum-compat==0.0.2
 eventlet==0.20.1
-Flask==0.12
+Flask==0.12.3
 Flask-DebugToolbar==0.10.1
 Flask-Migrate==2.1.1
 Flask-RESTful==0.3.6
