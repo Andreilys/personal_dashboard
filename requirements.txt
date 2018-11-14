@@ -43,7 +43,7 @@ python-socketio==1.8.0
 pytodoist==2.1.0
 pytz==2017.2
 rauth==0.7.3
-requests==2.18.4
+requests==2.20.0 
 requests-oauth==0.4.1
 requests-oauthlib==0.8.0
 six==1.10.0
