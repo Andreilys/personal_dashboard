@@ -33,7 +33,10 @@ class Toggl():
             end_time = time_entry['start'].split('T')[0]
             if end_time in dates:
                 time_in_hours = time_entry['duration']/60/60
-                description = time_entry['description']
+                try:
+                    description = time_entry['description']
+                except:
+                    description = "No description"
                 if description != 'Pomodoro Break':
                     if time_in_hours < 0:
                         epoch_time = int(time.time())
@@ -81,6 +84,9 @@ class Toggl():
                 for second_pomodoro in pomodoros:
                     if second_pomodoro == pomodoro:
                         daily_data = {'year' : year, 'month' : month, 'day' : day, 'value' : pomodoros[pomodoro]}
+                        weekly_data.append(daily_data)
+                    else:
+                        daily_data = {'year': year, 'month': month, 'day': day, 'value': 0}
                         weekly_data.append(daily_data)
             toggl_data.append(weekly_data)
         return toggl_data

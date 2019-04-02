@@ -1,22 +1,26 @@
-var waiting_for_update = false; // are we currently waiting?
+var waiting_for_update = false;
+// are we currently waiting?
 var LONG_POLL_DURATION = 10000; // how long should we wait? (msec)
 var first_time_loading = true;
-var global_steps_doughnut = Object(),
+var global_meditation_doughnut = Object(),
   global_pomodoro_doughnut = Object(),
   global_unproductive_doughnut = Object(),
   global_coding_chart = Object(),
   global_coding_type_chart = Object(),
   global_rescuetime_pie = Object(),
   global_rescuetime_bar = Object(),
+  global_books_bar = Object(),
+  global_writing_bar = Object(),
+  global_meditation_bar = Object(),
   global_toggl_pie = Object(),
   global_toggl_bar = Object(),
-  global_steps_bar = Object(),
+  // global_steps_bar = Object(),
   global_weight_line = Object(),
-  global_chess_pie = Object(),
+  // global_chess_pie = Object(),
   global_cal = Object();
-var STEPS_GOAL = null;
 var POMODORO_GOAL = null;
 var UNPRODUCTIVITY_GOAL = null;
+var MEDITATION_GOAL = null;
 /**
  * Load data from /data, optionally providing a query parameter read
  * from the #format select
@@ -61,12 +65,14 @@ function sleep(ms) {
  */
 async function display_data(data) {
     if (data) {
-        if (STEPS_GOAL == null){
-          STEPS_GOAL = data.steps_goal;
+        if (UNPRODUCTIVITY_GOAL == null){
+          MEDITATION_GOAL = data.meditation_goal
           UNPRODUCTIVITY_GOAL = data.unproductivity_goal;
           POMODORO_GOAL = data.pomodoro_goal;
         }
         $('#rescue_time_past_seven_top_five').html(data.rescue_time_past_seven_top_five);
+        $('#past_books').html(data.past_books);
+        $('#past_writing').html(data.past_writing);
         $('#total_tasks').html("Todo List " + data.total_tasks);
         $('#top_tracks').html(data.top_tracks);
         $('#top_artists').html(data.top_artists);
@@ -75,43 +81,50 @@ async function display_data(data) {
         $('#quote_content').html(data.quote_content);
         $('#quote_author').html(data.quote_author);
         $('#moves_places').html(data.moves_places);
-        $('#chess_rating').html(data.chess_rating);
+        // $('#chess_rating').html(data.chess_rating);
         coding_time = format_coding_data(data.coding_time);
         coding_type = format_coding_type_data(data.coding_type);
         toggl_data = format_toggl_data(data.past_seven_days_pomodoros);
         toggl_bar_data = format_toggl_data_bar(data.toggl_bar_data);
-        weight_data = format_weight_data(data.weight_line_data, data.weight_line_dates);
+        // weight_data = format_weight_data(data.weight_line_data, data.weight_line_dates);
         rescuetime_data = format_rescuetime_data(data.rescue_time_past_seven_productivity, data.rescue_time_past_seven_unproductivity);
-        chess_pie_data = format_chess_pie_data(data.chess_games)
+        // chess_pie_data = format_chess_pie_data(data.chess_games)
         if (first_time_loading) {
-            global_steps_doughnut = create_steps_doughnut(data);
+            global_meditation_doughnut = create_meditation_doughnut(data);
             global_pomodoro_doughnut = create_pomodoro_doughnut(data);
             global_unproductive_doughnut = create_unproductive_doughnut(data);
             global_coding_chart = create_coding_chart(coding_time);
             global_coding_type_chart = create_pie(coding_type, "coding_type");
             global_rescuetime_pie = create_pie(rescuetime_data, "rescuetime_pie")
             global_rescuetime_bar = create_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates, "rescuetime_bar");
+            global_books_bar = create_bar(data.books_bar_data, data.books_bar_data_dates, "books_bar");
+            global_books_bar = create_bar(data.writing_bar_data, data.writing_bar_data_dates, "writing_bar");
+
+            global_meditation_bar = create_bar(data.meditation_bar_data, data.meditation_bar_data_dates, "meditation_bar");
             global_toggl_pie = create_pie(toggl_data, "toggl_pie");
             //We can use rescuetime bar data dates since its the same information
-            global_steps_bar = create_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar");
+            // global_steps_bar = create_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar");
             global_toggl_bar = create_toggl_bar(toggl_bar_data);
-            global_weight_line = create_line(weight_data, "weight_line");
-            global_chess_pie = create_pie(chess_pie_data, "chess_pie");
+            // global_weight_line = create_line(weight_data, "weight_line");
+            // global_chess_pie = create_pie(chess_pie_data, "chess_pie");
             global_cal = create_goal_calendar();
             global_cal.update('/datesCompletedGoals');
         }
         else {
           global_cal.update('/datesCompletedGoals');
-          update_doughnuts(global_steps_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
+          update_doughnuts(global_meditation_doughnut, global_pomodoro_doughnut, global_unproductive_doughnut, data);
           update_coding_chart(coding_time);
           update_coding_type_chart(coding_type);
           update_pie(rescuetime_data, "rescuetime_pie", global_rescuetime_pie);
-          update_pie(chess_pie_data, "chess_pie", global_chess_pie);
+          // update_pie(chess_pie_data, "chess_pie", global_chess_pie);
           update_pie(toggl_data, "toggl_pie", global_toggl_pie);
           update_bar(data.rescuetime_bar_data, data.rescuetime_bar_data_dates, "rescuetime_bar", global_rescuetime_bar);
           //We can use rescuetime bar data dates since its the same information
-          update_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar", global_steps_bar)
-          update_line(weight_data, "weight_line", global_weight_line);
+          // update_bar(data.steps_bar_data, data.rescuetime_bar_data_dates, "steps_bar", global_steps_bar);
+          update_bar(data.meditation_bar_data, data.meditation_bar_data_dates, "meditation_bar", global_meditation_bar);
+          update_bar(data.books_bar_data, data.books_bar_data_dates, "books_bar", global_books_bar);
+          update_bar(data.writing_bar_data, data.writing_bar_data_dates, "writing_bar", global_writing_bar);
+          // update_line(weight_data, "weight_line", global_weight_line);
           update_toggl_bar(toggl_bar_data);
         }
         $('#loading').remove();
@@ -146,19 +159,20 @@ function create_goal_calendar(){
 }
 
 //Row 1 - Start of Doughuts
-function update_doughnuts(steps_doughnut, pomodoro_doughnut, unproductive_doughnut, data) {
+function update_doughnuts(meditation_doughnut, pomodoro_doughnut, unproductive_doughnut, data) {
   var total_pomodoros = 0;
   for (var key in data.daily_doughnut_pomodoro){
     total_pomodoros += data.daily_doughnut_pomodoro[key];
   }
   var current_pomodoro_percent = total_pomodoros > POMODORO_GOAL ? 100 : Math.round(total_pomodoros/POMODORO_GOAL * 100),
-      current_steps_percent = data.current_steps > STEPS_GOAL ? 100 : Math.round(data.current_steps/STEPS_GOAL * 100),
+      current_meditation_percent = data.current_meditation > MEDITATION_GOAL ? 100 : Math.round(data.current_meditation/MEDITATION_GOAL * 100),
       current_unproductive_percent = data.rescue_time_daily_unproductivity > UNPRODUCTIVITY_GOAL ? 100 : Math.round(data.rescue_time_daily_unproductivity/UNPRODUCTIVITY_GOAL * 100);
-    //Updating steps doughnut
-      steps_doughnut.options.title.text = String(current_steps_percent) + "%";
-      steps_doughnut.options.data[0].dataPoints[0].y = current_steps_percent;
-      steps_doughnut.options.data[0].dataPoints[1].y = 100 - current_steps_percent;
-      steps_doughnut.options.data[0].dataPoints[0].toolTipContent = String(data.current_steps) + " steps",
+    //Updating meditation doughnut
+
+      meditation_doughnut.options.title.text = String(current_meditation_percent) + "%";
+      meditation_doughnut.options.data[0].dataPoints[0].y = current_meditation_percent;
+      meditation_doughnut.options.data[0].dataPoints[1].y = 100 - current_meditation_percent;
+      meditation_doughnut.options.data[0].dataPoints[0].toolTipContent = String(data.current_meditation) + " minutes of meditation",
     //Updating pomodoro doughnut
       pomodoro_doughnut.options.title.text = String(current_pomodoro_percent) + "%";
       pomodoro_doughnut.options.data[0].dataPoints[0].y = current_pomodoro_percent;
@@ -172,7 +186,7 @@ function update_doughnuts(steps_doughnut, pomodoro_doughnut, unproductive_doughn
     unproductive_doughnut.options.data[0].dataPoints[0].toolTipContent= String(data.rescue_time_daily_unproductivity) + " hours",
 
     //Re-rendering the doughnuts
-    steps_doughnut.render();
+    meditation_doughnut.render();
     pomodoro_doughnut.render();
     unproductive_doughnut.render();
 }
@@ -260,17 +274,17 @@ function create_unproductive_doughnut(data){
 }
 
 
-//This creates and returns the steps doughnut chart
-function create_steps_doughnut(data) {
-    var current_steps_percent = data.current_steps > STEPS_GOAL ? 100 : Math.round(data.current_steps/STEPS_GOAL * 100);
-    var steps_doughnut = new CanvasJS.Chart("steps_doughnut", {
+//This creates and returns the meditation doughnut chart
+function create_meditation_doughnut(data) {
+    var current_meditation_percent = data.current_meditation > MEDITATION_GOAL ? 100 : Math.round(data.current_meditation/MEDITATION_GOAL * 100);
+    var meditation_doughnut = new CanvasJS.Chart("meditation_doughnut", {
       animationEnabled: true,
       backgroundColor: "transparent",
       title: {
         fontColor: "#848484",
         fontSize: 60,
         horizontalAlign: "center",
-        text: String(current_steps_percent) + "%",
+        text: String(current_meditation_percent) + "%",
         fontFamily: "Roboto",
         verticalAlign: "center"
       },
@@ -288,15 +302,15 @@ function create_steps_doughnut(data) {
           startAngle: 270,
           type: "doughnut",
           dataPoints: [
-            { y: current_steps_percent, color: "#33702a", toolTipContent: String(data.current_steps) + " steps" },
-            { y: 100 - current_steps_percent, color: "#424242", toolTipContent: null }
+            { y: current_meditation_percent, color: "#33702a", toolTipContent: String(data.current_meditation) + " minutes of meditation"  },
+            { y: 100 - current_meditation_percent, color: "#424242", toolTipContent: null }
           ]
         }
       ]
     });
     // jQuery.inview plugin
-    steps_doughnut.render()
-    return steps_doughnut;
+    meditation_doughnut.render()
+    return meditation_doughnut;
 }
 
 
@@ -372,7 +386,7 @@ function create_coding_chart(coding_time) {
 }
 
 
-//Row 3 Rescuetime Data
+//Row 3 Rescuetime Data for pie chart
 function format_rescuetime_data(rescue_time_past_seven_productivity, rescue_time_past_seven_unproductivity){
   rescuetime_weekly_data = [];
   total = rescue_time_past_seven_productivity + rescue_time_past_seven_unproductivity;
@@ -394,7 +408,7 @@ function create_pie(data, html_id){
     legend: {
       fontSize: 12,
       display: true,
-      position: 'bottom',
+      position: 'top',
       fullWidth: true,
       reverse: false,
     },
@@ -502,24 +516,16 @@ function create_toggl_bar(toggl_data){
 }
 
 //Row 4 steps and weight
-function format_moves_data(rescue_time_past_seven_productivity, rescue_time_past_seven_unproductivity){
-  rescuetime_weekly_data = [];
-  total = rescue_time_past_seven_productivity + rescue_time_past_seven_unproductivity;
-  rescuetime_weekly_data.push({name: "Productive Time", y: rescue_time_past_seven_productivity, indexLabel: "Productive Hours" + " - " + String(rescue_time_past_seven_productivity) + " (" + String((rescue_time_past_seven_productivity/total*100).toFixed(2)) + "%)", legendText: "Productive Hours"});
-  rescuetime_weekly_data.push({name: "Unproductive Time", y: rescue_time_past_seven_unproductivity, indexLabel: "Unproductive Hours" + " - " + String(rescue_time_past_seven_unproductivity) + " (" + String((rescue_time_past_seven_unproductivity/total*100).toFixed(2)) + "%)", legendText: "Unproductive Hours"});
-  return rescuetime_weekly_data;
-}
-
-function format_weight_data(weight_data, dates){
-  formatted_dataset = []
-  dataset = []
-  for (let index in weight_data) {
-    data = {x: new Date(dates[index]), y: weight_data[index]}
-    dataset.push(data)
-  }
-  formatted_dataset.push({data: dataset, label:"Weight", borderColor: "#3e95cd", fill: false})
-  return {labels:dates, datasets: formatted_dataset}
-}
+// function format_weight_data(weight_data, dates){
+//   formatted_dataset = []
+//   dataset = []
+//   for (let index in weight_data) {
+//     data = {x: new Date(dates[index]), y: weight_data[index]}
+//     dataset.push(data)
+//   }
+//   formatted_dataset.push({data: dataset, label:"Weight", borderColor: "#3e95cd", fill: false})
+//   return {labels:dates, datasets: formatted_dataset}
+// }
 
 
 function update_line(data, html_id, global_var_chart){
@@ -555,14 +561,14 @@ function create_line(data_set, html_id){
 }
 
 //Row 5: Chess
-function format_chess_pie_data(chess_data){
-  chess_data_formatted = [];
-  total = chess_data['wins'] + chess_data['losses'] + chess_data['draws'];
-  chess_data_formatted.push({name: "Wins", y: chess_data['wins'], indexLabel: "Wins" + " - " + String(chess_data['wins']) + " (" + String((chess_data['wins']/total*100).toFixed(2)) + "%)", legendText: "Wins"});
-  chess_data_formatted.push({name: "Losses", y: chess_data['losses'], indexLabel: "Losses" + " - " + String(chess_data['losses']) + " (" + String((chess_data['losses']/total*100).toFixed(2)) + "%)", legendText: "Losses"});
-  chess_data_formatted.push({name: "Draws", y: chess_data['draws'], indexLabel: "Draws" + " - " + String(chess_data['draws']) + " (" + String((chess_data['draws']/total*100).toFixed(2)) + "%)", legendText: "Draws"});
-  return chess_data_formatted;
-}
+// function format_chess_pie_data(chess_data){
+//   chess_data_formatted = [];
+//   total = chess_data['wins'] + chess_data['losses'] + chess_data['draws'];
+//   chess_data_formatted.push({name: "Wins", y: chess_data['wins'], indexLabel: "Wins" + " - " + String(chess_data['wins']) + " (" + String((chess_data['wins']/total*100).toFixed(2)) + "%)", legendText: "Wins"});
+//   chess_data_formatted.push({name: "Losses", y: chess_data['losses'], indexLabel: "Losses" + " - " + String(chess_data['losses']) + " (" + String((chess_data['losses']/total*100).toFixed(2)) + "%)", legendText: "Losses"});
+//   chess_data_formatted.push({name: "Draws", y: chess_data['draws'], indexLabel: "Draws" + " - " + String(chess_data['draws']) + " (" + String((chess_data['draws']/total*100).toFixed(2)) + "%)", legendText: "Draws"});
+//   return chess_data_formatted;
+// }
 
 
 function load_first_time() {

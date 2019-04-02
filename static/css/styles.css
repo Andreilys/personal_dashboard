@@ -44,6 +44,10 @@ canvas {
   font-family: "Roboto", Helvetica, Arial, sans-serif;
 }
 
+#quote_author {
+  color:white;
+}
+
 hr {
   border-top: 1px solid #727273;
   margin-bottom: 2rem;
@@ -54,7 +58,7 @@ hr {
   text-align: center;
 }
 
-#steps_doughnut, #pomodoro_doughnut, #unproductivity_doughnut {
+#meditation_doughnut, #pomodoro_doughnut, #unproductivity_doughnut {
   height: 280px;
   margin-top: 1rem;
   width: 100%;

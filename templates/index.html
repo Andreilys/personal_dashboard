@@ -11,23 +11,22 @@
   <title>Personal Dashboard</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="static/js/canvasjs/assets/bootstrap/bootstrap4-alpha3.min.css">
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
   <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='css/styles.css')}}">
-  <script src="{{ url_for('static', filename='js/scripts.js')}}"> </script>
   <link rel="shortcut icon" href="static/favicon.ico" type="gear">
-  <script src="static/js/canvasjs/assets/jquery/jquery-3.1.0.min.js"></script>
-  <script src="static/js/canvasjs/assets/tether/tether.min.js"></script>
-  <script type="text/javascript" src="static/js/canvasjs/canvasjs.min.js"></script>
-    <script src="static/js/canvasjs/assets/jquery.scrollspeed/jquery.scrollspeed.min.js"></script>
-  <script src="static/js/canvasjs/assets/jquery.inview/jquery.inview.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
-  <!-- Cal Heat map-->
-  <script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
-  <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
   <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+<script src="static/js/canvasjs/assets/jquery/jquery-3.1.0.min.js"></script>
+<script src="static/js/canvasjs/assets/tether/tether.min.js"></script>
+<script type="text/javascript" src="static/js/canvasjs/canvasjs.min.js"></script>
+<script src="static/js/canvasjs/assets/jquery.scrollspeed/jquery.scrollspeed.min.js"></script>
+<script src="static/js/canvasjs/assets/jquery.inview/jquery.inview.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+<!-- Cal Heat map-->
+<script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
+<script src="{{ url_for('static', filename='js/scripts.js')}}"> </script>
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
@@ -46,8 +45,8 @@
   <!--Daily doughnut charts -->
   <div class="row">
     <div class="col-md-4">
-      <div class="inview" id="steps_doughnut"></div>
-      <h3 class="align-center">Steps</h3>
+      <div class="inview" id="meditation_doughnut"></div>
+      <h3 class="align-center">Meditation Time</h3>
     </div>
 
     <div class="col-md-4">
@@ -68,6 +67,71 @@
 <hr>
 
 <div class="container">
+  <div class="row m-b-1">
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <h4 class="card-header">Daily Focus Time</h4>
+        <div class="card-block">
+          <div id="toggl_bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <h4 class="card-header">Total Weekly Focus Time</h4>
+        <div class="card-block">
+          <div id="toggl_pie"></div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- row -->
+
+
+  <!-- <div class="row m-b-1">
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <h4 class="card-header">Weekly Meditation Time</h4>
+        <div class="card-block">
+          <div id="coding_time"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <h4 class="card-header">Weekly Coding Type</h4>
+        <div class="card-block">
+          <div id="coding_type"></div>
+        </div>
+      </div>
+    </div>
+  </div>  -->
+  <!-- row -->
+
+  <div class="row m-b-1">
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <h4 class="card-header">Daily Time Spent Online</h4>
+        <div class="card-block">
+          <canvas id="rescuetime_bar"></canvas>
+          <hr>
+          <p style="color:black"><strong>Top Five Sources:</strong> <p style="color:black" id="rescue_time_past_seven_top_five"></p></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <h4 class="card-header">Total Weekly Time Spent Online</h4>
+        <div class="card-block">
+          <div id="rescuetime_pie"></div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- row -->
+
+
 <div class="row m-b-1">
   <div class="col-lg-6">
     <div class="card shadow">
@@ -89,92 +153,77 @@
 </div> <!-- row -->
 
 <div class="row m-b-1">
-  <div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Daily Time Spent Online</h4>
-      <div class="card-block">
-        <canvas id="rescuetime_bar"></canvas>
-        <hr>
-        <p style="color:black"><strong>Top Five Sources:</strong> <p style="color:black" id="rescue_time_past_seven_top_five"></p></p>
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <h4 class="card-header"><span>Weekly Meditation Time</span></h4>
+        <div class="card-block">
+          <canvas id="meditation_bar"></canvas>
       </div>
     </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Total Weekly Time Spent Online</h4>
-      <div class="card-block">
-        <div id="rescuetime_pie"></div>
-      </div>
     </div>
-  </div>
-</div> <!-- row -->
 
-
-<div class="row m-b-1">
-  <div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Daily Focus Time</h4>
-      <div class="card-block">
-        <div id="toggl_bar"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Total Weekly Focus Time</h4>
-      <div class="card-block">
-        <div id="toggl_pie"></div>
-      </div>
-    </div>
-  </div>
-</div> <!-- row -->
-
-<div class="row m-b-1">
-  <div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Daily and Average Steps</h4>
-      <div class="card-block">
-        <canvas id="steps_bar"></canvas>
-        <hr>
-        <p><strong style="color:black;">Places Visited This Week:</strong> <p id="moves_places"></p></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Weight</h4>
-      <div class="card-block">
-        <canvas id="weight_line"></canvas>
-      </div>
-    </div>
-  </div>
-</div> <!-- row -->
-
-<div class="row m-b-1">
-  <div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Chess - <span id="chess_rating"></span></h4>
-      <div class="card-block">
-        <div id="chess_pie"></div>
-    </div>
-  </div>
-  </div>
-
-  <div class="col-lg-6">
+<div class="col-lg-6">
     <div class="card shadow">
       <h4 class="card-header">Spotify</h4>
       <div class="card-block">
-        <TABLE class="data_table" border="1">
-        <TR><td><p> <strong>Top Tracks This Month:</strong> </p><p id="top_tracks"></p> <p><strong>Top Artists This Month: </strong></p><p id="top_artists"></p></td></TR>
-        </TABLE>
+    <table class="data_table" border="1">
+      <tr>
+        <td>
+          <p>
+            <strong>Top Tracks This Month:</strong>
+          </p>
+          <p id="top_tracks"></p>
+          <p>
+            <strong>Top Artists This Month: </strong>
+          </p>
+          <p id="top_artists"></p>
+        </td>
+      </tr>
+    </table>
       </div>
     </div>
   </div>
 </div> <!-- row -->
+<div class="row m-b-1">
 
-</div> <!-- container -->
+<div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Writing</h4>
+      <div class="card-block">
+        <canvas id="writing_bar"></canvas>
+        <hr>
+        <p style="color:black" id="past_writing"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card shadow">
+      <h4 class="card-header">Reading</h4>
+      <div class="card-block">
+        <canvas id="books_bar"></canvas>
+        <hr>
+        <p style="color:black" id="past_books"></p>
+      </div>
+    </div>
+  </div>
+
+</div> <!-- row -->
+
+
+<!-- <div class="row m-b-1">
+    <div class="col-lg-6">
+      <div class="card shadow">
+        <h4 class="card-header">Chess - <span id="chess_rating"></span></h4>
+        <div class="card-block">
+          <div id="chess_pie"></div>
+      </div>
+    </div>
+    </div> -->
+<!-- 
+</div>
+</div>  -->
+
 </body>
+
 </html>
