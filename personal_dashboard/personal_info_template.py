@@ -10,3 +10,9 @@ UNPRODUCTIVITY_GOAL = UNPRODUCTIVITY_GOAL
 #Get the JSON share link from wakatime, similar to this (https://wakatime.com/share/@0c62f2ad-9fa5-43c7-a08f-7b1562918a7d/43cd4128-5361-43db-b51b-d965e3c575a5.json):
 WAKATIME_CODING_TIME = JSON_LINK
 WAKATIME_CODING_TYPE = JSON_LINK
+MEDITATION_GOAL = 30
+STEPS_GOAL = 5000
+UNPRODUCTIVITY_GOAL = 1
+INSIGHT_MEDITATION_LOGIN = {'username' : 'user', 'password' : 'pw'}
+GOODREADS_INFO = {'user_id': '1', 'api_key' : '1'}
+MEDIUM_USER = 'a'
