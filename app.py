@@ -4,12 +4,15 @@ import time, threading, random, webbrowser
 from personal_dashboard.quotes import Quote
 from flask import send_from_directory
 from personal_dashboard.rescuetime import RescueTime
-from personal_dashboard.withings import Withings
+# from personal_dashboard.withings import Withings
 from personal_dashboard.todoist import Todoist
 from personal_dashboard.spotify import Spotify
 from personal_dashboard.moves import Moves
 from personal_dashboard.chess import Chess
 from personal_dashboard.toggl import Toggl
+from personal_dashboard.meditation import Meditation
+from personal_dashboard.books import Books 
+from personal_dashboard.articles import Articles
 import requests
 import psycopg2
 import os
@@ -43,14 +46,14 @@ def dates_completed_goals():
     now = dt.datetime.now()
     rescue_time = RescueTime()
     toggl = Toggl().get_daily_pomodoros()
-    moves = Moves()
+    meditation = Meditation()
     total_pomodoros = sum(toggl.values())
     #Check that we are almost done the day, we use two minutes in case the url
     #doesn't get pinged during the 59th minute for whatever reason
-    if now.hour == 23 and now.minute == 59:
-        if moves.get_current_days_steps() >= STEPS_GOAL and \
+    if now.hour == 23 and now.minute == 59 and now.second <= 30:
+        if meditation.get_current_meditation_time() >= MEDITATION_GOAL and \
         total_pomodoros >= FOCUS_GOAL and \
-        rescue_time.get_current_days_data()["unproductive_hours"] < 1:
+        rescue_time.get_current_days_data()["unproductive_hours"] < UNPRODUCTIVITY_GOAL:
             now = time.time()
             todayDict = {str(now) : 100}
             try:
@@ -64,8 +67,12 @@ def dates_completed_goals():
         session = db.session()
         rows = session.execute("SELECT * FROM dates_completed_goals")
         datesDict={}
+        # Returns the dates in a tuple (1, dict_value)
+        rows = rows.fetchall()
         for row in rows:
-            datesDict={**datesDict, **row[0]}
+            #iterate through the dict value pair and save to our dictionary
+            for key in row[1]:
+                datesDict[key] = row[1][key]
         session.close()
         return jsonify(datesDict)
     except psycopg2.DatabaseError as e:
@@ -82,8 +89,10 @@ def first_time_load():
         personal_info_dict = {}
         dictionary = dictionary.fetchall()
         session.close()
+        dictionary[0][0]['unproductivity_goal'] = 1
         return jsonify(dictionary[0][0])
-    except:
+    except Exception as e:
+        print(e)
         personal_info_dict = data()
         return personal_info_dict
 
@@ -91,51 +100,61 @@ def first_time_load():
 @app.route("/data", methods=['GET'])
 def data():
     rescue_time = RescueTime()
-    withings = Withings()
-    todoist = Todoist()
+    # withings = Withings()
     spotify = Spotify()
-    moves = Moves()
-    chess = Chess()
     toggl = Toggl()
     quote = Quote()
-    withings_line_data = withings.get_weight_line_data()
+    meditation = Meditation()
+    books = Books()
+    articles = Articles()
+    # withings_line_data = withings.get_weight_line_data()
     coding_time = requests.get(WAKATIME_CODING_TIME).json()['data']
     coding_type = requests.get(WAKATIME_CODING_TYPE).json()['data']
     rescuetime_bar_data = rescue_time.get_daily_week_view()
-    info = {'rescue_time_daily_unproductivity' : rescue_time.get_current_days_data()["unproductive_hours"],
-            'current_steps' : moves.get_current_days_steps(),
-            'rescue_time_past_seven_productivity' : rescue_time.get_past_seven_days_data()["productive_hours"],
-            'rescue_time_past_seven_unproductivity' : rescue_time.get_past_seven_days_data()["unproductive_hours"],
-            'rescue_time_past_seven_top_five' : rescue_time.get_past_seven_days_data()["top_five_sources"],
-            'weight' : withings.weight,
-            'total_tasks' : todoist.get_total_tasks(),
-            'top_tracks' : spotify.get_monthly_top_tracks(),
-            'top_artists' : spotify.get_monthly_top_artists(),
-            'chess_games' : chess.get_games(),
-            'chess_rating' : chess.get_rating(),
-            'quote_content' : quote.content,
-            'quote_author' : quote.author,
-            'moves_places' : moves.get_past_seven_days_places(),
-            'steps_bar_data' : moves.get_daily_week_view(),
-            #This is the integer version which gets stored in the database and used for doughnut chart
-            'daily_doughnut_pomodoro' : toggl.get_daily_pomodoros(),
-            'past_seven_days_pomodoros' : toggl.get_past_seven_days_pomodoros(),
-            'coding_time' : coding_time,
-            'coding_type' : coding_type,
-            'rescuetime_bar_data' : rescuetime_bar_data[0],
-            'rescuetime_bar_data_dates' : rescuetime_bar_data[1],
-            'toggl_bar_data' : toggl.get_daily_week_view(),
-            'weight_line_data' : withings_line_data[0],
-            'weight_line_dates' : withings_line_data[1],
-            'pomodoro_goal' : FOCUS_GOAL,
-            'steps_goal' : STEPS_GOAL,
-            'unproductivity_goal' : UNPRODUCTIVITY_GOAL
-        }
-    # Save each hour to the database
+    rescue_time_past_seven_days = rescue_time.get_past_seven_days_data()
+    books_bar_data = books.get_past_reading_history()
+    articles_bar_data = articles.get_past_n_month_writing_history(6)
+    meditation_bar_data = meditation.get_weekly_meditation_data()
+    info = {
+        'rescue_time_daily_unproductivity': rescue_time.get_current_days_data()["unproductive_hours"],
+        'current_meditation': meditation.get_current_meditation_time(),
+        'rescue_time_past_seven_productivity': rescue_time_past_seven_days["productive_hours"],
+        'rescue_time_past_seven_unproductivity': rescue_time_past_seven_days["unproductive_hours"],
+        'rescue_time_past_seven_top_five': rescue_time_past_seven_days["top_five_sources"],
+        # 'weight': withings.weight,
+        'top_tracks': spotify.get_monthly_top_tracks(),
+        'top_artists': spotify.get_monthly_top_artists(),
+        'quote_content': quote.content,
+        'quote_author': quote.author,
+        #This is the integer version which gets stored in the database and used for doughnut chart
+        'daily_doughnut_pomodoro': toggl.get_daily_pomodoros(),
+        'past_seven_days_pomodoros': toggl.get_past_seven_days_pomodoros(),
+        'coding_time': coding_time,
+        'coding_type': coding_type,
+        'rescuetime_bar_data': rescuetime_bar_data[0],
+        'rescuetime_bar_data_dates': rescuetime_bar_data[1],
+        'toggl_bar_data': toggl.get_daily_week_view(),
+        # 'weight_line_data': withings_line_data[0],
+        # 'weight_line_dates': withings_line_data[1],
+        'pomodoro_goal': FOCUS_GOAL,
+        'unproductivity_goal': UNPRODUCTIVITY_GOAL,
+        'meditation_goal': MEDITATION_GOAL,
+        'meditation_data': meditation.get_weekly_meditation_data(),
+        'past_books': books.get_past_n_books(3),
+        'books_bar_data': books_bar_data[0],
+        'books_bar_data_dates': books_bar_data[1],
+        'past_writing': articles.get_past_n_articles(3),
+        'writing_bar_data': articles_bar_data[0],
+        'writing_bar_data_dates': articles_bar_data[1],
+        'meditation_bar_data': meditation_bar_data[0],
+        'meditation_bar_data_dates': meditation_bar_data[1],
+        'top_three_sources': rescue_time.get_current_days_data()["top_three_sources"]
+    }
     now = dt.datetime.now()
-    if now.minute == 0:
+    if now.minute == 0 and now.second < 25:
         try:
-            personal_data = PersonalData(personal_data_dictionary=info, created_date=now)
+            personal_data = PersonalData(
+                personal_data_dictionary=info, created_date=now)
             db.session.add(personal_data)
             db.session.commit()
             db.session.close()
@@ -178,4 +197,3 @@ if __name__ == "__main__":
     # url = "http://127.0.0.1:{}".format(port)
     # wb = webbrowser.get(None)  # instead of None, can be "firefox" etc
     # threading.Timer(1.25, lambda: wb.open(url) ).start()
-    app.run(debug=True)
