@@ -10,15 +10,12 @@
 
   <title>Personal Dashboard</title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="static/js/canvasjs/assets/bootstrap/bootstrap4-alpha3.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='css/styles.css')}}">
   <link rel="shortcut icon" href="static/favicon.ico" type="gear">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
-<script src="static/js/canvasjs/assets/jquery/jquery-3.1.0.min.js"></script>
-<script src="static/js/canvasjs/assets/tether/tether.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script type="text/javascript" src="static/js/canvasjs/canvasjs.min.js"></script>
 <script src="static/js/canvasjs/assets/jquery.scrollspeed/jquery.scrollspeed.min.js"></script>
 <script src="static/js/canvasjs/assets/jquery.inview/jquery.inview.min.js"></script>
@@ -61,31 +58,8 @@
   </div>
 </div>
 
-<!-- Calendar heatmap -->
-<div class="inview" id="cal-heatmap"></div>
-<h6 style="text-align:center">Daily Goals Chain</h6>
-<hr>
 
 <div class="container">
-  <div class="row m-b-1">
-    <div class="col-lg-6">
-      <div class="card shadow">
-        <h4 class="card-header">Daily Focus Time</h4>
-        <div class="card-block">
-          <div id="toggl_bar"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-6">
-      <div class="card shadow">
-        <h4 class="card-header">Total Weekly Focus Time</h4>
-        <div class="card-block">
-          <div id="toggl_pie"></div>
-        </div>
-      </div>
-    </div>
-  </div> <!-- row -->
 
 
   <!-- <div class="row m-b-1">
@@ -152,15 +126,6 @@
   </div>
 </div> <!-- row -->
 
-<div class="row m-b-1">
-    <div class="col-lg-6">
-      <div class="card shadow">
-        <h4 class="card-header"><span>Weekly Meditation Time</span></h4>
-        <div class="card-block">
-          <canvas id="meditation_bar"></canvas>
-      </div>
-    </div>
-    </div>
 
 <div class="col-lg-6">
     <div class="card shadow">
@@ -183,31 +148,6 @@
       </div>
     </div>
   </div>
-</div> <!-- row -->
-<div class="row m-b-1">
-
-<div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Writing</h4>
-      <div class="card-block">
-        <canvas id="writing_bar"></canvas>
-        <hr>
-        <p style="color:black" id="past_writing"></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-6">
-    <div class="card shadow">
-      <h4 class="card-header">Reading</h4>
-      <div class="card-block">
-        <canvas id="books_bar"></canvas>
-        <hr>
-        <p style="color:black" id="past_books"></p>
-      </div>
-    </div>
-  </div>
-
 </div> <!-- row -->
 
 

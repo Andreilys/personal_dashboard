@@ -1,0 +1,201 @@
+{
+  "books_bar_data": [],
+  "books_bar_data_dates": [],
+  "coding_time": [
+    {
+      "grand_total": {
+        "ai_additions": 0,
+        "ai_deletions": 0,
+        "decimal": "0.00",
+        "digital": "0:00",
+        "hours": 0,
+        "human_additions": 0,
+        "human_deletions": 0,
+        "minutes": 0,
+        "text": "0 secs",
+        "total_seconds": 0.0
+      },
+      "range": {
+        "date": "2025-09-16",
+        "end": "2025-09-17T03:59:59Z",
+        "start": "2025-09-16T04:00:00Z",
+        "text": "Tue Sep 16th 2025",
+        "timezone": "America/Toronto"
+      }
+    },
+    {
+      "grand_total": {
+        "ai_additions": 0,
+        "ai_deletions": 0,
+        "decimal": "0.00",
+        "digital": "0:00",
+        "hours": 0,
+        "human_additions": 0,
+        "human_deletions": 0,
+        "minutes": 0,
+        "text": "0 secs",
+        "total_seconds": 0.0
+      },
+      "range": {
+        "date": "2025-09-17",
+        "end": "2025-09-18T03:59:59Z",
+        "start": "2025-09-17T04:00:00Z",
+        "text": "Wed Sep 17th 2025",
+        "timezone": "America/Toronto"
+      }
+    },
+    {
+      "grand_total": {
+        "ai_additions": 0,
+        "ai_deletions": 0,
+        "decimal": "0.00",
+        "digital": "0:00",
+        "hours": 0,
+        "human_additions": 0,
+        "human_deletions": 0,
+        "minutes": 0,
+        "text": "0 secs",
+        "total_seconds": 0.0
+      },
+      "range": {
+        "date": "2025-09-18",
+        "end": "2025-09-19T03:59:59Z",
+        "start": "2025-09-18T04:00:00Z",
+        "text": "Thu Sep 18th 2025",
+        "timezone": "America/Toronto"
+      }
+    },
+    {
+      "grand_total": {
+        "ai_additions": 0,
+        "ai_deletions": 0,
+        "decimal": "0.00",
+        "digital": "0:00",
+        "hours": 0,
+        "human_additions": 0,
+        "human_deletions": 0,
+        "minutes": 0,
+        "text": "0 secs",
+        "total_seconds": 0.0
+      },
+      "range": {
+        "date": "2025-09-19",
+        "end": "2025-09-20T03:59:59Z",
+        "start": "2025-09-19T04:00:00Z",
+        "text": "Fri Sep 19th 2025",
+        "timezone": "America/Toronto"
+      }
+    },
+    {
+      "grand_total": {
+        "ai_additions": 0,
+        "ai_deletions": 0,
+        "decimal": "0.00",
+        "digital": "0:00",
+        "hours": 0,
+        "human_additions": 0,
+        "human_deletions": 0,
+        "minutes": 0,
+        "text": "0 secs",
+        "total_seconds": 0.0
+      },
+      "range": {
+        "date": "2025-09-20",
+        "end": "2025-09-21T03:59:59Z",
+        "start": "2025-09-20T04:00:00Z",
+        "text": "Sat Sep 20th 2025",
+        "timezone": "America/Toronto"
+      }
+    },
+    {
+      "grand_total": {
+        "ai_additions": 0,
+        "ai_deletions": 0,
+        "decimal": "0.00",
+        "digital": "0:00",
+        "hours": 0,
+        "human_additions": 0,
+        "human_deletions": 0,
+        "minutes": 0,
+        "text": "0 secs",
+        "total_seconds": 0.0
+      },
+      "range": {
+        "date": "2025-09-21",
+        "end": "2025-09-22T03:59:59Z",
+        "start": "2025-09-21T04:00:00Z",
+        "text": "Sun Sep 21st 2025",
+        "timezone": "America/Toronto"
+      }
+    },
+    {
+      "grand_total": {
+        "ai_additions": 0,
+        "ai_deletions": 0,
+        "decimal": "0.00",
+        "digital": "0:00",
+        "hours": 0,
+        "human_additions": 0,
+        "human_deletions": 0,
+        "minutes": 0,
+        "text": "0 secs",
+        "total_seconds": 0.0
+      },
+      "range": {
+        "date": "2025-09-22",
+        "end": "2025-09-23T03:59:59Z",
+        "start": "2025-09-22T04:00:00Z",
+        "text": "Mon Sep 22nd 2025",
+        "timezone": "America/Toronto"
+      }
+    }
+  ],
+  "coding_type": [],
+  "current_meditation": 0,
+  "daily_doughnut_pomodoro": {},
+  "meditation_bar_data": [],
+  "meditation_bar_data_dates": [],
+  "meditation_data": [
+    [],
+    []
+  ],
+  "meditation_goal": 20,
+  "past_books": "",
+  "past_seven_days_pomodoros": {},
+  "past_writing": "",
+  "pomodoro_goal": 2.4,
+  "quote_author": "Marcus Aurelius",
+  "quote_content": "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth.",
+  "rescue_time_daily_unproductivity": 0,
+  "rescue_time_past_seven_productivity": 0,
+  "rescue_time_past_seven_top_five": "",
+  "rescue_time_past_seven_unproductivity": 0,
+  "rescuetime_bar_data": [
+    {
+      "backgroundColor": "#33702a",
+      "data": [],
+      "label": "Productive Hours"
+    },
+    {
+      "backgroundColor": "#b30000",
+      "data": [],
+      "label": "Unproductive Hours"
+    }
+  ],
+  "rescuetime_bar_data_dates": [
+    "09-16",
+    "09-17",
+    "09-18",
+    "09-19",
+    "09-20",
+    "09-21",
+    "09-22"
+  ],
+  "toggl_bar_data": [],
+  "top_artists": [],
+  "top_three_sources": "",
+  "top_tracks": "",
+  "unproductivity_goal": 1,
+  "writing_bar_data": [],
+  "writing_bar_data_dates": []
+}

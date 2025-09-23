@@ -1,9 +1,6 @@
 import requests
 from time import strftime
-try:
-    from .personal_info import RESCUETIME_API_KEY
-except:
-    from personal_info import RESCUETIME_API_KEY
+from .personal_info import RESCUETIME_API_KEY
 import datetime as DT
 
 #This rescuetime class interacts with the rescuetime API allowing it to pull current day and weekly data
